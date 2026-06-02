@@ -20,7 +20,6 @@ import {
 } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
 import {
   MOCK_CONTRACTS,
@@ -59,6 +58,19 @@ function getARStatus(customerId: string): { label: string; variant: 'success' | 
   if (custInvoices.some(i => i.status === 'overdue')) return { label: 'Overdue', variant: 'danger' }
   if (custInvoices.some(i => i.status === 'sent')) return { label: 'Attention', variant: 'warning' }
   return { label: 'Good Standing', variant: 'success' }
+}
+
+function ARStatusPill({ label, variant }: { label: string; variant: 'success' | 'warning' | 'danger' }) {
+  const styles = {
+    success: 'bg-[#d1fae5] text-[#047857]',
+    warning: 'bg-[#fef3c7] text-[#b45309]',
+    danger:  'bg-[#fee2e2] text-[#dc2626]',
+  }
+  return (
+    <span className={`inline-flex items-center rounded-md px-2.5 py-1 text-xs font-semibold ${styles[variant]}`}>
+      {label}
+    </span>
+  )
 }
 
 export default function CustomersPage() {
@@ -333,7 +345,7 @@ export default function CustomersPage() {
                   </Td>
 
                   <Td>
-                    <Badge variant={ar.variant}>{ar.label}</Badge>
+                    <ARStatusPill label={ar.label} variant={ar.variant} />
                   </Td>
 
                   <Td>

@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { AlertTriangle, Clock, Receipt, Gauge, X } from 'lucide-react'
+import { AlertTriangle, Bell, Clock, Receipt, Gauge, X } from 'lucide-react'
 import { useState } from 'react'
 import { MOCK_CONTRACTS, MOCK_INVOICES, MOCK_EQUIPMENT, MOCK_METER_READINGS } from '@/lib/mock-data'
 import { getDaysUntilExpiry, formatCurrency } from '@/lib/billing'
@@ -30,8 +30,8 @@ function buildAlerts(): Alert[] {
         id: `contract-expiry-${c.id}`,
         severity: 'critical',
         icon: <AlertTriangle className="w-3.5 h-3.5" />,
-        title: `${c.customer?.name} contract expiring`,
-        description: `${c.contract_number} · ${days === 0 ? 'Today' : `${days} day${days !== 1 ? 's' : ''}`}`,
+        title: `${c.customer?.name}`,
+        description: `Contract expiring ${days === 0 ? 'today' : `in ${days} day${days !== 1 ? 's' : ''}`}`,
         href: `/contracts/${c.id}`,
         action: 'Renew',
       })
@@ -40,8 +40,8 @@ function buildAlerts(): Alert[] {
         id: `contract-warn-${c.id}`,
         severity: 'warning',
         icon: <Clock className="w-3.5 h-3.5" />,
-        title: `${c.customer?.name} contract in ${days}d`,
-        description: `${c.contract_number} · Auto-renew ${c.auto_renew ? 'on' : 'off'}`,
+        title: `${c.customer?.name}`,
+        description: `Contract expiring in ${days} days`,
         href: `/contracts/${c.id}`,
       })
     }
@@ -75,7 +75,7 @@ function buildAlerts(): Alert[] {
         severity: 'info',
         icon: <Gauge className="w-3.5 h-3.5" />,
         title: `Missing meter — ${eq.make} ${eq.model}`,
-        description: `${eq.customer?.name} · ${latestDate ? `Last: ${latestDate.toLocaleDateString()}` : 'Never read'}`,
+        description: `${eq.customer?.name}`,
         href: '/meters',
       })
     }
@@ -86,10 +86,10 @@ function buildAlerts(): Alert[] {
   return alerts.sort((a, b) => order[a.severity] - order[b.severity])
 }
 
-const SEVERITY_STYLES: Record<AlertSeverity, { dot: string; icon: string; label: string }> = {
-  critical: { dot: 'bg-[#dc2626]', icon: 'text-[#dc2626]', label: 'text-[#dc2626]' },
-  warning:  { dot: 'bg-[#d97706]', icon: 'text-[#d97706]', label: 'text-[#d97706]' },
-  info:     { dot: 'bg-[#9ca3af]', icon: 'text-[#6b7280]',  label: 'text-[#6b7280]' },
+const SEVERITY_STYLES: Record<AlertSeverity, { icon: string; bg: string; border: string }> = {
+  critical: { icon: 'text-[#dc2626]', bg: 'bg-[#fff7f7]', border: 'border-[#fee2e2]' },
+  warning:  { icon: 'text-[#d97706]', bg: 'bg-[#fffaf0]', border: 'border-[#fed7aa]' },
+  info:     { icon: 'text-[#2563eb]', bg: 'bg-[#f8fbff]', border: 'border-[#dbeafe]' },
 }
 
 export function AlertsPanel() {
@@ -97,37 +97,38 @@ export function AlertsPanel() {
   const [dismissed, setDismissed] = useState<Set<string>>(new Set())
   const alerts = allAlerts.filter(a => !dismissed.has(a.id))
 
-  const criticalCount = alerts.filter(a => a.severity === 'critical').length
-
   if (alerts.length === 0) return null
 
   return (
-    <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] overflow-hidden mb-5">
-      <div className="px-4 py-2.5 border-b border-[#f3f4f6] flex items-center justify-between">
+    <div id="alerts" className="bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden mb-4">
+      <div className="px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-[#111827]">Alerts</span>
-          {criticalCount > 0 && (
-            <span className="inline-flex items-center gap-1 text-[11px] font-medium text-[#dc2626]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#dc2626]" />
-              {criticalCount} critical
-            </span>
-          )}
+          <Bell className="w-4 h-4 text-[#64748b]" />
+          <span className="text-sm font-semibold text-[#111827]">Alerts</span>
+          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-[#fee2e2] text-xs font-semibold text-[#dc2626]">
+            {alerts.length}
+          </span>
         </div>
-        <span className="text-[11px] text-[#9ca3af]">{alerts.length} total</span>
+        <Link href="#alerts" className="text-xs text-[#2563eb] hover:underline font-medium">
+          View all alerts →
+        </Link>
       </div>
-      <div className="divide-y divide-[#f9fafb]">
-        {alerts.slice(0, 8).map(alert => {
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 px-4 pb-4">
+        {alerts.slice(0, 4).map(alert => {
           const styles = SEVERITY_STYLES[alert.severity]
           const Inner = (
-            <div className={`flex items-start gap-3 px-4 py-2.5 hover:bg-[#f9fafb] transition-colors group ${alert.href ? 'cursor-pointer' : ''}`}>
-              <div className={`flex-shrink-0 mt-0.5 ${styles.icon}`}>{alert.icon}</div>
-              <div className="flex-1 min-w-0">
-                <div className="text-xs font-medium text-[#111827] truncate">{alert.title}</div>
-                <div className="text-[11px] text-[#9ca3af] truncate mt-0.5">{alert.description}</div>
+            <div className={`relative h-full rounded-xl border px-4 py-3 transition-colors hover:bg-white ${styles.bg} ${styles.border} group`}>
+              <div className="flex items-center gap-3">
+                <div className={`flex-shrink-0 ${styles.icon}`}>{alert.icon}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs font-semibold text-[#111827] truncate">{alert.title}</div>
+                  <div className="text-[11px] text-[#475569] truncate mt-1">{alert.description}</div>
+                </div>
               </div>
               <button
                 onClick={e => { e.preventDefault(); e.stopPropagation(); setDismissed(prev => new Set([...prev, alert.id])) }}
-                className="flex-shrink-0 opacity-0 group-hover:opacity-100 text-[#d1d5db] hover:text-[#6b7280] transition-all"
+                className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 text-[#cbd5e1] hover:text-[#64748b] transition-all"
+                aria-label="Dismiss alert"
               >
                 <X className="w-3 h-3" />
               </button>
