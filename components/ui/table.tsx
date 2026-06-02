@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react'
+import { type ReactNode, type ElementType } from 'react'
 
 export function Table({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
@@ -61,11 +61,16 @@ export function Td({ children, className = '' }: { children: ReactNode; classNam
   )
 }
 
-export function EmptyRow({ cols, message = 'No records found' }: { cols: number; message?: string }) {
+export function EmptyRow({ cols, message = 'No records found', icon: Icon }: {
+  cols: number
+  message?: string
+  icon?: ElementType
+}) {
   return (
     <tr>
-      <td colSpan={cols} className="px-5 py-16 text-center text-[#9ca3af] text-sm">
-        {message}
+      <td colSpan={cols} className="px-5 py-16 text-center">
+        {Icon && <Icon className="w-8 h-8 text-[#e5e7eb] mx-auto mb-3" />}
+        <p className="text-sm text-[#9ca3af]">{message}</p>
       </td>
     </tr>
   )

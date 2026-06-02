@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
 import { MOCK_PARTS } from '@/lib/mock-data'
 import { formatCurrency } from '@/lib/billing'
-import { Plus, Search, AlertTriangle } from 'lucide-react'
+import { Plus, Search, AlertTriangle, X, Package } from 'lucide-react'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import type { PartCategory } from '@/lib/types'
 
 const CATEGORY_LABELS: Record<PartCategory, string> = {
@@ -57,23 +58,23 @@ export default function PartsPage() {
 
       {/* KPIs */}
       <div className="grid grid-cols-4 gap-3 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Total SKUs</div>
-          <div className="text-2xl font-mono font-bold text-[#111827]">{MOCK_PARTS.length}</div>
+        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Total SKUs</div>
+          <div className="text-2xl font-semibold text-[#111827] tabular-nums">{MOCK_PARTS.length}</div>
         </div>
-        <div className={`bg-white border rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${lowStock > 0 ? 'border-[#fde68a]' : 'border-[#e5e7eb]'}`}>
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Low Stock</div>
-          <div className={`text-2xl font-mono font-bold ${lowStock > 0 ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>{lowStock}</div>
-          <div className="text-[11px] text-[#9ca3af] mt-0.5">At or below reorder point</div>
+        <div className={`bg-white border rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)] ${lowStock > 0 ? 'border-[#fde68a]' : 'border-[#ebebeb]'}`}>
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Low Stock</div>
+          <div className={`text-2xl font-semibold tabular-nums ${lowStock > 0 ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>{lowStock}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">At or below reorder point</div>
         </div>
-        <div className={`bg-white border rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${outOfStock > 0 ? 'border-[#fecaca]' : 'border-[#e5e7eb]'}`}>
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Out of Stock</div>
-          <div className={`text-2xl font-mono font-bold ${outOfStock > 0 ? 'text-[#dc2626]' : 'text-[#16a34a]'}`}>{outOfStock}</div>
+        <div className={`bg-white border rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)] ${outOfStock > 0 ? 'border-[#fecaca]' : 'border-[#ebebeb]'}`}>
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Out of Stock</div>
+          <div className={`text-2xl font-semibold tabular-nums ${outOfStock > 0 ? 'text-[#dc2626]' : 'text-[#16a34a]'}`}>{outOfStock}</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Inventory Value</div>
-          <div className="text-2xl font-mono font-bold text-[#5c5fef]">{formatCurrency(totalValue)}</div>
-          <div className="text-[11px] text-[#9ca3af] mt-0.5">At cost</div>
+        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Inventory Value</div>
+          <div className="text-2xl font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(totalValue)}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">At cost</div>
         </div>
       </div>
 
@@ -86,15 +87,24 @@ export default function PartsPage() {
             placeholder="Search parts..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          <button onClick={() => setStockFilter('all')} className={`px-3 h-7 text-xs rounded transition-colors ${stockFilter === 'all' ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}>All</button>
-          <button onClick={() => setStockFilter('low')} className={`px-3 h-7 text-xs rounded transition-colors ${stockFilter === 'low' ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}>Low Stock</button>
-          <button onClick={() => setStockFilter('out')} className={`px-3 h-7 text-xs rounded transition-colors ${stockFilter === 'out' ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}>Out of Stock</button>
-        </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as 'all' | 'low' | 'out', label: 'All', count: MOCK_PARTS.length },
+            { key: 'low' as 'all' | 'low' | 'out', label: 'Low Stock', count: lowStock },
+            { key: 'out' as 'all' | 'low' | 'out', label: 'Out of Stock', count: outOfStock },
+          ]}
+          value={stockFilter}
+          onChange={setStockFilter}
+        />
 
         <select
           value={catFilter}
@@ -106,7 +116,7 @@ export default function PartsPage() {
         </select>
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
@@ -122,7 +132,7 @@ export default function PartsPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={9} message="No parts found" />}
+            {filtered.length === 0 && <EmptyRow cols={9} message="No parts found" icon={Package} />}
             {filtered.map(part => {
               const isOut = part.quantity_on_hand === 0
               const isLow = !isOut && part.quantity_on_hand <= part.reorder_point

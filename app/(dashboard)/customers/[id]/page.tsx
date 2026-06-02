@@ -105,29 +105,29 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
           { label: 'Open Calls', value: serviceCalls.filter(s => s.status === 'open' || s.status === 'in_progress').length, icon: Wrench, href: `/service?customer=${id}` },
           { label: 'Outstanding', value: formatCurrency(invoices.filter(i => i.status !== 'paid').reduce((s, i) => s + i.total, 0)), icon: FileText, href: `/invoices?customer=${id}` },
         ].map(tile => (
-          <Link key={tile.label} href={tile.href} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] hover:border-[#d1d5db] transition-colors">
-            <div className="flex items-center gap-2 mb-1.5">
+          <Link key={tile.label} href={tile.href} className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:border-[#d1d5db] transition-all">
+            <div className="flex items-center gap-2 mb-2">
               <tile.icon className="w-3.5 h-3.5 text-[#9ca3af]" />
               <span className="text-xs text-[#6b7280] uppercase tracking-wide font-medium">{tile.label}</span>
             </div>
-            <div className="text-xl font-semibold text-[#111827] tabular-nums">{tile.value}</div>
+            <div className="text-2xl font-semibold text-[#111827] tabular-nums leading-none">{tile.value}</div>
           </Link>
         ))}
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Equipment */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
             <span className="text-sm font-semibold text-[#111827]">Equipment</span>
             <Link href={`/equipment/new?customer=${id}`}>
               <Button variant="ghost" size="sm"><Plus className="w-3 h-3" />Add</Button>
             </Link>
           </div>
-          <div className="divide-y divide-[#f9fafb]">
+          <div className="divide-y divide-[#f7f7f7]">
             {equipment.length === 0 && <div className="px-4 py-8 text-sm text-[#9ca3af] text-center">No equipment assigned</div>}
             {equipment.map(eq => (
-              <Link key={eq.id} href={`/equipment/${eq.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
+              <Link key={eq.id} href={`/equipment/${eq.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-[#fafafa] transition-colors">
                 <div>
                   <div className="text-sm text-[#111827] font-medium">{eq.make} {eq.model}</div>
                   <div className="text-xs text-[#6b7280] font-mono">S/N: {eq.serial_number}</div>
@@ -141,17 +141,17 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Contracts */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
             <span className="text-sm font-semibold text-[#111827]">Contracts</span>
             <Link href={`/contracts/new?customer=${id}`}>
               <Button variant="ghost" size="sm"><Plus className="w-3 h-3" />Add</Button>
             </Link>
           </div>
-          <div className="divide-y divide-[#f9fafb]">
+          <div className="divide-y divide-[#f7f7f7]">
             {contracts.length === 0 && <div className="px-4 py-8 text-sm text-[#9ca3af] text-center">No contracts</div>}
             {contracts.map(con => (
-              <Link key={con.id} href={`/contracts/${con.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
+              <Link key={con.id} href={`/contracts/${con.id}`} className="flex items-center justify-between px-4 py-2.5 hover:bg-[#fafafa] transition-colors">
                 <div>
                   <div className="text-sm text-[#111827] font-medium font-mono">{con.contract_number}</div>
                   <div className="text-xs text-[#6b7280]">{formatCurrency(con.base_rate)}/mo · {con.contract_type.replace('_', ' ')}</div>
@@ -164,8 +164,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Recent Service Calls */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-4">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] mb-4">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
           <span className="text-sm font-semibold text-[#111827]">Recent Service Calls</span>
           <Link href={`/service?customer=${id}`} className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
         </div>

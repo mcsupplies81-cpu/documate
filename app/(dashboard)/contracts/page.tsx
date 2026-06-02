@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Download, AlertTriangle } from 'lucide-react'
+import { Plus, Search, Download, AlertTriangle, X, FileText } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import { MOCK_CONTRACTS, MOCK_CONTRACT_EQUIPMENT } from '@/lib/mock-data'
 import { formatCurrency, getDaysUntilExpiry } from '@/lib/billing'
 
@@ -78,7 +79,7 @@ export default function ContractsPage() {
         </div>
       )}
 
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-5">
         <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
@@ -86,23 +87,27 @@ export default function ContractsPage() {
             placeholder="Search contracts..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
-        </div>
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          {(['all', 'active', 'expiring', 'expired'] as FilterType[]).map(f => (
-            <button
-              key={f}
-              onClick={() => setFilter(f)}
-              className={`px-3 h-7 text-xs rounded transition-colors capitalize ${filter === f ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
-            >
-              {f} {f !== 'all' && <span className="ml-0.5 text-[#9ca3af]">({contractCounts[f]})</span>}
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
             </button>
-          ))}
+          )}
         </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as FilterType, label: 'All', count: contractCounts.all },
+            { key: 'active' as FilterType, label: 'Active', count: contractCounts.active },
+            { key: 'expiring' as FilterType, label: 'Expiring', count: contractCounts.expiring },
+            { key: 'expired' as FilterType, label: 'Expired', count: contractCounts.expired },
+          ]}
+          value={filter}
+          onChange={setFilter}
+        />
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
@@ -119,7 +124,7 @@ export default function ContractsPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={10} message="No contracts found" />}
+            {filtered.length === 0 && <EmptyRow cols={10} message="No contracts found" icon={FileText} />}
             {filtered.map(contract => {
               const eqCount = MOCK_CONTRACT_EQUIPMENT.filter(ce => ce.contract_id === contract.id).length
               const days = contract.end_date ? getDaysUntilExpiry(contract.end_date) : null

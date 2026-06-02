@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Clock } from 'lucide-react'
+import { Plus, Search, Clock, X, Wrench } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import { MOCK_SERVICE_CALLS } from '@/lib/mock-data'
 
 type StatusFilter = 'all' | 'open' | 'in_progress' | 'completed' | 'closed'
@@ -20,6 +21,13 @@ function getAge(openedAt: string) {
   const d = Math.floor(hours / 24)
   const h = Math.round(hours % 24)
   return { label: `${d}d ${h}h`, color: 'text-[#dc2626]' }
+}
+
+const PRIORITY_COLORS: Record<string, string> = {
+  urgent: 'bg-[#dc2626]',
+  high: 'bg-[#d97706]',
+  normal: 'bg-[#5c5fef]',
+  low: 'bg-[#d1d5db]',
 }
 
 export default function ServicePage() {
@@ -37,16 +45,27 @@ export default function ServicePage() {
     return matchSearch && matchStatus && matchPriority
   })
 
-  const counts = {
+  const statusCounts = {
+    all: MOCK_SERVICE_CALLS.length,
     open: MOCK_SERVICE_CALLS.filter(s => s.status === 'open').length,
     in_progress: MOCK_SERVICE_CALLS.filter(s => s.status === 'in_progress').length,
+    completed: MOCK_SERVICE_CALLS.filter(s => s.status === 'completed').length,
+    closed: MOCK_SERVICE_CALLS.filter(s => s.status === 'closed').length,
+  }
+
+  const priorityCounts = {
+    all: MOCK_SERVICE_CALLS.length,
+    urgent: MOCK_SERVICE_CALLS.filter(s => s.priority === 'urgent').length,
+    high: MOCK_SERVICE_CALLS.filter(s => s.priority === 'high').length,
+    normal: MOCK_SERVICE_CALLS.filter(s => s.priority === 'normal').length,
+    low: MOCK_SERVICE_CALLS.filter(s => s.priority === 'low').length,
   }
 
   return (
     <div>
       <PageHeader
         title="Service Calls"
-        subtitle={`${counts.open} open · ${counts.in_progress} in progress`}
+        subtitle={`${statusCounts.open} open · ${statusCounts.in_progress} in progress`}
         actions={
           <Link href="/service/new">
             <Button variant="primary" size="sm"><Plus className="w-3.5 h-3.5" />New Service Call</Button>
@@ -54,7 +73,7 @@ export default function ServicePage() {
         }
       />
 
-      <div className="flex items-center gap-3 mb-4 flex-wrap">
+      <div className="flex items-center gap-3 mb-5 flex-wrap">
         <div className="relative flex-1 min-w-[200px] max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
@@ -62,59 +81,66 @@ export default function ServicePage() {
             placeholder="Search calls..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          {(['all', 'open', 'in_progress', 'completed', 'closed'] as StatusFilter[]).map(s => (
-            <button
-              key={s}
-              onClick={() => setStatusFilter(s)}
-              className={`px-3 h-7 text-xs rounded transition-colors ${statusFilter === s ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
-            >
-              {s.replace('_', ' ')}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as StatusFilter, label: 'All', count: statusCounts.all },
+            { key: 'open' as StatusFilter, label: 'Open', count: statusCounts.open },
+            { key: 'in_progress' as StatusFilter, label: 'In Progress', count: statusCounts.in_progress },
+            { key: 'completed' as StatusFilter, label: 'Completed', count: statusCounts.completed },
+            { key: 'closed' as StatusFilter, label: 'Closed', count: statusCounts.closed },
+          ]}
+          value={statusFilter}
+          onChange={setStatusFilter}
+        />
 
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          {(['all', 'urgent', 'high', 'normal', 'low'] as PriorityFilter[]).map(p => (
-            <button
-              key={p}
-              onClick={() => setPriorityFilter(p)}
-              className={`px-3 h-7 text-xs rounded transition-colors capitalize ${priorityFilter === p ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as PriorityFilter, label: 'All Priority' },
+            { key: 'urgent' as PriorityFilter, label: 'Urgent', count: priorityCounts.urgent },
+            { key: 'high' as PriorityFilter, label: 'High', count: priorityCounts.high },
+            { key: 'normal' as PriorityFilter, label: 'Normal', count: priorityCounts.normal },
+            { key: 'low' as PriorityFilter, label: 'Low', count: priorityCounts.low },
+          ]}
+          value={priorityFilter}
+          onChange={setPriorityFilter}
+        />
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
+              <Th></Th>
               <Th>Call #</Th>
               <Th>Customer</Th>
               <Th>Equipment</Th>
               <Th>Problem</Th>
               <Th>Tech</Th>
-              <Th>Priority</Th>
               <Th>Age</Th>
               <Th>Status</Th>
-              <Th>Billable</Th>
               <Th></Th>
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={10} message="No service calls found" />}
+            {filtered.length === 0 && <EmptyRow cols={9} message="No service calls match your filters" icon={Wrench} />}
             {filtered.map(sc => {
               const age = getAge(sc.opened_at)
               const isOpen = sc.status === 'open' || sc.status === 'in_progress'
               return (
                 <Tr key={sc.id} onClick={() => window.location.href = `/service/${sc.id}`}>
-                  <Td><span className="font-mono text-xs text-[#5c5fef] font-medium">{sc.call_number}</span></Td>
+                  <Td className="w-1 pr-0 pl-5">
+                    <div className={`w-1.5 h-1.5 rounded-full ${PRIORITY_COLORS[sc.priority] || 'bg-[#d1d5db]'}`} />
+                  </Td>
+                  <Td><span className="font-mono text-xs text-[#5c5fef] font-semibold">{sc.call_number}</span></Td>
                   <Td>
                     <Link href={`/customers/${sc.customer_id}`} onClick={e => e.stopPropagation()} className="text-[#111827] font-medium hover:text-[#5c5fef] transition-colors">
                       {sc.customer?.name}
@@ -122,7 +148,7 @@ export default function ServicePage() {
                   </Td>
                   <Td><span className="text-xs text-[#6b7280]">{sc.equipment?.make} {sc.equipment?.model}</span></Td>
                   <Td>
-                    <span className="text-xs text-[#6b7280] block truncate max-w-[220px]" title={sc.problem_description || ''}>
+                    <span className="text-xs text-[#6b7280] block truncate max-w-[200px]" title={sc.problem_description || ''}>
                       {sc.problem_description}
                     </span>
                   </Td>
@@ -130,15 +156,6 @@ export default function ServicePage() {
                     <span className={`text-xs font-medium ${sc.assigned_to ? 'text-[#374151]' : 'text-[#dc2626]'}`}>
                       {sc.technician?.name || 'Unassigned'}
                     </span>
-                  </Td>
-                  <Td>
-                    <Badge variant={
-                      sc.priority === 'urgent' ? 'danger' :
-                      sc.priority === 'high' ? 'warning' :
-                      sc.priority === 'normal' ? 'default' : 'muted'
-                    }>
-                      {sc.priority}
-                    </Badge>
                   </Td>
                   <Td>
                     {isOpen
@@ -154,11 +171,6 @@ export default function ServicePage() {
                     }>
                       {sc.status.replace('_', ' ')}
                     </Badge>
-                  </Td>
-                  <Td>
-                    <span className={`text-xs font-medium ${sc.billable ? 'text-[#d97706]' : 'text-[#9ca3af]'}`}>
-                      {sc.billable ? 'Yes' : 'No'}
-                    </span>
                   </Td>
                   <Td>
                     <Link href={`/service/${sc.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#5c5fef] hover:underline font-medium">

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Download, MapPin, Phone, Mail, Printer, FileText } from 'lucide-react'
+import { Plus, Search, Download, MapPin, Phone, Mail, Printer, FileText, X, Users } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
@@ -49,7 +49,7 @@ export default function CustomersPage() {
         }
       />
 
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-5">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
@@ -57,12 +57,17 @@ export default function CustomersPage() {
             placeholder="Search customers..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
@@ -75,7 +80,7 @@ export default function CustomersPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={6} message="No customers match your search" />}
+            {filtered.length === 0 && <EmptyRow cols={6} message="No customers match your search" icon={Users} />}
             {filtered.map(customer => (
               <Tr key={customer.id} onClick={() => window.location.href = `/customers/${customer.id}`}>
                 <Td>

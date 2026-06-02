@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
 import { MOCK_VENDORS, MOCK_PURCHASE_ORDERS, MOCK_PARTS } from '@/lib/mock-data'
 import { formatCurrency } from '@/lib/billing'
-import { Plus, Search, ShoppingCart } from 'lucide-react'
+import { Plus, Search, ShoppingCart, X, Building2 } from 'lucide-react'
 
 export default function VendorsPage() {
   const [search, setSearch] = useState('')
@@ -47,18 +47,18 @@ export default function VendorsPage() {
       />
 
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Active Vendors</div>
-          <div className="text-2xl font-mono font-bold text-[#111827]">{MOCK_VENDORS.length}</div>
+        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Active Vendors</div>
+          <div className="text-2xl font-semibold text-[#111827] tabular-nums">{MOCK_VENDORS.length}</div>
         </div>
-        <div className={`bg-white border rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${totalOpenPos > 0 ? 'border-[#fde68a]' : 'border-[#e5e7eb]'}`}>
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Open POs</div>
-          <div className={`text-2xl font-mono font-bold ${totalOpenPos > 0 ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>{totalOpenPos}</div>
-          <div className="text-[11px] text-[#9ca3af] mt-0.5">Awaiting receipt</div>
+        <div className={`bg-white border rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)] ${totalOpenPos > 0 ? 'border-[#fde68a]' : 'border-[#ebebeb]'}`}>
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Open POs</div>
+          <div className={`text-2xl font-semibold tabular-nums ${totalOpenPos > 0 ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>{totalOpenPos}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">Awaiting receipt</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Pending Payment</div>
-          <div className="text-2xl font-mono font-bold text-[#5c5fef]">{formatCurrency(totalPending)}</div>
+        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Pending Payment</div>
+          <div className="text-2xl font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(totalPending)}</div>
         </div>
       </div>
 
@@ -69,11 +69,16 @@ export default function VendorsPage() {
           placeholder="Search vendors..."
           value={search}
           onChange={e => setSearch(e.target.value)}
-          className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
         />
+        {search && (
+          <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+            <X className="w-3.5 h-3.5" />
+          </button>
+        )}
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
@@ -88,7 +93,7 @@ export default function VendorsPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={8} message="No vendors found" />}
+            {filtered.length === 0 && <EmptyRow cols={8} message="No vendors found" icon={Building2} />}
             {vendorStats.filter(v => filtered.find(f => f.id === v.id)).map(v => (
               <Tr key={v.id}>
                 <Td>

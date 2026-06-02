@@ -1,7 +1,8 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Download } from 'lucide-react'
+import { Plus, Search, Download, X, Monitor } from 'lucide-react'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -72,22 +73,25 @@ export default function EquipmentPage() {
             placeholder="Search equipment..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
-        {/* Status filter */}
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          {statusOptions.map(s => (
-            <button
-              key={s}
-              onClick={() => setStatusFilter(s)}
-              className={`px-3 h-7 text-xs rounded transition-colors capitalize ${statusFilter === s ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
-            >
-              {s}
-            </button>
-          ))}
-        </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as StatusFilter, label: 'All', count: allEquipment.length },
+            { key: 'active' as StatusFilter, label: 'Active', count: allEquipment.filter(e => e.status === 'active').length },
+            { key: 'inactive' as StatusFilter, label: 'Inactive', count: allEquipment.filter(e => e.status === 'inactive').length },
+            { key: 'removed' as StatusFilter, label: 'Removed', count: allEquipment.filter(e => e.status === 'removed').length },
+          ]}
+          value={statusFilter}
+          onChange={setStatusFilter}
+        />
 
         {/* Customer filter */}
         <select
@@ -100,7 +104,7 @@ export default function EquipmentPage() {
         </select>
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
         <Table>
           <Thead>
             <tr>
@@ -116,7 +120,7 @@ export default function EquipmentPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={9} message="No equipment found" />}
+            {filtered.length === 0 && <EmptyRow cols={9} message="No equipment found" icon={Monitor} />}
             {filtered.map(eq => (
               <Tr key={eq.id} onClick={() => window.location.href = `/equipment/${eq.id}`}>
                 <Td>

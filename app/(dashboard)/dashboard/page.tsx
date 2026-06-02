@@ -100,7 +100,7 @@ export default function DashboardPage() {
 
       {/* Meter progress bar */}
       {meterPct < 100 && (
-        <div className="bg-white border border-[#fde68a] rounded-lg p-3 mb-5 flex items-center gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#fde68a] rounded-xl p-3 mb-5 flex items-center gap-3 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
           <Gauge className="w-4 h-4 text-[#d97706] flex-shrink-0" />
           <div className="flex-1">
             <div className="flex items-center justify-between text-xs mb-1.5">
@@ -122,22 +122,27 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Open Service Calls */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
             <div className="flex items-center gap-2">
               <Wrench className="w-4 h-4 text-[#9ca3af]" />
               <span className="text-sm font-semibold text-[#111827]">Open Service Calls</span>
             </div>
             <Link href="/service" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
           </div>
-          <div className="divide-y divide-[#f9fafb]">
+          <div className="divide-y divide-[#f7f7f7]">
             {openCalls.slice(0, 5).map(call => {
               const age = getCallAge(call.opened_at)
+              const priorityDot: Record<string, string> = { urgent: 'bg-[#dc2626]', high: 'bg-[#d97706]', normal: 'bg-[#5c5fef]', low: 'bg-[#d1d5db]' }
               return (
-                <Link key={call.id} href={`/service/${call.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
+                <Link key={call.id} href={`/service/${call.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#fafafa] transition-colors">
+                  <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${priorityDot[call.priority] || 'bg-[#d1d5db]'}`} />
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-[#111827] font-medium truncate">{call.customer?.name}</div>
-                    <div className="text-xs text-[#6b7280] truncate">{call.problem_description?.slice(0, 60)}…</div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm text-[#111827] font-medium truncate">{call.customer?.name}</span>
+                      <span className="text-[10px] font-mono text-[#9ca3af] flex-shrink-0">{call.call_number}</span>
+                    </div>
+                    <div className="text-xs text-[#6b7280] truncate">{call.problem_description?.slice(0, 55)}…</div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <Badge variant={getStatusColor(call.status) as 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'default'}>{call.status.replace('_', ' ')}</Badge>
@@ -156,20 +161,20 @@ export default function DashboardPage() {
         </div>
 
         {/* Expiring Contracts */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-[#9ca3af]" />
               <span className="text-sm font-semibold text-[#111827]">Expiring Contracts</span>
             </div>
             <Link href="/contracts?filter=expiring" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
           </div>
-          <div className="divide-y divide-[#f9fafb]">
+          <div className="divide-y divide-[#f7f7f7]">
             {expiringContracts.slice(0, 5).map(contract => {
               const days = getDaysUntilExpiry(contract.end_date!)
               const isExpired = days < 0
               return (
-                <Link key={contract.id} href={`/contracts/${contract.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
+                <Link key={contract.id} href={`/contracts/${contract.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#fafafa] transition-colors">
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-[#111827] font-medium truncate">{contract.customer?.name}</div>
                     <div className="text-xs text-[#6b7280] font-mono">{contract.contract_number}</div>
@@ -194,8 +199,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Invoices */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+      <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-[#9ca3af]" />
             <span className="text-sm font-semibold text-[#111827]">Recent Invoices</span>

@@ -1,11 +1,12 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { TrendingUp, Download, Search } from 'lucide-react'
+import { TrendingUp, Download, Search, X, Receipt } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
+import { FilterTabs } from '@/components/ui/filter-tabs'
 import { MOCK_INVOICES } from '@/lib/mock-data'
 import { formatCurrency } from '@/lib/billing'
 
@@ -73,7 +74,7 @@ export default function InvoicesPage() {
         </div>
       </div>
 
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex items-center gap-3 mb-5">
         <div className="relative flex-1 max-w-xs">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
@@ -81,20 +82,25 @@ export default function InvoicesPage() {
             placeholder="Search invoices..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
-        </div>
-        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
-          {(['all', 'draft', 'sent', 'paid', 'overdue'] as StatusFilter[]).map(s => (
-            <button
-              key={s}
-              onClick={() => setStatusFilter(s)}
-              className={`px-3 h-7 text-xs rounded transition-colors ${statusFilter === s ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
-            >
-              {s}
+          {search && (
+            <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
+              <X className="w-3.5 h-3.5" />
             </button>
-          ))}
+          )}
         </div>
+        <FilterTabs
+          options={[
+            { key: 'all' as StatusFilter, label: 'All', count: MOCK_INVOICES.length },
+            { key: 'draft' as StatusFilter, label: 'Draft', count: MOCK_INVOICES.filter(i => i.status === 'draft').length },
+            { key: 'sent' as StatusFilter, label: 'Sent', count: MOCK_INVOICES.filter(i => i.status === 'sent').length },
+            { key: 'paid' as StatusFilter, label: 'Paid', count: MOCK_INVOICES.filter(i => i.status === 'paid').length },
+            { key: 'overdue' as StatusFilter, label: 'Overdue', count: MOCK_INVOICES.filter(i => i.status === 'overdue').length },
+          ]}
+          value={statusFilter}
+          onChange={setStatusFilter}
+        />
       </div>
 
       <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
@@ -112,7 +118,7 @@ export default function InvoicesPage() {
             </tr>
           </Thead>
           <Tbody>
-            {filtered.length === 0 && <EmptyRow cols={8} message="No invoices found" />}
+            {filtered.length === 0 && <EmptyRow cols={8} message="No invoices found" icon={Receipt} />}
             {filtered.map(inv => (
               <Tr key={inv.id}>
                 <Td><Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline font-medium">{inv.invoice_number}</Link></Td>
