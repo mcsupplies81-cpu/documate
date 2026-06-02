@@ -30,6 +30,11 @@ import {
   MOCK_SERVICE_CALLS,
 } from '@/lib/mock-data'
 
+// Unique states from customer billing addresses for location filter
+const CUSTOMER_STATES = Array.from(
+  new Set(MOCK_CUSTOMERS.map(c => c.billing_address?.state).filter(Boolean) as string[])
+).sort()
+
 function getAvatarColor(name: string): { bg: string; text: string } {
   const colors = [
     { bg: '#dbeafe', text: '#1d4ed8' }, // blue
@@ -59,6 +64,8 @@ function getARStatus(customerId: string): { label: string; variant: 'success' | 
 export default function CustomersPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [locationFilter, setLocationFilter] = useState('all')
+  const [contractStatusFilter, setContractStatusFilter] = useState('all')
   const [sortBy, setSortBy] = useState('name_asc')
 
   const totalCustomers = MOCK_CUSTOMERS.length
@@ -73,8 +80,13 @@ export default function CustomersPage() {
       c.phone?.includes(search)
     const customerStatus = 'status' in c && typeof c.status === 'string' ? c.status : 'active'
     const matchesStatus = statusFilter === 'all' || customerStatus === statusFilter
+    const matchesLocation = locationFilter === 'all' || c.billing_address?.state === locationFilter
+    const customerContracts = MOCK_CONTRACTS.filter(contract => contract.customer_id === c.id)
+    const matchesContractStatus =
+      contractStatusFilter === 'all' ||
+      customerContracts.some(contract => contract.status === contractStatusFilter)
 
-    return matchesSearch && matchesStatus
+    return matchesSearch && matchesStatus && matchesLocation && matchesContractStatus
   }).sort((a, b) => {
     if (sortBy === 'name_asc') return a.name.localeCompare(b.name)
     if (sortBy === 'name_desc') return b.name.localeCompare(a.name)
@@ -192,6 +204,27 @@ export default function CustomersPage() {
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
           <option value="inactive">Inactive</option>
+        </select>
+
+        <select
+          value={locationFilter}
+          onChange={e => setLocationFilter(e.target.value)}
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+        >
+          <option value="all">All States</option>
+          {CUSTOMER_STATES.map(state => <option key={state} value={state}>{state}</option>)}
+        </select>
+
+        <select
+          value={contractStatusFilter}
+          onChange={e => setContractStatusFilter(e.target.value)}
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+        >
+          <option value="all">All Contracts</option>
+          <option value="active">Active</option>
+          <option value="expiring">Expiring</option>
+          <option value="expired">Expired</option>
+          <option value="cancelled">Cancelled</option>
         </select>
 
         <select
