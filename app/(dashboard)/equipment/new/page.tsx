@@ -1,15 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { MOCK_CUSTOMERS } from '@/lib/mock-data'
-import { Suspense } from 'react'
 
 function NewEquipmentForm() {
   const router = useRouter()
@@ -28,21 +26,17 @@ function NewEquipmentForm() {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/equipment" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/equipment" className="text-sm text-[#555]">Equipment</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">Add Equipment</span>
-      </div>
-
-      <PageHeader title="Add Equipment" subtitle="Register a new machine to your fleet" />
+      <PageHeader
+        title="Add Equipment"
+        subtitle="Register a new machine to your fleet"
+        breadcrumb={[{ label: 'Equipment', href: '/equipment' }, { label: 'Add Equipment' }]}
+      />
 
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
-          <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-5">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             <div>
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider mb-3">Assignment</h3>
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Assignment</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Select
                   label="Customer"
@@ -54,8 +48,8 @@ function NewEquipmentForm() {
               </div>
             </div>
 
-            <div className="border-t border-[#1a1a1a] pt-5">
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider mb-3">Machine Info</h3>
+            <div className="border-t border-[#f3f4f6] pt-5">
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Machine Info</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Select
                   label="Make"
@@ -77,16 +71,16 @@ function NewEquipmentForm() {
               </div>
             </div>
 
-            <div className="border-t border-[#1a1a1a] pt-5">
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider mb-3">Initial Meter Readings</h3>
+            <div className="border-t border-[#f3f4f6] pt-5">
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Initial Meter Readings</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="B&W Counter" type="number" defaultValue="0" min="0" />
                 <Input label="Color Counter" type="number" defaultValue="0" min="0" />
               </div>
-              <p className="text-xs text-[#444] mt-2">Enter current meter readings if this is an existing machine being added to the system.</p>
+              <p className="text-xs text-[#9ca3af] mt-2">Enter current meter readings if this is an existing machine being added to the system.</p>
             </div>
 
-            <div className="border-t border-[#1a1a1a] pt-5">
+            <div className="border-t border-[#f3f4f6] pt-5">
               <Textarea label="Notes" placeholder="Location in building, special instructions, etc." rows={2} />
             </div>
           </div>

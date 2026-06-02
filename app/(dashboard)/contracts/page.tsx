@@ -27,12 +27,12 @@ export default function ContractsPage() {
   })
 
   const getEndDateColor = (endDate: string | null, status: string) => {
-    if (!endDate || status === 'expired') return 'text-[#ef4444]'
+    if (!endDate || status === 'expired') return 'text-[#dc2626]'
     const days = getDaysUntilExpiry(endDate)
-    if (days < 0) return 'text-[#ef4444]'
-    if (days <= 30) return 'text-[#ef4444]'
-    if (days <= 60) return 'text-[#f59e0b]'
-    return 'text-[#555]'
+    if (days < 0) return 'text-[#dc2626]'
+    if (days <= 30) return 'text-[#dc2626]'
+    if (days <= 60) return 'text-[#d97706]'
+    return 'text-[#6b7280]'
   }
 
   const contractCounts = {
@@ -69,11 +69,10 @@ export default function ContractsPage() {
         }
       />
 
-      {/* Expiry alert */}
       {contractCounts.expiring > 0 && (
-        <div className="bg-[#f59e0b0d] border border-[#f59e0b33] rounded-lg px-4 py-2.5 mb-4 flex items-center gap-2">
-          <AlertTriangle className="w-4 h-4 text-[#f59e0b]" />
-          <span className="text-sm text-[#f59e0b]">
+        <div className="bg-[#fffbeb] border border-[#fde68a] rounded-lg px-4 py-2.5 mb-4 flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-[#d97706]" />
+          <span className="text-sm text-[#92400e]">
             <strong>{contractCounts.expiring}</strong> contract{contractCounts.expiring > 1 ? 's are' : ' is'} expiring soon — review and renew before they lapse.
           </span>
         </div>
@@ -81,29 +80,29 @@ export default function ContractsPage() {
 
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#444]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
             type="text"
             placeholder="Search contracts..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[#111] border border-[#222] rounded-md text-[#e8e8e8] placeholder-[#444] focus:outline-none focus:ring-1 focus:ring-[#00d4ff] focus:border-transparent"
+            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
         </div>
-        <div className="flex items-center gap-1 p-1 bg-[#111] border border-[#1e1e1e] rounded-md">
+        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
           {(['all', 'active', 'expiring', 'expired'] as FilterType[]).map(f => (
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1 text-xs rounded transition-colors capitalize ${filter === f ? 'bg-[#1e1e1e] text-[#e8e8e8]' : 'text-[#555] hover:text-[#888]'}`}
+              className={`px-3 h-7 text-xs rounded transition-colors capitalize ${filter === f ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
             >
-              {f} {f !== 'all' && <span className="ml-0.5 text-[#444]">({contractCounts[f]})</span>}
+              {f} {f !== 'all' && <span className="ml-0.5 text-[#9ca3af]">({contractCounts[f]})</span>}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg overflow-hidden">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <Table>
           <Thead>
             <tr>
@@ -126,16 +125,16 @@ export default function ContractsPage() {
               const days = contract.end_date ? getDaysUntilExpiry(contract.end_date) : null
               return (
                 <Tr key={contract.id} onClick={() => window.location.href = `/contracts/${contract.id}`}>
-                  <Td><span className="font-mono text-xs text-[#00d4ff]">{contract.contract_number}</span></Td>
-                  <Td><span className="text-[#e8e8e8]">{contract.customer?.name}</span></Td>
+                  <Td><span className="font-mono text-xs text-[#5c5fef] font-medium">{contract.contract_number}</span></Td>
+                  <Td><span className="text-[#111827] font-medium">{contract.customer?.name}</span></Td>
                   <Td>
                     <Badge variant="muted">{contract.contract_type.replace('_', ' ')}</Badge>
                   </Td>
-                  <Td><span className="font-mono text-xs text-[#888]">{eqCount}</span></Td>
-                  <Td><span className="font-mono text-sm font-medium">{formatCurrency(contract.base_rate)}</span></Td>
-                  <Td><span className="text-xs text-[#555] capitalize">{contract.billing_cycle}</span></Td>
+                  <Td><span className="tabular-nums text-[#6b7280]">{eqCount}</span></Td>
+                  <Td><span className="font-semibold tabular-nums">{formatCurrency(contract.base_rate)}</span></Td>
+                  <Td><span className="text-xs text-[#6b7280] capitalize">{contract.billing_cycle}</span></Td>
                   <Td>
-                    <span className={`text-xs font-mono ${getEndDateColor(contract.end_date, contract.status)}`}>
+                    <span className={`text-xs tabular-nums ${getEndDateColor(contract.end_date, contract.status)}`}>
                       {contract.end_date || '—'}
                       {days !== null && days <= 60 && (
                         <span className="ml-1 text-[10px]">({days < 0 ? `${Math.abs(days)}d ago` : `${days}d`})</span>
@@ -143,7 +142,7 @@ export default function ContractsPage() {
                     </span>
                   </Td>
                   <Td>
-                    <span className={`text-xs ${contract.auto_renew ? 'text-[#22c55e]' : 'text-[#444]'}`}>
+                    <span className={`text-xs font-medium ${contract.auto_renew ? 'text-[#16a34a]' : 'text-[#9ca3af]'}`}>
                       {contract.auto_renew ? 'Yes' : 'No'}
                     </span>
                   </Td>
@@ -157,7 +156,7 @@ export default function ContractsPage() {
                     </Badge>
                   </Td>
                   <Td>
-                    <Link href={`/contracts/${contract.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#555] hover:text-[#00d4ff]">
+                    <Link href={`/contracts/${contract.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#5c5fef] hover:underline font-medium">
                       View →
                     </Link>
                   </Td>

@@ -37,7 +37,7 @@ export default function MetersPage() {
       const hasMissingReading = !latest || new Date(latest.reading_date) < new Date('2026-06-01')
       return { eq, ce, latest, hasMissingReading }
     })
-    .filter(item => item.ce) // Only equipment on contracts
+    .filter(item => item.ce)
 
   const filtered = equipmentWithContracts.filter(item => {
     if (filter === 'missing') return item.hasMissingReading && !entries[item.eq.id]?.bw
@@ -80,13 +80,6 @@ export default function MetersPage() {
     setTimeout(() => setSaved(false), 2000)
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent, nextId: string) => {
-    if (e.key === 'Tab' || e.key === 'Enter') {
-      const next = inputRefs.current[nextId]
-      if (next) { e.preventDefault(); next.focus() }
-    }
-  }
-
   const pendingCount = Object.values(entries).filter(e => e.bw && !e.saved).length
 
   return (
@@ -116,25 +109,25 @@ export default function MetersPage() {
       />
 
       {/* Progress */}
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-4 mb-5">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <div className="flex items-center justify-between text-sm mb-2">
           <div className="flex items-center gap-2">
-            <Gauge className="w-4 h-4 text-[#00d4ff]" />
-            <span className="font-medium text-[#e8e8e8]">Collection Progress</span>
+            <Gauge className="w-4 h-4 text-[#5c5fef]" />
+            <span className="font-semibold text-[#111827]">Collection Progress</span>
           </div>
-          <span className="font-mono text-[#888]">{collectedCount}/{totalCount} ({pct}%)</span>
+          <span className="text-[#6b7280] tabular-nums text-sm">{collectedCount}/{totalCount} ({pct}%)</span>
         </div>
-        <div className="h-2 bg-[#1a1a1a] rounded-full overflow-hidden">
+        <div className="h-2 bg-[#f3f4f6] rounded-full overflow-hidden">
           <div
             className="h-full rounded-full transition-all duration-500"
             style={{
               width: `${pct}%`,
-              background: pct === 100 ? '#22c55e' : pct > 70 ? '#00d4ff' : '#f59e0b'
+              background: pct === 100 ? '#16a34a' : pct > 70 ? '#5c5fef' : '#d97706'
             }}
           />
         </div>
         {pct < 100 && (
-          <p className="text-xs text-[#444] mt-2">
+          <p className="text-xs text-[#9ca3af] mt-2">
             {totalCount - collectedCount} meter{totalCount - collectedCount !== 1 ? 's' : ''} still needed for billing.
             Tab between fields for fast entry.
           </p>
@@ -142,7 +135,7 @@ export default function MetersPage() {
       </div>
 
       {/* Filter tabs */}
-      <div className="flex items-center gap-1 p-1 bg-[#111] border border-[#1e1e1e] rounded-md mb-4 w-fit">
+      <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md mb-4 w-fit">
         {([
           { key: 'all', label: 'All Machines' },
           { key: 'missing', label: `Missing (${equipmentWithContracts.filter(e => e.hasMissingReading).length})` },
@@ -151,7 +144,7 @@ export default function MetersPage() {
           <button
             key={f.key}
             onClick={() => setFilter(f.key)}
-            className={`px-3 py-1.5 text-xs rounded transition-colors ${filter === f.key ? 'bg-[#1e1e1e] text-[#e8e8e8]' : 'text-[#555] hover:text-[#888]'}`}
+            className={`px-3 h-7 text-xs rounded transition-colors ${filter === f.key ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
           >
             {f.label}
           </button>
@@ -159,25 +152,25 @@ export default function MetersPage() {
       </div>
 
       {/* Bulk entry table */}
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg overflow-hidden">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <table className="w-full text-sm">
-          <thead className="border-b border-[#1e1e1e]">
+          <thead className="border-b border-[#f0f0f0]">
             <tr>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Customer</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Make / Model</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Serial #</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Last B&W</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Last Color</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Last Date</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#00d4ff] uppercase tracking-wider">New B&W</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#00d4ff] uppercase tracking-wider">New Color</th>
-              <th className="px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider">Status</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Customer</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Make / Model</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Serial #</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Last B&W</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Last Color</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Last Date</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#5c5fef] uppercase tracking-wider">New B&W</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#5c5fef] uppercase tracking-wider">New Color</th>
+              <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#1a1a1a]">
+          <tbody className="divide-y divide-[#f3f4f6]">
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-3 py-12 text-center text-[#444] text-sm">No equipment to display</td>
+                <td colSpan={9} className="px-4 py-12 text-center text-[#9ca3af] text-sm">No equipment to display</td>
               </tr>
             )}
             {filtered.map(({ eq, latest, hasMissingReading }, rowIdx) => {
@@ -192,29 +185,29 @@ export default function MetersPage() {
               const nextBwId = nextItemId ? `bw-${nextItemId}` : ''
 
               return (
-                <tr key={eq.id} className={`transition-colors ${isSaved ? 'bg-[#22c55e08]' : hasMissingReading && !entry.bw ? 'bg-[#f59e0b05]' : ''}`}>
-                  <td className="px-3 py-2.5 text-xs text-[#888]">{eq.customer?.name}</td>
-                  <td className="px-3 py-2.5">
-                    <span className="text-sm text-[#e8e8e8]">{eq.make} {eq.model}</span>
+                <tr key={eq.id} className={`h-10 transition-colors ${isSaved ? 'bg-[#f0fdf4]' : hasMissingReading && !entry.bw ? 'bg-[#fffbeb]' : 'hover:bg-[#f9fafb]'}`}>
+                  <td className="px-4 py-2.5 text-xs text-[#6b7280]">{eq.customer?.name}</td>
+                  <td className="px-4 py-2.5">
+                    <span className="text-sm text-[#111827] font-medium">{eq.make} {eq.model}</span>
                   </td>
-                  <td className="px-3 py-2.5">
-                    <span className="font-mono text-xs text-[#555]">{eq.serial_number}</span>
+                  <td className="px-4 py-2.5">
+                    <span className="font-mono text-xs text-[#6b7280]">{eq.serial_number}</span>
                   </td>
-                  <td className="px-3 py-2.5">
-                    <span className="font-mono text-xs text-[#666]">{latest ? formatNumber(latest.bw_reading) : <span className="text-[#333]">—</span>}</span>
+                  <td className="px-4 py-2.5">
+                    <span className="font-mono text-xs text-[#374151]">{latest ? formatNumber(latest.bw_reading) : <span className="text-[#9ca3af]">—</span>}</span>
                   </td>
-                  <td className="px-3 py-2.5">
-                    <span className="font-mono text-xs text-[#666]">{latest ? formatNumber(latest.color_reading) : <span className="text-[#333]">—</span>}</span>
+                  <td className="px-4 py-2.5">
+                    <span className="font-mono text-xs text-[#374151]">{latest ? formatNumber(latest.color_reading) : <span className="text-[#9ca3af]">—</span>}</span>
                   </td>
-                  <td className="px-3 py-2.5">
-                    <span className={`text-xs ${hasMissingReading && !hasCurrentReading ? 'text-[#f59e0b]' : 'text-[#555]'}`}>
-                      {latest?.reading_date || <span className="text-[#ef4444]">Never</span>}
+                  <td className="px-4 py-2.5">
+                    <span className={`text-xs ${hasMissingReading && !hasCurrentReading ? 'text-[#d97706] font-medium' : 'text-[#6b7280]'}`}>
+                      {latest?.reading_date || <span className="text-[#dc2626] font-medium">Never</span>}
                     </span>
                   </td>
-                  <td className="px-3 py-1.5">
+                  <td className="px-4 py-1.5">
                     {isSaved || hasCurrentReading
                       ? (
-                        <span className="font-mono text-xs text-[#22c55e]">
+                        <span className="font-mono text-xs text-[#16a34a] font-medium">
                           {formatNumber(parseInt(entry.bw) || latest?.bw_reading || 0)}
                         </span>
                       )
@@ -238,26 +231,26 @@ export default function MetersPage() {
                               }
                             }}
                             className={`
-                              w-32 px-2 py-1.5 text-xs font-mono rounded
-                              bg-[#0d0d0d] border text-[#e8e8e8] placeholder-[#333]
+                              w-32 px-2 h-7 text-xs font-mono rounded
+                              bg-white border text-[#111827] placeholder-[#9ca3af]
                               focus:outline-none focus:ring-1
-                              ${bwStatus === 'error' ? 'border-[#ef4444] focus:ring-[#ef4444]' :
-                                bwStatus === 'suspect' ? 'border-[#f59e0b] focus:ring-[#f59e0b]' :
-                                bwStatus === 'ok' ? 'border-[#22c55e] focus:ring-[#22c55e]' :
-                                'border-[#2a2a2a] focus:ring-[#00d4ff]'}
+                              ${bwStatus === 'error' ? 'border-[#dc2626] focus:ring-[#dc2626]' :
+                                bwStatus === 'suspect' ? 'border-[#d97706] focus:ring-[#d97706]' :
+                                bwStatus === 'ok' ? 'border-[#16a34a] focus:ring-[#16a34a]' :
+                                'border-[#e5e7eb] focus:ring-[#5c5fef]'}
                             `}
                           />
                           {bwStatus === 'error' && (
-                            <AlertTriangle className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[#ef4444]" />
+                            <AlertTriangle className="absolute right-1.5 top-1/2 -translate-y-1/2 w-3 h-3 text-[#dc2626]" />
                           )}
                         </div>
                       )
                     }
                   </td>
-                  <td className="px-3 py-1.5">
+                  <td className="px-4 py-1.5">
                     {isSaved || hasCurrentReading
                       ? (
-                        <span className="font-mono text-xs text-[#22c55e]">
+                        <span className="font-mono text-xs text-[#16a34a] font-medium">
                           {formatNumber(parseInt(entry.color) || latest?.color_reading || 0)}
                         </span>
                       )
@@ -279,12 +272,12 @@ export default function MetersPage() {
                               if (next) next.focus()
                             }
                           }}
-                          className="w-32 px-2 py-1.5 text-xs font-mono rounded bg-[#0d0d0d] border border-[#2a2a2a] text-[#e8e8e8] placeholder-[#333] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]"
+                          className="w-32 px-2 h-7 text-xs font-mono rounded bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
                         />
                       )
                     }
                   </td>
-                  <td className="px-3 py-2.5">
+                  <td className="px-4 py-2.5">
                     {isSaved
                       ? <Badge variant="success"><CheckCircle2 className="w-2.5 h-2.5" />Saved</Badge>
                       : hasCurrentReading
@@ -306,8 +299,8 @@ export default function MetersPage() {
       </div>
 
       {pendingCount > 0 && (
-        <div className="flex items-center justify-between mt-4 bg-[#00d4ff0d] border border-[#00d4ff22] rounded-lg px-4 py-3">
-          <span className="text-sm text-[#00d4ff]">
+        <div className="flex items-center justify-between mt-4 bg-[#f0f0ff] border border-[#5c5fef33] rounded-lg px-4 py-3">
+          <span className="text-sm text-[#5c5fef] font-medium">
             {pendingCount} reading{pendingCount !== 1 ? 's' : ''} ready to save
           </span>
           <Button variant="primary" size="sm" onClick={handleBulkSave} loading={saving}>

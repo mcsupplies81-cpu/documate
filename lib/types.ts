@@ -199,6 +199,112 @@ export interface BillingPreviewItem {
   period_end: string
 }
 
+// ── Parts & Inventory ─────────────────────────────────────────────────────
+export type PartCategory = 'toner' | 'drum' | 'fuser' | 'feed_roller' | 'maintenance_kit' | 'belt' | 'other'
+
+export interface Part {
+  id: string
+  tenant_id: string
+  part_number: string
+  description: string
+  category: PartCategory
+  make_compatibility: string[]
+  unit_cost: number
+  unit_price: number
+  quantity_on_hand: number
+  reorder_point: number
+  reorder_quantity: number
+  vendor_id: string | null
+  notes: string | null
+  created_at: string
+  vendor?: Vendor
+}
+
+export interface PartUsage {
+  id: string
+  tenant_id: string
+  service_call_id: string
+  part_id: string
+  quantity: number
+  unit_cost: number
+  unit_price: number
+  total: number
+  notes: string | null
+  created_at: string
+  part?: Part
+}
+
+// ── Vendors & Accounts Payable ────────────────────────────────────────────
+export type PaymentTerms = 'net15' | 'net30' | 'net45' | 'cod' | 'prepaid'
+export type POStatus = 'draft' | 'sent' | 'partial' | 'received' | 'cancelled'
+
+export interface Vendor {
+  id: string
+  tenant_id: string
+  name: string
+  contact_name: string | null
+  email: string | null
+  phone: string | null
+  address: Address | null
+  account_number: string | null
+  payment_terms: PaymentTerms | null
+  notes: string | null
+  created_at: string
+}
+
+export interface PurchaseOrder {
+  id: string
+  tenant_id: string
+  vendor_id: string
+  po_number: string
+  status: POStatus
+  order_date: string
+  expected_date: string | null
+  received_date: string | null
+  subtotal: number
+  total: number
+  notes: string | null
+  created_at: string
+  vendor?: Vendor
+  line_items?: POLineItem[]
+}
+
+export interface POLineItem {
+  id: string
+  po_id: string
+  part_id: string | null
+  description: string
+  quantity_ordered: number
+  quantity_received: number
+  unit_cost: number
+  total: number
+  part?: Part
+}
+
+// ── Customer Portal ───────────────────────────────────────────────────────
+export interface CustomerPortalToken {
+  id: string
+  tenant_id: string
+  customer_id: string
+  token: string
+  expires_at: string
+  created_at: string
+}
+
+// ── Credit Memos ─────────────────────────────────────────────────────────
+export interface CreditMemo {
+  id: string
+  tenant_id: string
+  customer_id: string
+  invoice_id: string | null
+  credit_number: string
+  amount: number
+  reason: string
+  applied_at: string | null
+  created_at: string
+  customer?: Customer
+}
+
 export interface DashboardMetrics {
   monthly_recurring_revenue: number
   open_service_calls: number

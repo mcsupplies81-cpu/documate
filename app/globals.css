@@ -1,24 +1,19 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #0a0a0a;
-  --color-foreground: #e8e8e8;
-  --color-surface: #111111;
-  --color-surface-2: #1a1a1a;
-  --color-border: #222222;
-  --color-border-2: #2a2a2a;
-  --color-muted: #555555;
-  --color-muted-fg: #888888;
-  --color-accent: #00d4ff;
-  --color-accent-dim: #00d4ff1a;
-  --color-success: #22c55e;
-  --color-success-dim: #22c55e1a;
-  --color-warning: #f59e0b;
-  --color-warning-dim: #f59e0b1a;
-  --color-danger: #ef4444;
-  --color-danger-dim: #ef44441a;
-  --color-purple: #a855f7;
-  --color-purple-dim: #a855f71a;
+  --color-background: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-border-2: #d1d5db;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-muted: #9ca3af;
+  --color-accent: #5c5fef;
+  --color-accent-light: #f0f0ff;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "IBM Plex Mono", "Fira Code", "Consolas", monospace;
 }
@@ -30,15 +25,16 @@
 }
 
 html {
-  background: #0a0a0a;
-  color: #e8e8e8;
+  background: #f7f8fb;
+  color: #111827;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: #0a0a0a;
-  color: #e8e8e8;
+  background: #f7f8fb;
+  color: #111827;
   min-height: 100vh;
 }
 
@@ -51,21 +47,16 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #d1d5db;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #444;
-}
-
-/* Number/data font */
-.font-mono {
-  font-family: "IBM Plex Mono", "Fira Code", "Consolas", monospace;
+  background: #9ca3af;
 }
 
 /* Focus ring */
 *:focus-visible {
-  outline: 2px solid #00d4ff;
+  outline: 2px solid #5c5fef;
   outline-offset: 2px;
 }
 
@@ -77,25 +68,40 @@ table {
 
 /* Selection */
 ::selection {
-  background: #00d4ff33;
-  color: #fff;
+  background: #5c5fef33;
+  color: #111827;
 }
 
 /* Input reset */
 input, textarea, select {
-  background: #111;
-  color: #e8e8e8;
-  border: 1px solid #222;
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #e5e7eb;
   border-radius: 6px;
   font-family: inherit;
 }
 
 input:focus, textarea:focus, select:focus {
-  outline: 2px solid #00d4ff;
+  outline: 2px solid #5c5fef;
   outline-offset: -1px;
   border-color: transparent;
 }
 
 input::placeholder, textarea::placeholder {
-  color: #555;
+  color: #9ca3af;
+}
+
+/* Slide panel animation */
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { transform: translateX(0); opacity: 1; }
+  to { transform: translateX(100%); opacity: 0; }
+}
+
+.slide-panel {
+  animation: slideInRight 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }

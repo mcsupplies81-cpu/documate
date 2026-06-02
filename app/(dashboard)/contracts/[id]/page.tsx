@@ -1,21 +1,38 @@
 'use client'
-import { use } from 'react'
+import { use, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Printer, RefreshCw } from 'lucide-react'
+import { RefreshCw, RotateCcw } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Modal } from '@/components/ui/modal'
+import { Input } from '@/components/ui/input'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
 import { getContractWithEquipment, MOCK_METER_READINGS, MOCK_INVOICES } from '@/lib/mock-data'
 import { formatCurrency, formatNumber, getDaysUntilExpiry, calculateBilling, getCurrentPeriod } from '@/lib/billing'
+import { useToastStore } from '@/lib/store'
 import type { Customer } from '@/lib/types'
 
 export default function ContractDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
+  const toast = useToastStore()
+  const [renewalOpen, setRenewalOpen] = useState(false)
+  const [renewYears, setRenewYears] = useState('1')
+  const [newRate, setNewRate] = useState('')
+  const [renewing, setRenewing] = useState(false)
+
+  const handleRenew = async () => {
+    setRenewing(true)
+    await new Promise(r => setTimeout(r, 700))
+    setRenewing(false)
+    setRenewalOpen(false)
+    toast.success('Contract renewed', `${contract?.contract_number} extended ${renewYears} year${renewYears !== '1' ? 's' : ''}`)
+  }
+
   const contract = getContractWithEquipment(id)
   if (!contract) return (
-    <div className="text-[#555] py-20 text-center">
-      Contract not found. <Link href="/contracts" className="text-[#00d4ff]">Back to list</Link>
+    <div className="text-[#6b7280] py-20 text-center">
+      Contract not found. <Link href="/contracts" className="text-[#5c5fef]">Back to list</Link>
     </div>
   )
 
@@ -41,25 +58,28 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/contracts" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/contracts" className="text-sm text-[#555]">Contracts</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">{contract.contract_number}</span>
-      </div>
-
       <PageHeader
         title={contract.contract_number}
+        breadcrumb={[
+          { label: 'Contracts', href: '/contracts' },
+          { label: contract.contract_number },
+        ]}
         actions={
-          <Link href="/invoices/run">
-            <Button variant="primary" size="sm"><RefreshCw className="w-3.5 h-3.5" />Run Billing</Button>
-          </Link>
+          <div className="flex items-center gap-2">
+            {(contract.status === 'expiring' || contract.status === 'expired') && (
+              <Button variant="ghost" size="sm" onClick={() => { setNewRate(String(contract.base_rate)); setRenewalOpen(true) }}>
+                <RotateCcw className="w-3.5 h-3.5" />Renew Contract
+              </Button>
+            )}
+            <Link href="/invoices/run">
+              <Button variant="primary" size="sm"><RefreshCw className="w-3.5 h-3.5" />Run Billing</Button>
+            </Link>
+          </div>
         }
       >
         <div className="flex items-center gap-3 mt-1">
-          <Link href={`/customers/${contract.customer_id}`} className="text-xs text-[#00d4ff] hover:underline">{contract.customer?.name}</Link>
-          <span className="text-[#333]">·</span>
+          <Link href={`/customers/${contract.customer_id}`} className="text-sm text-[#5c5fef] hover:underline font-medium">{contract.customer?.name}</Link>
+          <span className="text-[#d1d5db]">·</span>
           <Badge variant="muted">{contract.contract_type.replace('_', ' ')}</Badge>
           <Badge variant={
             contract.status === 'active' ? 'success' :
@@ -67,7 +87,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
             contract.status === 'expired' ? 'danger' : 'muted'
           }>{contract.status}</Badge>
           {days !== null && (
-            <span className={`text-xs font-mono ${days < 0 ? 'text-[#ef4444]' : days <= 30 ? 'text-[#ef4444]' : days <= 60 ? 'text-[#f59e0b]' : 'text-[#555]'}`}>
+            <span className={`text-xs tabular-nums font-medium ${days < 0 ? 'text-[#dc2626]' : days <= 30 ? 'text-[#dc2626]' : days <= 60 ? 'text-[#d97706]' : 'text-[#6b7280]'}`}>
               {days < 0 ? `Expired ${Math.abs(days)}d ago` : `${days} days remaining`}
             </span>
           )}
@@ -80,20 +100,20 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
           { label: 'Base Rate', value: formatCurrency(contract.base_rate), sub: `/ ${contract.billing_cycle}` },
           { label: 'Start Date', value: contract.start_date },
           { label: 'End Date', value: contract.end_date || 'Open-ended' },
-          { label: 'Auto-Renew', value: contract.auto_renew ? 'Yes' : 'No', color: contract.auto_renew ? 'text-[#22c55e]' : 'text-[#555]' },
+          { label: 'Auto-Renew', value: contract.auto_renew ? 'Yes' : 'No', color: contract.auto_renew ? 'text-[#16a34a]' : 'text-[#9ca3af]' },
         ].map(tile => (
-          <div key={tile.label} className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-            <div className="text-xs text-[#555] uppercase tracking-wide mb-1">{tile.label}</div>
-            <div className={`text-lg font-mono font-semibold ${(tile as { color?: string }).color || 'text-[#e8e8e8]'}`}>{tile.value}</div>
-            {(tile as { sub?: string }).sub && <div className="text-xs text-[#444]">{(tile as { sub?: string }).sub}</div>}
+          <div key={tile.label} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">{tile.label}</div>
+            <div className={`text-lg font-semibold tabular-nums ${(tile as { color?: string }).color || 'text-[#111827]'}`}>{tile.value}</div>
+            {(tile as { sub?: string }).sub && <div className="text-xs text-[#9ca3af]">{(tile as { sub?: string }).sub}</div>}
           </div>
         ))}
       </div>
 
       {/* Equipment on contract */}
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg mb-4">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
-          <span className="text-sm font-medium">Equipment &amp; Meter Groups</span>
+      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-4">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+          <span className="text-sm font-semibold text-[#111827]">Equipment &amp; Meter Groups</span>
         </div>
         <Table>
           <Thead>
@@ -115,18 +135,18 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
               <Tr key={ce.id}>
                 <Td>
                   {ce.equipment
-                    ? <Link href={`/equipment/${ce.equipment_id}`} className="text-[#00d4ff] hover:underline text-sm">{ce.equipment.make} {ce.equipment.model}</Link>
+                    ? <Link href={`/equipment/${ce.equipment_id}`} className="text-[#5c5fef] hover:underline text-sm font-medium">{ce.equipment.make} {ce.equipment.model}</Link>
                     : '—'
                   }
                 </Td>
-                <Td><span className="font-mono text-xs text-[#666]">{ce.equipment?.serial_number}</span></Td>
+                <Td><span className="font-mono text-xs text-[#6b7280]">{ce.equipment?.serial_number}</span></Td>
                 <Td><span className="font-mono text-xs">{formatNumber(ce.included_bw)}</span></Td>
                 <Td><span className="font-mono text-xs">{formatNumber(ce.included_color)}</span></Td>
                 <Td><span className="font-mono text-xs">${ce.bw_overage_rate.toFixed(4)}</span></Td>
                 <Td><span className="font-mono text-xs">${ce.color_overage_rate.toFixed(4)}</span></Td>
-                <Td><span className="font-mono text-xs text-[#666]">{formatNumber(ce.last_billed_bw)}</span></Td>
-                <Td><span className="font-mono text-xs text-[#666]">{formatNumber(ce.last_billed_color)}</span></Td>
-                <Td><span className="text-xs text-[#555]">{ce.last_billed_date || '—'}</span></Td>
+                <Td><span className="font-mono text-xs text-[#6b7280]">{formatNumber(ce.last_billed_bw)}</span></Td>
+                <Td><span className="font-mono text-xs text-[#6b7280]">{formatNumber(ce.last_billed_color)}</span></Td>
+                <Td><span className="text-xs text-[#9ca3af]">{ce.last_billed_date || '—'}</span></Td>
               </Tr>
             ))}
           </Tbody>
@@ -134,44 +154,44 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Current period billing preview */}
-      <div className="bg-[#111] border border-[#00d4ff22] rounded-lg mb-4">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
+      <div className="bg-white border border-[#5c5fef22] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-4">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
           <div>
-            <span className="text-sm font-medium text-[#00d4ff]">Current Period Preview</span>
-            <span className="text-xs text-[#444] ml-3">{period.start} – {period.end}</span>
+            <span className="text-sm font-semibold text-[#5c5fef]">Current Period Preview</span>
+            <span className="text-xs text-[#9ca3af] ml-3">{period.start} – {period.end}</span>
           </div>
-          <span className="text-lg font-mono font-semibold text-[#e8e8e8]">{formatCurrency(preview.total)}</span>
+          <span className="text-lg font-semibold text-[#111827] tabular-nums">{formatCurrency(preview.total)}</span>
         </div>
         <div className="px-4 py-3 space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-[#666]">Base Rate</span>
-            <span className="font-mono">{formatCurrency(preview.base_charge)}</span>
+            <span className="text-[#6b7280]">Base Rate</span>
+            <span className="font-semibold tabular-nums">{formatCurrency(preview.base_charge)}</span>
           </div>
           {preview.equipment_items.map(item => (
-            <div key={item.equipment?.id} className="pl-3 border-l border-[#1e1e1e] space-y-1">
-              <div className="text-xs text-[#555]">{item.equipment?.make} {item.equipment?.model}</div>
+            <div key={item.equipment?.id} className="pl-3 border-l border-[#e5e7eb] space-y-1">
+              <div className="text-xs text-[#9ca3af]">{item.equipment?.make} {item.equipment?.model}</div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-[#666]">B&W: {formatNumber(item.bw_used)} used ({formatNumber(item.bw_overage)} over)</span>
-                <span className="font-mono text-[#e8e8e8]">{item.bw_overage > 0 ? formatCurrency(item.bw_overage_charge) : '—'}</span>
+                <span className="text-[#6b7280]">B&W: {formatNumber(item.bw_used)} used ({formatNumber(item.bw_overage)} over)</span>
+                <span className="font-semibold tabular-nums text-[#111827]">{item.bw_overage > 0 ? formatCurrency(item.bw_overage_charge) : '—'}</span>
               </div>
               <div className="flex items-center justify-between text-xs">
-                <span className="text-[#666]">Color: {formatNumber(item.color_used)} used ({formatNumber(item.color_overage)} over)</span>
-                <span className="font-mono text-[#e8e8e8]">{item.color_overage > 0 ? formatCurrency(item.color_overage_charge) : '—'}</span>
+                <span className="text-[#6b7280]">Color: {formatNumber(item.color_used)} used ({formatNumber(item.color_overage)} over)</span>
+                <span className="font-semibold tabular-nums text-[#111827]">{item.color_overage > 0 ? formatCurrency(item.color_overage_charge) : '—'}</span>
               </div>
             </div>
           ))}
-          <div className="flex items-center justify-between text-sm border-t border-[#1a1a1a] pt-2">
-            <span className="text-[#e8e8e8] font-medium">Estimated Total</span>
-            <span className="font-mono font-semibold text-[#00d4ff]">{formatCurrency(preview.total)}</span>
+          <div className="flex items-center justify-between text-sm border-t border-[#f3f4f6] pt-2">
+            <span className="text-[#111827] font-medium">Estimated Total</span>
+            <span className="font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(preview.total)}</span>
           </div>
         </div>
       </div>
 
       {/* Invoice history */}
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
-          <span className="text-sm font-medium">Invoice History</span>
-          <Link href="/invoices/run" className="text-xs text-[#00d4ff] hover:underline">Run billing →</Link>
+      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+          <span className="text-sm font-semibold text-[#111827]">Invoice History</span>
+          <Link href="/invoices/run" className="text-xs text-[#5c5fef] hover:underline font-medium">Run billing →</Link>
         </div>
         <Table>
           <Thead>
@@ -187,10 +207,10 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
             {invoices.length === 0 && <EmptyRow cols={5} message="No invoices yet" />}
             {invoices.map(inv => (
               <Tr key={inv.id}>
-                <Td><span className="font-mono text-xs text-[#00d4ff]">{inv.invoice_number}</span></Td>
-                <Td><span className="text-xs text-[#666]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
-                <Td><span className="font-mono font-medium">{formatCurrency(inv.total)}</span></Td>
-                <Td><span className="text-xs text-[#666] font-mono">{inv.due_date || '—'}</span></Td>
+                <Td><span className="font-mono text-xs text-[#5c5fef] font-medium">{inv.invoice_number}</span></Td>
+                <Td><span className="text-xs text-[#6b7280]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
+                <Td><span className="font-semibold tabular-nums">{formatCurrency(inv.total)}</span></Td>
+                <Td><span className="text-xs text-[#6b7280] tabular-nums">{inv.due_date || '—'}</span></Td>
                 <Td>
                   <Badge variant={
                     inv.status === 'paid' ? 'success' : inv.status === 'overdue' ? 'danger' :
@@ -202,6 +222,68 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
           </Tbody>
         </Table>
       </div>
+
+      {/* Renewal Modal (slide panel) */}
+      <Modal
+        open={renewalOpen}
+        onClose={() => setRenewalOpen(false)}
+        title={`Renew Contract — ${contract.customer?.name}`}
+      >
+        <div className="space-y-4">
+          <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded-lg p-3 text-sm">
+            <div className="flex justify-between text-[#6b7280] mb-1">
+              <span>Current end date</span>
+              <span className="font-semibold text-[#111827] tabular-nums">{contract.end_date}</span>
+            </div>
+            <div className="flex justify-between text-[#6b7280]">
+              <span>New end date</span>
+              <span className="font-semibold text-[#16a34a] tabular-nums">
+                {contract.end_date
+                  ? new Date(new Date(contract.end_date).setFullYear(new Date(contract.end_date).getFullYear() + Number(renewYears))).toISOString().split('T')[0]
+                  : '—'
+                }
+              </span>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-[#374151] mb-1.5 uppercase tracking-wider font-medium">Renewal Term</label>
+              <select
+                value={renewYears}
+                onChange={e => setRenewYears(e.target.value)}
+                className="w-full px-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+              >
+                <option value="1">1 Year</option>
+                <option value="2">2 Years</option>
+                <option value="3">3 Years</option>
+              </select>
+            </div>
+            <Input
+              label="New Monthly Rate ($)"
+              type="number"
+              step="0.01"
+              value={newRate}
+              onChange={e => setNewRate(e.target.value)}
+              placeholder={String(contract.base_rate)}
+            />
+          </div>
+          <div className="text-xs text-[#9ca3af]">
+            Current rate: <span className="font-semibold text-[#374151] tabular-nums">{formatCurrency(contract.base_rate)}/mo</span>
+            {newRate && Number(newRate) !== contract.base_rate && (
+              <span className={`ml-2 font-semibold tabular-nums ${Number(newRate) > contract.base_rate ? 'text-[#16a34a]' : 'text-[#d97706]'}`}>
+                → {formatCurrency(Number(newRate))}/mo
+                ({Number(newRate) > contract.base_rate ? '+' : ''}{(((Number(newRate) - contract.base_rate) / contract.base_rate) * 100).toFixed(1)}%)
+              </span>
+            )}
+          </div>
+          <div className="flex gap-3 pt-2">
+            <Button variant="ghost" size="sm" onClick={() => setRenewalOpen(false)} className="flex-1">Cancel</Button>
+            <Button variant="primary" size="sm" onClick={handleRenew} loading={renewing} className="flex-1">
+              Confirm Renewal
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }

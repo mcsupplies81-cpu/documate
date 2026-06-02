@@ -5,17 +5,17 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-[#00d4ff] text-[#0a0a0a] hover:bg-[#00bde8] font-semibold',
-  secondary: 'bg-[#1a1a1a] text-[#e8e8e8] hover:bg-[#222] border border-[#2a2a2a]',
-  ghost: 'bg-transparent text-[#888] hover:text-[#e8e8e8] hover:bg-[#111]',
-  danger: 'bg-[#ef44441a] text-[#ef4444] hover:bg-[#ef444433] border border-[#ef444433]',
-  outline: 'bg-transparent text-[#e8e8e8] border border-[#2a2a2a] hover:bg-[#111] hover:border-[#333]',
+  primary: 'bg-[#5c5fef] text-white hover:bg-[#4f52d9] font-medium',
+  secondary: 'bg-white text-[#374151] hover:bg-[#f9fafb] border border-[#e5e7eb]',
+  ghost: 'bg-transparent text-[#6b7280] hover:text-[#111827] hover:bg-[#f3f4f6]',
+  danger: 'bg-[#fef2f2] text-[#dc2626] hover:bg-[#fee2e2] border border-[#fecaca]',
+  outline: 'bg-transparent text-[#374151] border border-[#e5e7eb] hover:bg-[#f9fafb]',
 }
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-xs gap-1.5',
-  md: 'px-4 py-2 text-sm gap-2',
-  lg: 'px-5 py-2.5 text-sm gap-2',
+  sm: 'px-3 h-8 text-[13px] gap-1.5',
+  md: 'px-4 h-9 text-sm gap-2',
+  lg: 'px-5 h-10 text-sm gap-2',
 }
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -33,7 +33,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={disabled || loading}
         className={`
           inline-flex items-center justify-center rounded-md transition-colors duration-100
-          disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer
+          disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer font-medium
           ${variants[variant]} ${sizes[size]} ${className}
         `}
         {...props}

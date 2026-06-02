@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2 } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -48,15 +48,11 @@ export default function NewContractPage() {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/contracts" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/contracts" className="text-sm text-[#555]">Contracts</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">New Contract</span>
-      </div>
-
-      <PageHeader title="New Service Contract" subtitle="Set up a new maintenance agreement" />
+      <PageHeader
+        title="New Service Contract"
+        subtitle="Set up a new maintenance agreement"
+        breadcrumb={[{ label: 'Contracts', href: '/contracts' }, { label: 'New Contract' }]}
+      />
 
       {/* Step indicator */}
       <div className="flex items-center gap-3 mb-6">
@@ -66,11 +62,11 @@ export default function NewContractPage() {
           { n: 3, label: 'Equipment & Meters' },
         ].map(s => (
           <div key={s.n} className="flex items-center gap-2">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${step >= s.n ? 'bg-[#00d4ff] text-[#0a0a0a]' : 'bg-[#1a1a1a] text-[#555]'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${step >= s.n ? 'bg-[#5c5fef] text-white' : 'bg-[#f3f4f6] text-[#9ca3af] border border-[#e5e7eb]'}`}>
               {s.n}
             </div>
-            <span className={`text-xs ${step >= s.n ? 'text-[#888]' : 'text-[#444]'}`}>{s.label}</span>
-            {s.n < 3 && <span className="text-[#2a2a2a] mx-1">—</span>}
+            <span className={`text-xs ${step >= s.n ? 'text-[#374151] font-medium' : 'text-[#9ca3af]'}`}>{s.label}</span>
+            {s.n < 3 && <span className="text-[#d1d5db] mx-1">—</span>}
           </div>
         ))}
       </div>
@@ -78,8 +74,8 @@ export default function NewContractPage() {
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
           {step === 1 && (
-            <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-4">
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider">Customer &amp; Contract Type</h3>
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Customer &amp; Contract Type</h3>
               <Select
                 label="Customer"
                 value={customerId}
@@ -108,8 +104,8 @@ export default function NewContractPage() {
           )}
 
           {step === 2 && (
-            <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-4">
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider">Billing Terms</h3>
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Billing Terms</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Base Rate ($/month)" type="number" step="0.01" placeholder="0.00" />
                 <Select
@@ -125,8 +121,8 @@ export default function NewContractPage() {
                 <Input label="End Date" type="date" />
               </div>
               <div className="flex items-center gap-2">
-                <input type="checkbox" id="autorenew" className="w-4 h-4 rounded border-[#333] bg-[#111] text-[#00d4ff]" />
-                <label htmlFor="autorenew" className="text-sm text-[#888]">Auto-renew at end of term</label>
+                <input type="checkbox" id="autorenew" className="w-4 h-4 rounded border-[#d1d5db] text-[#5c5fef] focus:ring-[#5c5fef]" />
+                <label htmlFor="autorenew" className="text-sm text-[#374151]">Auto-renew at end of term</label>
               </div>
               <Textarea label="Notes" placeholder="Special terms, conditions, etc." rows={2} />
               <div className="flex justify-between">
@@ -137,9 +133,9 @@ export default function NewContractPage() {
           )}
 
           {step === 3 && (
-            <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-4">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
               <div className="flex items-center justify-between">
-                <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider">Equipment &amp; Meter Groups</h3>
+                <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Equipment &amp; Meter Groups</h3>
                 {contractType !== 'flat_rate' && contractType !== 'equipment_only' && (
                   <Button variant="ghost" size="sm" type="button" onClick={addMeterGroup} disabled={!customerId}>
                     <Plus className="w-3 h-3" />Add Equipment
@@ -148,14 +144,14 @@ export default function NewContractPage() {
               </div>
 
               {!customerId && (
-                <p className="text-xs text-[#555]">Go back and select a customer to add equipment.</p>
+                <p className="text-xs text-[#9ca3af]">Go back and select a customer to add equipment.</p>
               )}
 
               {meterGroups.map((group, i) => (
-                <div key={i} className="border border-[#2a2a2a] rounded-lg p-3 space-y-3">
+                <div key={i} className="border border-[#e5e7eb] rounded-lg p-3 space-y-3 bg-[#f9fafb]">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-[#666] font-medium">Equipment {i + 1}</span>
-                    <button type="button" onClick={() => removeMeterGroup(i)} className="text-[#444] hover:text-[#ef4444] transition-colors">
+                    <span className="text-xs text-[#374151] font-medium">Equipment {i + 1}</span>
+                    <button type="button" onClick={() => removeMeterGroup(i)} className="text-[#9ca3af] hover:text-[#dc2626] transition-colors">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -180,8 +176,8 @@ export default function NewContractPage() {
               ))}
 
               {meterGroups.length === 0 && contractType === 'cpc' && (
-                <div className="border border-dashed border-[#2a2a2a] rounded-lg p-6 text-center">
-                  <p className="text-sm text-[#444] mb-2">No equipment added yet</p>
+                <div className="border border-dashed border-[#d1d5db] rounded-lg p-6 text-center">
+                  <p className="text-sm text-[#9ca3af] mb-2">No equipment added yet</p>
                   <Button variant="ghost" size="sm" type="button" onClick={addMeterGroup} disabled={!customerId}>
                     <Plus className="w-3 h-3" />Add Equipment
                   </Button>

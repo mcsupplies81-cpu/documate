@@ -9,7 +9,7 @@ export function Table({ children, className = '' }: { children: ReactNode; class
 }
 
 export function Thead({ children }: { children: ReactNode }) {
-  return <thead className="border-b border-[#1e1e1e]">{children}</thead>
+  return <thead className="border-b border-[#f0f0f0]">{children}</thead>
 }
 
 export function Th({ children, className = '', onClick, sortable }: {
@@ -22,8 +22,8 @@ export function Th({ children, className = '', onClick, sortable }: {
     <th
       onClick={onClick}
       className={`
-        px-3 py-2.5 text-left text-[11px] font-medium text-[#555] uppercase tracking-wider
-        ${sortable ? 'cursor-pointer hover:text-[#888] select-none' : ''}
+        px-5 py-3 text-left text-[11px] font-semibold text-[#9ca3af] uppercase tracking-wider
+        ${sortable ? 'cursor-pointer hover:text-[#6b7280] select-none' : ''}
         ${className}
       `}
     >
@@ -33,7 +33,7 @@ export function Th({ children, className = '', onClick, sortable }: {
 }
 
 export function Tbody({ children }: { children: ReactNode }) {
-  return <tbody className="divide-y divide-[#1a1a1a]">{children}</tbody>
+  return <tbody className="divide-y divide-[#f7f7f7]">{children}</tbody>
 }
 
 export function Tr({ children, onClick, className = '' }: {
@@ -46,7 +46,7 @@ export function Tr({ children, onClick, className = '' }: {
       onClick={onClick}
       className={`
         transition-colors duration-75
-        ${onClick ? 'cursor-pointer hover:bg-[#141414]' : ''}
+        ${onClick ? 'cursor-pointer hover:bg-[#fafafa]' : 'hover:bg-[#fafafa]'}
         ${className}
       `}
     >
@@ -57,14 +57,14 @@ export function Tr({ children, onClick, className = '' }: {
 
 export function Td({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <td className={`px-3 py-2.5 text-[#c0c0c0] ${className}`}>{children}</td>
+    <td className={`px-5 py-3.5 text-[#374151] ${className}`}>{children}</td>
   )
 }
 
 export function EmptyRow({ cols, message = 'No records found' }: { cols: number; message?: string }) {
   return (
     <tr>
-      <td colSpan={cols} className="px-3 py-12 text-center text-[#444] text-sm">
+      <td colSpan={cols} className="px-5 py-16 text-center text-[#9ca3af] text-sm">
         {message}
       </td>
     </tr>

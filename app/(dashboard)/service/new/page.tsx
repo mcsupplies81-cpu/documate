@@ -1,15 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { MOCK_CUSTOMERS, MOCK_EQUIPMENT, MOCK_USERS } from '@/lib/mock-data'
-import { Suspense } from 'react'
 
 function NewServiceForm() {
   const router = useRouter()
@@ -32,19 +30,15 @@ function NewServiceForm() {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/service" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/service" className="text-sm text-[#555]">Service</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">New Call</span>
-      </div>
-
-      <PageHeader title="New Service Call" subtitle="Log a new service request or work order" />
+      <PageHeader
+        title="New Service Call"
+        subtitle="Log a new service request or work order"
+        breadcrumb={[{ label: 'Service', href: '/service' }, { label: 'New Call' }]}
+      />
 
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
-          <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-4">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             <div className="grid grid-cols-2 gap-4">
               <Select
                 label="Customer"
@@ -91,8 +85,8 @@ function NewServiceForm() {
             </div>
 
             <div className="flex items-center gap-2">
-              <input type="checkbox" id="billable" className="w-4 h-4" />
-              <label htmlFor="billable" className="text-sm text-[#888]">
+              <input type="checkbox" id="billable" className="w-4 h-4 rounded border-[#d1d5db] text-[#5c5fef] focus:ring-[#5c5fef]" />
+              <label htmlFor="billable" className="text-sm text-[#374151]">
                 Billable (not covered by contract)
               </label>
             </div>

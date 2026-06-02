@@ -4,10 +4,8 @@ import Link from 'next/link'
 import { Plus, Search, Download, MapPin, Phone, Mail, Printer, FileText } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Table, Thead, Th, Tbody, Tr, Td, EmptyRow } from '@/components/ui/table'
 import { MOCK_CUSTOMERS } from '@/lib/mock-data'
-import type { Customer } from '@/lib/types'
 
 export default function CustomersPage() {
   const [search, setSearch] = useState('')
@@ -40,13 +38,11 @@ export default function CustomersPage() {
         actions={
           <>
             <Button variant="ghost" size="sm" onClick={exportCSV}>
-              <Download className="w-3.5 h-3.5" />
-              Export
+              <Download className="w-3.5 h-3.5" />Export
             </Button>
             <Link href="/customers/new">
               <Button variant="primary" size="sm">
-                <Plus className="w-3.5 h-3.5" />
-                New Customer
+                <Plus className="w-3.5 h-3.5" />New Customer
               </Button>
             </Link>
           </>
@@ -55,18 +51,18 @@ export default function CustomersPage() {
 
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#444]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
             type="text"
             placeholder="Search customers..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[#111] border border-[#222] rounded-md text-[#e8e8e8] placeholder-[#444] focus:outline-none focus:ring-1 focus:ring-[#00d4ff] focus:border-transparent"
+            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
         </div>
       </div>
 
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg overflow-hidden">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <Table>
           <Thead>
             <tr>
@@ -84,9 +80,9 @@ export default function CustomersPage() {
               <Tr key={customer.id} onClick={() => window.location.href = `/customers/${customer.id}`}>
                 <Td>
                   <div>
-                    <div className="text-[#e8e8e8] font-medium">{customer.name}</div>
+                    <div className="text-[#111827] font-medium">{customer.name}</div>
                     {customer.notes && (
-                      <div className="text-xs text-[#444] truncate max-w-[200px]" title={customer.notes}>
+                      <div className="text-xs text-[#9ca3af] truncate max-w-[200px]" title={customer.notes}>
                         {customer.notes}
                       </div>
                     )}
@@ -95,12 +91,12 @@ export default function CustomersPage() {
                 <Td>
                   <div className="space-y-0.5">
                     {customer.email && (
-                      <div className="flex items-center gap-1.5 text-xs text-[#666]">
+                      <div className="flex items-center gap-1.5 text-xs text-[#6b7280]">
                         <Mail className="w-3 h-3" />{customer.email}
                       </div>
                     )}
                     {customer.phone && (
-                      <div className="flex items-center gap-1.5 text-xs text-[#666]">
+                      <div className="flex items-center gap-1.5 text-xs text-[#6b7280]">
                         <Phone className="w-3 h-3" />{customer.phone}
                       </div>
                     )}
@@ -108,7 +104,7 @@ export default function CustomersPage() {
                 </Td>
                 <Td>
                   {customer.billing_address && (
-                    <div className="flex items-center gap-1.5 text-xs text-[#666]">
+                    <div className="flex items-center gap-1.5 text-xs text-[#6b7280]">
                       <MapPin className="w-3 h-3 flex-shrink-0" />
                       {customer.billing_address.city}, {customer.billing_address.state}
                     </div>
@@ -116,21 +112,21 @@ export default function CustomersPage() {
                 </Td>
                 <Td>
                   <div className="flex items-center gap-1.5 text-xs">
-                    <Printer className="w-3 h-3 text-[#444]" />
-                    <span className="font-mono text-[#888]">{customer.equipment_count ?? 0}</span>
+                    <Printer className="w-3 h-3 text-[#9ca3af]" />
+                    <span className="tabular-nums text-[#6b7280]">{customer.equipment_count ?? 0}</span>
                   </div>
                 </Td>
                 <Td>
                   <div className="flex items-center gap-1.5 text-xs">
-                    <FileText className="w-3 h-3 text-[#444]" />
-                    <span className="font-mono text-[#888]">{customer.active_contracts ?? 0} active</span>
+                    <FileText className="w-3 h-3 text-[#9ca3af]" />
+                    <span className="tabular-nums text-[#6b7280]">{customer.active_contracts ?? 0} active</span>
                   </div>
                 </Td>
                 <Td>
                   <Link
                     href={`/customers/${customer.id}`}
                     onClick={e => e.stopPropagation()}
-                    className="text-xs text-[#555] hover:text-[#00d4ff] transition-colors"
+                    className="text-xs text-[#5c5fef] hover:underline font-medium"
                   >
                     View →
                   </Link>

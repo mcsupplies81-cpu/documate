@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { Plus, Search, Download, Activity } from 'lucide-react'
+import { Plus, Search, Download } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -66,23 +66,23 @@ export default function EquipmentPage() {
 
       <div className="flex items-center gap-3 mb-4 flex-wrap">
         <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#444]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
             type="text"
             placeholder="Search equipment..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[#111] border border-[#222] rounded-md text-[#e8e8e8] placeholder-[#444] focus:outline-none focus:ring-1 focus:ring-[#00d4ff] focus:border-transparent"
+            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
         </div>
 
         {/* Status filter */}
-        <div className="flex items-center gap-1 p-1 bg-[#111] border border-[#1e1e1e] rounded-md">
+        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
           {statusOptions.map(s => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1 text-xs rounded transition-colors capitalize ${statusFilter === s ? 'bg-[#1e1e1e] text-[#e8e8e8]' : 'text-[#555] hover:text-[#888]'}`}
+              className={`px-3 h-7 text-xs rounded transition-colors capitalize ${statusFilter === s ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
             >
               {s}
             </button>
@@ -93,14 +93,14 @@ export default function EquipmentPage() {
         <select
           value={customerFilter}
           onChange={e => setCustomerFilter(e.target.value)}
-          className="px-3 py-2 text-sm bg-[#111] border border-[#222] rounded-md text-[#888] focus:outline-none focus:ring-1 focus:ring-[#00d4ff]"
+          className="h-9 px-3 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
         >
           <option value="">All Customers</option>
           {MOCK_CUSTOMERS.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
         </select>
       </div>
 
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg overflow-hidden">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <Table>
           <Thead>
             <tr>
@@ -120,34 +120,34 @@ export default function EquipmentPage() {
             {filtered.map(eq => (
               <Tr key={eq.id} onClick={() => window.location.href = `/equipment/${eq.id}`}>
                 <Td>
-                  <Link href={`/customers/${eq.customer_id}`} onClick={e => e.stopPropagation()} className="text-[#888] hover:text-[#00d4ff] transition-colors text-xs">
+                  <Link href={`/customers/${eq.customer_id}`} onClick={e => e.stopPropagation()} className="text-[#5c5fef] hover:underline text-xs font-medium">
                     {eq.customer?.name || '—'}
                   </Link>
                 </Td>
                 <Td>
                   <div>
-                    <div className="text-[#e8e8e8] text-sm">{eq.make} {eq.model}</div>
-                    {eq.notes && <div className="text-[10px] text-[#444] truncate max-w-[160px]">{eq.notes}</div>}
+                    <div className="text-[#111827] font-medium">{eq.make} {eq.model}</div>
+                    {eq.notes && <div className="text-[10px] text-[#9ca3af] truncate max-w-[160px]">{eq.notes}</div>}
                   </div>
                 </Td>
-                <Td><span className="font-mono text-xs text-[#888]">{eq.serial_number}</span></Td>
-                <Td><span className="text-xs text-[#666]">{eq.install_date || '—'}</span></Td>
+                <Td><span className="font-mono text-xs text-[#6b7280]">{eq.serial_number}</span></Td>
+                <Td><span className="text-xs text-[#6b7280]">{eq.install_date || '—'}</span></Td>
                 <Td>
                   {eq.latest_reading
-                    ? <span className="font-mono text-xs text-[#888]">{formatNumber(eq.latest_reading.bw_reading)}</span>
-                    : <span className="text-xs text-[#333]">—</span>
+                    ? <span className="font-mono text-xs text-[#374151]">{formatNumber(eq.latest_reading.bw_reading)}</span>
+                    : <span className="text-xs text-[#9ca3af]">—</span>
                   }
                 </Td>
                 <Td>
                   {eq.latest_reading
-                    ? <span className="font-mono text-xs text-[#888]">{formatNumber(eq.latest_reading.color_reading)}</span>
-                    : <span className="text-xs text-[#333]">—</span>
+                    ? <span className="font-mono text-xs text-[#374151]">{formatNumber(eq.latest_reading.color_reading)}</span>
+                    : <span className="text-xs text-[#9ca3af]">—</span>
                   }
                 </Td>
                 <Td>
                   {eq.latest_reading
-                    ? <span className="text-xs text-[#555]">{eq.latest_reading.reading_date}</span>
-                    : <span className="text-xs text-[#ef4444]">Never</span>
+                    ? <span className="text-xs text-[#6b7280]">{eq.latest_reading.reading_date}</span>
+                    : <span className="text-xs text-[#dc2626] font-medium">Never</span>
                   }
                 </Td>
                 <Td>
@@ -156,7 +156,7 @@ export default function EquipmentPage() {
                   </Badge>
                 </Td>
                 <Td>
-                  <Link href={`/equipment/${eq.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#555] hover:text-[#00d4ff]">
+                  <Link href={`/equipment/${eq.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#5c5fef] hover:underline font-medium">
                     View →
                   </Link>
                 </Td>

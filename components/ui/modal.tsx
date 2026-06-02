@@ -11,10 +11,10 @@ interface ModalProps {
 }
 
 const sizes = {
-  sm: 'max-w-md',
-  md: 'max-w-lg',
-  lg: 'max-w-2xl',
-  xl: 'max-w-4xl',
+  sm: 'w-[400px]',
+  md: 'w-[480px]',
+  lg: 'w-[600px]',
+  xl: 'w-[720px]',
 }
 
 export function Modal({ open, onClose, title, children, size = 'md' }: ModalProps) {
@@ -27,16 +27,22 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${sizes[size]} bg-[#111] border border-[#222] rounded-xl shadow-2xl`}>
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#1e1e1e]">
-          <h2 className="text-sm font-semibold text-[#e8e8e8]">{title}</h2>
-          <button onClick={onClose} className="text-[#555] hover:text-[#e8e8e8] transition-colors p-1 rounded hover:bg-[#1a1a1a]">
+    <div className="fixed inset-0 z-50 flex">
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" onClick={onClose} />
+
+      {/* Slide panel from right */}
+      <div className={`absolute right-0 top-0 bottom-0 ${sizes[size]} bg-white border-l border-[#e5e7eb] shadow-2xl slide-panel flex flex-col`}>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#e5e7eb] flex-shrink-0">
+          <h2 className="text-sm font-semibold text-[#111827]">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-[#9ca3af] hover:text-[#374151] transition-colors p-1 rounded hover:bg-[#f3f4f6]"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
-        <div className="p-5">{children}</div>
+        <div className="flex-1 overflow-y-auto p-5">{children}</div>
       </div>
     </div>
   )

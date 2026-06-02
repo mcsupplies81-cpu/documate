@@ -1,14 +1,21 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Zap, ArrowRight } from 'lucide-react'
+import { Zap, ArrowRight, Eye, EyeOff } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+
+const DEMO_USERS = [
+  { email: 'admin@pacificoffice.com', password: 'demo1234', name: 'Jordan Martinez', role: 'Admin' },
+  { email: 'service@pacificoffice.com', password: 'demo1234', name: 'Alex Chen', role: 'Service Manager' },
+  { email: 'billing@pacificoffice.com', password: 'demo1234', name: 'Sam Rivera', role: 'Billing' },
+]
 
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('admin@pacificoffice.com')
   const [password, setPassword] = useState('demo1234')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -16,37 +23,37 @@ export default function LoginPage() {
     e.preventDefault()
     setLoading(true)
     setError('')
-    // Demo login — any credentials work
-    await new Promise(r => setTimeout(r, 600))
-    if (!email || !password) {
-      setError('Please enter your email and password')
+
+    await new Promise(r => setTimeout(r, 500))
+
+    const user = DEMO_USERS.find(u => u.email === email && u.password === password)
+    if (!user) {
+      setError('Invalid credentials. Try admin@pacificoffice.com / demo1234')
       setLoading(false)
       return
     }
+
+    document.cookie = `demo_session=${encodeURIComponent(JSON.stringify({ email: user.email, name: user.name, role: user.role }))}; path=/; max-age=86400`
     router.push('/dashboard')
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-4">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#00d4ff05_0%,transparent_70%)]" />
-
-      <div className="relative w-full max-w-sm">
+    <div className="min-h-screen bg-[#f7f8fb] flex items-center justify-center p-4">
+      <div className="w-full max-w-sm">
         {/* Logo */}
-        <div className="flex items-center gap-2.5 mb-8">
-          <div className="w-8 h-8 bg-[#00d4ff] rounded-lg flex items-center justify-center">
-            <Zap className="w-4.5 h-4.5 text-[#0a0a0a]" fill="currentColor" />
+        <div className="flex items-center gap-3 mb-8 justify-center">
+          <div className="w-9 h-9 bg-[#5c5fef] rounded-lg flex items-center justify-center shadow-md">
+            <Zap className="w-5 h-5 text-white" fill="currentColor" />
           </div>
           <div>
-            <div className="text-base font-bold text-white tracking-tight font-mono">DealerOS</div>
-            <div className="text-[11px] text-[#444]">Office Technology ERP</div>
+            <div className="text-xl font-bold text-[#111827] tracking-tight">DealerOS</div>
+            <div className="text-[11px] text-[#9ca3af]">Office Technology ERP</div>
           </div>
         </div>
 
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-xl p-6">
-          <h1 className="text-base font-semibold text-[#e8e8e8] mb-0.5">Sign in</h1>
-          <p className="text-sm text-[#555] mb-5">Enter your credentials to access your account</p>
+        <div className="bg-white border border-[#e5e7eb] rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+          <h1 className="text-base font-semibold text-[#111827] mb-0.5">Welcome back</h1>
+          <p className="text-sm text-[#6b7280] mb-6">Sign in to your account</p>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <Input
@@ -56,37 +63,61 @@ export default function LoginPage() {
               onChange={e => setEmail(e.target.value)}
               placeholder="you@example.com"
               autoComplete="email"
+              autoFocus
             />
-            <Input
-              label="Password"
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="••••••••"
-              autoComplete="current-password"
-            />
+            <div className="flex flex-col gap-1.5">
+              <label className="text-xs font-medium text-[#374151] uppercase tracking-wide">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  className="w-full px-3 h-9 pr-10 text-sm rounded-md bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
 
             {error && (
-              <div className="text-xs text-[#ef4444] bg-[#ef44441a] border border-[#ef444433] rounded px-3 py-2">
+              <div className="text-xs text-[#dc2626] bg-[#fef2f2] border border-[#fecaca] rounded-md px-3 py-2">
                 {error}
               </div>
             )}
 
-            <Button type="submit" variant="primary" size="md" className="w-full" loading={loading}>
+            <Button type="submit" variant="primary" size="md" className="w-full mt-2" loading={loading}>
               {!loading && <ArrowRight className="w-4 h-4" />}
               Sign in
             </Button>
           </form>
+        </div>
 
-          <div className="mt-4 pt-4 border-t border-[#1a1a1a]">
-            <p className="text-[11px] text-[#444] text-center">
-              Demo account: <span className="text-[#666] font-mono">admin@pacificoffice.com</span>
-            </p>
+        {/* Demo credentials */}
+        <div className="mt-4 bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <p className="text-[11px] text-[#9ca3af] mb-2 uppercase tracking-wide font-medium">Demo accounts</p>
+          <div className="space-y-0.5">
+            {DEMO_USERS.map(u => (
+              <button
+                key={u.email}
+                onClick={() => { setEmail(u.email); setPassword(u.password) }}
+                className="w-full text-left flex items-center justify-between px-2 py-1.5 rounded hover:bg-[#f9fafb] transition-colors group"
+              >
+                <span className="text-[11px] text-[#6b7280] group-hover:text-[#374151] font-mono">{u.email}</span>
+                <span className="text-[10px] text-[#9ca3af] group-hover:text-[#6b7280]">{u.role}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        <p className="text-center text-[11px] text-[#333] mt-4">
-          DealerOS v0.1 · Pacific Office Solutions
+        <p className="text-center text-[11px] text-[#9ca3af] mt-4">
+          DealerOS v0.1 — Pacific Office Solutions
         </p>
       </div>
     </div>

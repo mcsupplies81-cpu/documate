@@ -1,12 +1,14 @@
 'use client'
 import Link from 'next/link'
-import { AlertTriangle, TrendingUp, Gauge, Wrench, FileText, Clock, CheckCircle2, XCircle } from 'lucide-react'
+import { TrendingUp, Gauge, Wrench, FileText, CheckCircle2, CreditCard } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { StatCard } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Table, Thead, Th, Tbody, Tr, Td } from '@/components/ui/table'
 import { MOCK_METRICS, MOCK_SERVICE_CALLS, MOCK_CONTRACTS, MOCK_INVOICES } from '@/lib/mock-data'
 import { formatCurrency, getDaysUntilExpiry } from '@/lib/billing'
+import { AlertsPanel } from '@/components/alerts-panel'
+import { Button } from '@/components/ui/button'
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -27,10 +29,10 @@ function getStatusColor(status: string) {
 
 function getCallAge(openedAt: string): { label: string; color: string } {
   const hours = (Date.now() - new Date(openedAt).getTime()) / 3600000
-  if (hours < 4) return { label: `${Math.round(hours)}h`, color: 'text-[#22c55e]' }
-  if (hours < 24) return { label: `${Math.round(hours)}h`, color: 'text-[#f59e0b]' }
+  if (hours < 4) return { label: `${Math.round(hours)}h`, color: 'text-[#16a34a]' }
+  if (hours < 24) return { label: `${Math.round(hours)}h`, color: 'text-[#d97706]' }
   const days = Math.floor(hours / 24)
-  return { label: `${days}d ${Math.round(hours % 24)}h`, color: 'text-[#ef4444]' }
+  return { label: `${days}d ${Math.round(hours % 24)}h`, color: 'text-[#dc2626]' }
 }
 
 export default function DashboardPage() {
@@ -51,76 +53,68 @@ export default function DashboardPage() {
     <div>
       <PageHeader
         title="Dashboard"
-        subtitle={`${new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}`}
+        subtitle={new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
         actions={
-          <Link href="/invoices/run" className="inline-flex items-center gap-2 px-4 py-2 bg-[#00d4ff] text-[#0a0a0a] rounded-md text-sm font-semibold hover:bg-[#00bde8] transition-colors">
-            <TrendingUp className="w-4 h-4" />
-            Run Billing
+          <Link href="/invoices/run">
+            <Button variant="primary" size="sm">
+              <TrendingUp className="w-3.5 h-3.5" />
+              Run Billing
+            </Button>
           </Link>
         }
       />
 
+      <AlertsPanel />
+
       {/* KPI Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         <StatCard
           label="Monthly Revenue"
           value={mrrFormatted}
-          sub={`${m.active_contracts} active contracts`}
+          sub={`${m.active_customers} customers · ${m.active_contracts} contracts`}
           color="info"
+          icon={TrendingUp}
         />
         <StatCard
           label="Open Service Calls"
           value={m.open_service_calls}
-          sub="Requires attention"
+          sub={`${m.active_equipment} active machines`}
           color={m.open_service_calls > 3 ? 'warning' : 'default'}
+          icon={Wrench}
         />
         <StatCard
           label="Meters Collected"
           value={`${m.meters_collected}/${m.meters_due}`}
           sub={`${meterPct}% this cycle`}
           color={meterPct === 100 ? 'success' : meterPct > 70 ? 'warning' : 'danger'}
+          icon={Gauge}
         />
         <StatCard
           label="Outstanding AR"
           value={outstandingFormatted}
-          sub={`${m.invoices_outstanding_count} invoices`}
+          sub={`${m.invoices_outstanding_count} invoices · ${m.contracts_expiring_30} expiring soon`}
           color={m.invoices_outstanding_amount > 500 ? 'warning' : 'default'}
-        />
-      </div>
-
-      {/* Second row */}
-      <div className="grid grid-cols-4 gap-3 mb-6">
-        <StatCard label="Active Customers" value={m.active_customers} />
-        <StatCard label="Active Equipment" value={m.active_equipment} />
-        <StatCard
-          label="Expiring (30d)"
-          value={m.contracts_expiring_30}
-          color={m.contracts_expiring_30 > 0 ? 'danger' : 'success'}
-        />
-        <StatCard
-          label="Expiring (60d)"
-          value={m.contracts_expiring_30 + m.contracts_expiring_60}
-          color={(m.contracts_expiring_30 + m.contracts_expiring_60) > 0 ? 'warning' : 'success'}
+          icon={CreditCard}
         />
       </div>
 
       {/* Meter progress bar */}
       {meterPct < 100 && (
-        <div className="bg-[#111] border border-[#f59e0b33] rounded-lg p-3 mb-6 flex items-center gap-3">
-          <Gauge className="w-4 h-4 text-[#f59e0b] flex-shrink-0" />
+        <div className="bg-white border border-[#fde68a] rounded-lg p-3 mb-5 flex items-center gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <Gauge className="w-4 h-4 text-[#d97706] flex-shrink-0" />
           <div className="flex-1">
-            <div className="flex items-center justify-between text-xs mb-1">
-              <span className="text-[#f59e0b] font-medium">Meter Collection in Progress</span>
-              <span className="text-[#888] font-mono">{m.meters_collected}/{m.meters_due}</span>
+            <div className="flex items-center justify-between text-xs mb-1.5">
+              <span className="text-[#92400e] font-medium">Meter Collection in Progress</span>
+              <span className="text-[#6b7280] tabular-nums">{m.meters_collected}/{m.meters_due}</span>
             </div>
-            <div className="h-1.5 bg-[#1a1a1a] rounded-full overflow-hidden">
+            <div className="h-1.5 bg-[#f3f4f6] rounded-full overflow-hidden">
               <div
-                className="h-full bg-[#f59e0b] rounded-full transition-all duration-500"
+                className="h-full bg-[#d97706] rounded-full transition-all duration-500"
                 style={{ width: `${meterPct}%` }}
               />
             </div>
           </div>
-          <Link href="/meters" className="text-xs text-[#f59e0b] hover:underline flex-shrink-0">
+          <Link href="/meters" className="text-xs text-[#5c5fef] hover:underline flex-shrink-0 font-medium">
             Enter readings →
           </Link>
         </div>
@@ -128,22 +122,22 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Open Service Calls */}
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
             <div className="flex items-center gap-2">
-              <Wrench className="w-4 h-4 text-[#555]" />
-              <span className="text-sm font-medium">Open Service Calls</span>
+              <Wrench className="w-4 h-4 text-[#9ca3af]" />
+              <span className="text-sm font-semibold text-[#111827]">Open Service Calls</span>
             </div>
-            <Link href="/service" className="text-xs text-[#00d4ff] hover:underline">View all →</Link>
+            <Link href="/service" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
           </div>
-          <div className="divide-y divide-[#1a1a1a]">
+          <div className="divide-y divide-[#f9fafb]">
             {openCalls.slice(0, 5).map(call => {
               const age = getCallAge(call.opened_at)
               return (
-                <Link key={call.id} href={`/service/${call.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#141414] transition-colors">
+                <Link key={call.id} href={`/service/${call.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-[#e8e8e8] truncate">{call.customer?.name}</div>
-                    <div className="text-xs text-[#555] truncate">{call.problem_description?.slice(0, 60)}…</div>
+                    <div className="text-sm text-[#111827] font-medium truncate">{call.customer?.name}</div>
+                    <div className="text-xs text-[#6b7280] truncate">{call.problem_description?.slice(0, 60)}…</div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <Badge variant={getStatusColor(call.status) as 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'default'}>{call.status.replace('_', ' ')}</Badge>
@@ -153,8 +147,8 @@ export default function DashboardPage() {
               )
             })}
             {openCalls.length === 0 && (
-              <div className="flex items-center gap-2 px-4 py-6 text-[#444] text-sm">
-                <CheckCircle2 className="w-4 h-4 text-[#22c55e]" />
+              <div className="flex items-center gap-2 px-4 py-6 text-[#6b7280] text-sm">
+                <CheckCircle2 className="w-4 h-4 text-[#16a34a]" />
                 All caught up — no open calls
               </div>
             )}
@@ -162,36 +156,36 @@ export default function DashboardPage() {
         </div>
 
         {/* Expiring Contracts */}
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
             <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-[#555]" />
-              <span className="text-sm font-medium">Expiring Contracts</span>
+              <FileText className="w-4 h-4 text-[#9ca3af]" />
+              <span className="text-sm font-semibold text-[#111827]">Expiring Contracts</span>
             </div>
-            <Link href="/contracts?filter=expiring" className="text-xs text-[#00d4ff] hover:underline">View all →</Link>
+            <Link href="/contracts?filter=expiring" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
           </div>
-          <div className="divide-y divide-[#1a1a1a]">
+          <div className="divide-y divide-[#f9fafb]">
             {expiringContracts.slice(0, 5).map(contract => {
               const days = getDaysUntilExpiry(contract.end_date!)
               const isExpired = days < 0
               return (
-                <Link key={contract.id} href={`/contracts/${contract.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#141414] transition-colors">
+                <Link key={contract.id} href={`/contracts/${contract.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#f9fafb] transition-colors">
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm text-[#e8e8e8] truncate">{contract.customer?.name}</div>
-                    <div className="text-xs text-[#555] font-mono">{contract.contract_number}</div>
+                    <div className="text-sm text-[#111827] font-medium truncate">{contract.customer?.name}</div>
+                    <div className="text-xs text-[#6b7280] font-mono">{contract.contract_number}</div>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <div className={`text-xs font-mono font-semibold ${isExpired ? 'text-[#ef4444]' : days <= 30 ? 'text-[#ef4444]' : 'text-[#f59e0b]'}`}>
+                    <div className={`text-xs font-semibold tabular-nums ${isExpired ? 'text-[#dc2626]' : days <= 30 ? 'text-[#dc2626]' : 'text-[#d97706]'}`}>
                       {isExpired ? `${Math.abs(days)}d ago` : `${days}d left`}
                     </div>
-                    <div className="text-[10px] text-[#444]">{contract.end_date}</div>
+                    <div className="text-[10px] text-[#9ca3af]">{contract.end_date}</div>
                   </div>
                 </Link>
               )
             })}
             {expiringContracts.length === 0 && (
-              <div className="flex items-center gap-2 px-4 py-6 text-[#444] text-sm">
-                <CheckCircle2 className="w-4 h-4 text-[#22c55e]" />
+              <div className="flex items-center gap-2 px-4 py-6 text-[#6b7280] text-sm">
+                <CheckCircle2 className="w-4 h-4 text-[#16a34a]" />
                 No contracts expiring soon
               </div>
             )}
@@ -200,13 +194,13 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Invoices */}
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
           <div className="flex items-center gap-2">
-            <FileText className="w-4 h-4 text-[#555]" />
-            <span className="text-sm font-medium">Recent Invoices</span>
+            <FileText className="w-4 h-4 text-[#9ca3af]" />
+            <span className="text-sm font-semibold text-[#111827]">Recent Invoices</span>
           </div>
-          <Link href="/invoices" className="text-xs text-[#00d4ff] hover:underline">View all →</Link>
+          <Link href="/invoices" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
         </div>
         <Table>
           <Thead>
@@ -221,13 +215,13 @@ export default function DashboardPage() {
           </Thead>
           <Tbody>
             {recentInvoices.map(inv => (
-              <Tr key={inv.id} onClick={() => {}} className="cursor-pointer">
-                <Td><span className="font-mono text-[#00d4ff] text-xs">{inv.invoice_number}</span></Td>
-                <Td><span className="text-[#e8e8e8]">{inv.customer?.name}</span></Td>
-                <Td><span className="text-xs text-[#666]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
-                <Td><span className="font-mono font-medium">{formatCurrency(inv.total)}</span></Td>
+              <Tr key={inv.id}>
+                <Td><span className="font-mono text-[#5c5fef] text-xs font-medium">{inv.invoice_number}</span></Td>
+                <Td><span className="text-[#111827] font-medium">{inv.customer?.name}</span></Td>
+                <Td><span className="text-xs text-[#6b7280]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
+                <Td><span className="font-semibold tabular-nums">{formatCurrency(inv.total)}</span></Td>
                 <Td>
-                  <span className={`text-xs font-mono ${inv.status === 'overdue' ? 'text-[#ef4444]' : 'text-[#666]'}`}>
+                  <span className={`text-xs tabular-nums ${inv.status === 'overdue' ? 'text-[#dc2626]' : 'text-[#6b7280]'}`}>
                     {inv.due_date || '—'}
                   </span>
                 </Td>

@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -21,21 +20,17 @@ export default function NewCustomerPage() {
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/customers" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/customers" className="text-sm text-[#555]">Customers</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">New Customer</span>
-      </div>
-
-      <PageHeader title="New Customer" subtitle="Add a new customer to your account" />
+      <PageHeader
+        title="New Customer"
+        subtitle="Add a new customer to your account"
+        breadcrumb={[{ label: 'Customers', href: '/customers' }, { label: 'New Customer' }]}
+      />
 
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
-          <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-5 space-y-5">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
             <div>
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider mb-3">Basic Info</h3>
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Basic Info</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Company Name" placeholder="Acme Corp" required className="col-span-2" />
                 <Input label="Email" type="email" placeholder="billing@example.com" />
@@ -43,8 +38,8 @@ export default function NewCustomerPage() {
               </div>
             </div>
 
-            <div className="border-t border-[#1a1a1a] pt-5">
-              <h3 className="text-xs font-medium text-[#555] uppercase tracking-wider mb-3">Billing Address</h3>
+            <div className="border-t border-[#f3f4f6] pt-5">
+              <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Billing Address</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Street" placeholder="123 Main St" className="col-span-2" />
                 <Input label="City" placeholder="San Francisco" />
@@ -55,7 +50,7 @@ export default function NewCustomerPage() {
               </div>
             </div>
 
-            <div className="border-t border-[#1a1a1a] pt-5">
+            <div className="border-t border-[#f3f4f6] pt-5">
               <Textarea label="Notes" placeholder="Net 30 terms, special instructions, etc." rows={3} />
             </div>
           </div>

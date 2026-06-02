@@ -1,7 +1,7 @@
 'use client'
 import { use, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Plus, AlertTriangle, CheckCircle } from 'lucide-react'
+import { Plus, AlertTriangle, CheckCircle } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -22,8 +22,8 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
   const eq = MOCK_EQUIPMENT.find(e => e.id === id)
   if (!eq) return (
-    <div className="text-[#555] py-20 text-center">
-      Equipment not found. <Link href="/equipment" className="text-[#00d4ff]">Back to list</Link>
+    <div className="text-[#6b7280] py-20 text-center">
+      Equipment not found. <Link href="/equipment" className="text-[#5c5fef]">Back to list</Link>
     </div>
   )
 
@@ -60,16 +60,9 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
   return (
     <div>
-      <div className="flex items-center gap-3 mb-4">
-        <Link href="/equipment" className="text-[#555] hover:text-[#888]"><ArrowLeft className="w-4 h-4" /></Link>
-        <span className="text-[#333]">/</span>
-        <Link href="/equipment" className="text-sm text-[#555]">Equipment</Link>
-        <span className="text-[#333]">/</span>
-        <span className="text-sm text-[#888]">{eq.make} {eq.model}</span>
-      </div>
-
       <PageHeader
         title={`${eq.make} ${eq.model}`}
+        breadcrumb={[{ label: 'Equipment', href: '/equipment' }, { label: `${eq.make} ${eq.model}` }]}
         actions={
           <>
             <Button variant="primary" size="sm" onClick={() => setMeterOpen(true)}>
@@ -80,60 +73,60 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
         }
       >
         <div className="flex items-center gap-3 mt-1">
-          <span className="text-xs text-[#555] font-mono">S/N: {eq.serial_number}</span>
-          <span className="text-[#333]">·</span>
-          <Link href={`/customers/${eq.customer_id}`} className="text-xs text-[#00d4ff] hover:underline">{eq.customer?.name}</Link>
-          {eq.install_date && <><span className="text-[#333]">·</span><span className="text-xs text-[#555]">Installed {eq.install_date}</span></>}
+          <span className="text-xs text-[#6b7280] font-mono">S/N: {eq.serial_number}</span>
+          <span className="text-[#d1d5db]">·</span>
+          <Link href={`/customers/${eq.customer_id}`} className="text-xs text-[#5c5fef] hover:underline">{eq.customer?.name}</Link>
+          {eq.install_date && <><span className="text-[#d1d5db]">·</span><span className="text-xs text-[#6b7280]">Installed {eq.install_date}</span></>}
           <Badge variant={eq.status === 'active' ? 'success' : eq.status === 'inactive' ? 'warning' : 'muted'}>{eq.status}</Badge>
         </div>
       </PageHeader>
 
       {/* Meter summary */}
       <div className="grid grid-cols-4 gap-3 mb-5">
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Current B&W</div>
-          <div className="text-2xl font-mono font-semibold text-[#e8e8e8]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Current B&W</div>
+          <div className="text-2xl font-mono font-semibold text-[#111827]">
             {latestReading ? formatNumber(latestReading.bw_reading) : '—'}
           </div>
-          {bwDelta !== null && <div className="text-xs text-[#555] mt-0.5">+{formatNumber(bwDelta)} this period</div>}
+          {bwDelta !== null && <div className="text-xs text-[#9ca3af] mt-0.5">+{formatNumber(bwDelta)} this period</div>}
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Current Color</div>
-          <div className="text-2xl font-mono font-semibold text-[#e8e8e8]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Current Color</div>
+          <div className="text-2xl font-mono font-semibold text-[#111827]">
             {latestReading ? formatNumber(latestReading.color_reading) : '—'}
           </div>
-          {colorDelta !== null && <div className="text-xs text-[#555] mt-0.5">+{formatNumber(colorDelta)} this period</div>}
+          {colorDelta !== null && <div className="text-xs text-[#9ca3af] mt-0.5">+{formatNumber(colorDelta)} this period</div>}
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Last Reading</div>
-          <div className="text-lg font-mono font-semibold text-[#888]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Last Reading</div>
+          <div className="text-lg font-mono font-semibold text-[#374151]">
             {latestReading?.reading_date || '—'}
           </div>
-          <div className="text-xs text-[#444]">{latestReading?.source || ''}</div>
+          <div className="text-xs text-[#9ca3af]">{latestReading?.source || ''}</div>
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Contract</div>
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Contract</div>
           {contract
-            ? <Link href={`/contracts/${contract.id}`} className="text-sm text-[#00d4ff] hover:underline font-mono">{contract.contract_number}</Link>
-            : <div className="text-sm text-[#444]">None</div>
+            ? <Link href={`/contracts/${contract.id}`} className="text-sm text-[#5c5fef] hover:underline font-mono">{contract.contract_number}</Link>
+            : <div className="text-sm text-[#9ca3af]">None</div>
           }
-          {contractEq && <div className="text-xs text-[#555] mt-0.5">{contractEq.included_bw.toLocaleString()} B&W / {contractEq.included_color.toLocaleString()} Color incl.</div>}
+          {contractEq && <div className="text-xs text-[#9ca3af] mt-0.5">{contractEq.included_bw.toLocaleString()} B&W / {contractEq.included_color.toLocaleString()} Color incl.</div>}
         </div>
       </div>
 
       {/* Notes */}
       {eq.notes && (
-        <div className="bg-[#111] border border-[#f59e0b33] rounded-lg px-4 py-2.5 mb-4 flex items-center gap-2">
-          <AlertTriangle className="w-3.5 h-3.5 text-[#f59e0b] flex-shrink-0" />
-          <span className="text-sm text-[#888]">{eq.notes}</span>
+        <div className="bg-[#fffbeb] border border-[#fde68a] rounded-lg px-4 py-2.5 mb-4 flex items-center gap-2">
+          <AlertTriangle className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0" />
+          <span className="text-sm text-[#92400e]">{eq.notes}</span>
         </div>
       )}
 
       <div className="grid grid-cols-2 gap-4">
         {/* Meter History */}
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
-            <span className="text-sm font-medium">Meter History</span>
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+            <span className="text-sm font-semibold text-[#111827]">Meter History</span>
             <Button variant="ghost" size="sm" onClick={() => setMeterOpen(true)}>
               <Plus className="w-3 h-3" />Enter Reading
             </Button>
@@ -155,13 +148,13 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
                 const bwDiff = prev ? r.bw_reading - prev.bw_reading : null
                 return (
                   <Tr key={r.id}>
-                    <Td><span className="text-xs font-mono">{r.reading_date}</span></Td>
+                    <Td><span className="text-xs font-mono text-[#374151]">{r.reading_date}</span></Td>
                     <Td>
-                      <div className="font-mono text-xs text-[#e8e8e8]">{formatNumber(r.bw_reading)}</div>
-                      {bwDiff !== null && <div className="text-[10px] text-[#555]">+{formatNumber(bwDiff)}</div>}
+                      <div className="font-mono text-xs text-[#111827]">{formatNumber(r.bw_reading)}</div>
+                      {bwDiff !== null && <div className="text-[10px] text-[#9ca3af]">+{formatNumber(bwDiff)}</div>}
                     </Td>
                     <Td>
-                      <span className="font-mono text-xs text-[#888]">{formatNumber(r.color_reading)}</span>
+                      <span className="font-mono text-xs text-[#374151]">{formatNumber(r.color_reading)}</span>
                     </Td>
                     <Td>
                       <Badge variant={r.source === 'dca' ? 'info' : r.source === 'customer' ? 'purple' : 'muted'}>
@@ -169,7 +162,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
                       </Badge>
                     </Td>
                     <Td>
-                      {r.is_suspect && <AlertTriangle className="w-3.5 h-3.5 text-[#f59e0b]" />}
+                      {r.is_suspect && <AlertTriangle className="w-3.5 h-3.5 text-[#d97706]" />}
                     </Td>
                   </Tr>
                 )
@@ -179,9 +172,9 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
         </div>
 
         {/* Service History */}
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#1e1e1e]">
-            <span className="text-sm font-medium">Service History</span>
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
+            <span className="text-sm font-semibold text-[#111827]">Service History</span>
             <Link href={`/service/new?equipment=${id}`}>
               <Button variant="ghost" size="sm"><Plus className="w-3 h-3" />New Call</Button>
             </Link>
@@ -199,9 +192,9 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
               {serviceCalls.length === 0 && <EmptyRow cols={4} message="No service history" />}
               {serviceCalls.map(sc => (
                 <Tr key={sc.id} onClick={() => window.location.href = `/service/${sc.id}`}>
-                  <Td><span className="font-mono text-xs text-[#00d4ff]">{sc.call_number}</span></Td>
-                  <Td><span className="text-xs text-[#888] block truncate max-w-[160px]">{sc.problem_description}</span></Td>
-                  <Td><span className="text-xs">{sc.technician?.name || <span className="text-[#333]">—</span>}</span></Td>
+                  <Td><span className="font-mono text-xs text-[#5c5fef]">{sc.call_number}</span></Td>
+                  <Td><span className="text-xs text-[#6b7280] block truncate max-w-[160px]">{sc.problem_description}</span></Td>
+                  <Td><span className="text-xs text-[#374151]">{sc.technician?.name || <span className="text-[#9ca3af]">—</span>}</span></Td>
                   <Td>
                     <Badge variant={sc.status === 'open' ? 'danger' : sc.status === 'in_progress' ? 'warning' : sc.status === 'completed' ? 'success' : 'muted'}>
                       {sc.status.replace('_', ' ')}
@@ -217,11 +210,11 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
       {/* Meter Entry Modal */}
       <Modal open={meterOpen} onClose={() => setMeterOpen(false)} title="Enter Meter Reading">
         <div className="space-y-4">
-          <div className="bg-[#0d0d0d] rounded-md px-3 py-2 text-xs text-[#555]">
-            <div className="font-medium text-[#888] mb-1">{eq.make} {eq.model}</div>
-            <div>S/N: <span className="font-mono">{eq.serial_number}</span></div>
+          <div className="bg-[#f9fafb] border border-[#e5e7eb] rounded-md px-3 py-2 text-xs text-[#6b7280]">
+            <div className="font-medium text-[#374151] mb-1">{eq.make} {eq.model}</div>
+            <div>S/N: <span className="font-mono text-[#374151]">{eq.serial_number}</span></div>
             {latestReading && (
-              <div className="mt-1">Last reading: <span className="font-mono">B&W {formatNumber(latestReading.bw_reading)} · Color {formatNumber(latestReading.color_reading)}</span> <span className="text-[#444]">({latestReading.reading_date})</span></div>
+              <div className="mt-1">Last reading: <span className="font-mono text-[#374151]">B&W {formatNumber(latestReading.bw_reading)} · Color {formatNumber(latestReading.color_reading)}</span> <span className="text-[#9ca3af]">({latestReading.reading_date})</span></div>
             )}
           </div>
 
@@ -234,9 +227,9 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
                 value={bwVal}
                 onChange={e => setBwVal(e.target.value)}
               />
-              {bwStatus === 'error' && <p className="text-xs text-[#ef4444] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Lower than last reading</p>}
-              {bwStatus === 'suspect' && <p className="text-xs text-[#f59e0b] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Unusually high — verify</p>}
-              {bwStatus === 'ok' && <p className="text-xs text-[#22c55e] mt-1 flex items-center gap-1"><CheckCircle className="w-3 h-3" />Looks good</p>}
+              {bwStatus === 'error' && <p className="text-xs text-[#dc2626] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Lower than last reading</p>}
+              {bwStatus === 'suspect' && <p className="text-xs text-[#d97706] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Unusually high — verify</p>}
+              {bwStatus === 'ok' && <p className="text-xs text-[#16a34a] mt-1 flex items-center gap-1"><CheckCircle className="w-3 h-3" />Looks good</p>}
             </div>
             <div>
               <Input
@@ -246,8 +239,8 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
                 value={colorVal}
                 onChange={e => setColorVal(e.target.value)}
               />
-              {colorStatus === 'error' && <p className="text-xs text-[#ef4444] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Lower than last reading</p>}
-              {colorStatus === 'suspect' && <p className="text-xs text-[#f59e0b] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Unusually high — verify</p>}
+              {colorStatus === 'error' && <p className="text-xs text-[#dc2626] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Lower than last reading</p>}
+              {colorStatus === 'suspect' && <p className="text-xs text-[#d97706] mt-1 flex items-center gap-1"><AlertTriangle className="w-3 h-3" />Unusually high — verify</p>}
             </div>
           </div>
 

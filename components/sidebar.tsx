@@ -3,81 +3,142 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
   LayoutDashboard, Users, Printer, FileText, Gauge,
-  Wrench, Receipt, Settings, ChevronRight, Zap
+  Wrench, Receipt, Settings, Zap, Search,
+  BarChart2, Package, ShoppingCart, CalendarDays,
+  CreditCard, Store
 } from 'lucide-react'
+import { useCommandStore } from '@/lib/store'
 
-const nav = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/customers', icon: Users, label: 'Customers' },
-  { href: '/equipment', icon: Printer, label: 'Equipment' },
-  { href: '/contracts', icon: FileText, label: 'Contracts' },
-  { href: '/meters', icon: Gauge, label: 'Meters' },
-  { href: '/service', icon: Wrench, label: 'Service' },
-  { href: '/invoices', icon: Receipt, label: 'Invoices' },
+const navGroups = [
+  {
+    label: 'Operations',
+    items: [
+      { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+      { href: '/customers', icon: Users, label: 'Customers' },
+      { href: '/equipment', icon: Printer, label: 'Equipment' },
+      { href: '/contracts', icon: FileText, label: 'Contracts' },
+    ],
+  },
+  {
+    label: 'Service',
+    items: [
+      { href: '/meters', icon: Gauge, label: 'Meters' },
+      { href: '/dispatch', icon: CalendarDays, label: 'Dispatch' },
+      { href: '/service', icon: Wrench, label: 'Service Calls' },
+    ],
+  },
+  {
+    label: 'Finance',
+    items: [
+      { href: '/invoices', icon: Receipt, label: 'Invoices' },
+      { href: '/ar', icon: CreditCard, label: 'AR Aging' },
+      { href: '/reports', icon: BarChart2, label: 'Reports' },
+    ],
+  },
+  {
+    label: 'Inventory',
+    items: [
+      { href: '/parts', icon: Package, label: 'Parts' },
+      { href: '/vendors', icon: Store, label: 'Vendors' },
+      { href: '/purchase-orders', icon: ShoppingCart, label: 'Purchase Orders' },
+    ],
+  },
 ]
+
+function NavItem({ href, icon: Icon, label, active }: {
+  href: string
+  icon: React.ElementType
+  label: string
+  active: boolean
+}) {
+  return (
+    <Link
+      href={href}
+      className={`
+        flex items-center gap-2.5 px-3 h-8 text-[13px] rounded-lg transition-all duration-100
+        ${active
+          ? 'bg-[#eef2ff] text-[#5c5fef] font-medium'
+          : 'text-[#6b7280] hover:text-[#111827] hover:bg-[#f5f5f5]'
+        }
+      `}
+    >
+      <Icon className={`w-[15px] h-[15px] flex-shrink-0 ${active ? 'text-[#5c5fef]' : 'text-[#9ca3af]'}`} />
+      {label}
+    </Link>
+  )
+}
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { toggle } = useCommandStore()
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[200px] bg-[#0d0d0d] border-r border-[#1a1a1a] flex flex-col z-40">
+    <aside className="sticky top-0 h-screen w-[220px] shrink-0 bg-white border-r border-[#f0f0f0] flex flex-col z-40">
       {/* Logo */}
-      <div className="px-4 py-4 border-b border-[#1a1a1a]">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 bg-[#00d4ff] rounded-md flex items-center justify-center flex-shrink-0">
-            <Zap className="w-4 h-4 text-[#0a0a0a]" fill="currentColor" />
+      <div className="px-4 py-5">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <div className="w-7 h-7 bg-[#5c5fef] rounded-lg flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(92,95,239,0.3)]">
+            <Zap className="w-4 h-4 text-white" fill="currentColor" />
           </div>
           <div>
-            <div className="text-sm font-bold text-white tracking-tight font-mono">DealerOS</div>
-            <div className="text-[10px] text-[#444]">Pacific Office Solutions</div>
+            <div className="text-sm font-bold text-[#111827] tracking-tight">DealerOS</div>
+            <div className="text-[10px] text-[#b0b7c3]">Pacific Office Solutions</div>
           </div>
-        </div>
+        </Link>
       </div>
 
-      {/* Nav */}
-      <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto">
-        {nav.map(item => {
-          const active = pathname === item.href || pathname.startsWith(item.href + '/')
-          const Icon = item.icon
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-100
-                ${active
-                  ? 'bg-[#00d4ff15] text-[#00d4ff] font-medium'
-                  : 'text-[#666] hover:text-[#bbb] hover:bg-[#111]'
-                }
-              `}
-            >
-              <Icon className={`w-4 h-4 flex-shrink-0 ${active ? 'text-[#00d4ff]' : ''}`} />
-              <span>{item.label}</span>
-              {active && <ChevronRight className="w-3 h-3 ml-auto text-[#00d4ff44]" />}
-            </Link>
-          )
-        })}
+      {/* Search / CMD+K */}
+      <div className="px-3 pb-3">
+        <button
+          onClick={toggle}
+          className="w-full flex items-center gap-2 px-3 h-8 rounded-lg bg-[#f5f5f5] text-[#9ca3af] hover:bg-[#efefef] hover:text-[#6b7280] transition-all text-xs"
+        >
+          <Search className="w-3.5 h-3.5 flex-shrink-0" />
+          <span className="flex-1 text-left">Search...</span>
+          <kbd className="text-[10px] bg-white rounded px-1 py-0.5 font-mono text-[#b0b7c3] shadow-[0_1px_2px_rgba(0,0,0,0.08)]">⌘K</kbd>
+        </button>
+      </div>
+
+      {/* Nav Groups */}
+      <nav className="flex-1 px-3 overflow-y-auto space-y-5">
+        {navGroups.map(group => (
+          <div key={group.label}>
+            <div className="px-3 mb-1.5 text-[10px] font-semibold text-[#c0c6d4] uppercase tracking-widest">
+              {group.label}
+            </div>
+            <div className="space-y-0.5">
+              {group.items.map(item => {
+                const active = pathname === item.href || pathname.startsWith(item.href + '/')
+                return (
+                  <NavItem
+                    key={item.href}
+                    href={item.href}
+                    icon={item.icon}
+                    label={item.label}
+                    active={active}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
 
       {/* Bottom */}
-      <div className="px-2 py-3 border-t border-[#1a1a1a]">
-        <Link
+      <div className="px-3 pb-4 pt-3 border-t border-[#f0f0f0] space-y-0.5">
+        <NavItem
           href="/settings"
-          className={`
-            flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-100
-            ${pathname === '/settings' ? 'bg-[#00d4ff15] text-[#00d4ff]' : 'text-[#666] hover:text-[#bbb] hover:bg-[#111]'}
-          `}
-        >
-          <Settings className="w-4 h-4" />
-          <span>Settings</span>
-        </Link>
-        <div className="flex items-center gap-2 px-3 py-2 mt-1">
-          <div className="w-6 h-6 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] flex items-center justify-center text-[10px] text-[#888] font-mono">
+          icon={Settings}
+          label="Settings"
+          active={pathname === '/settings'}
+        />
+        <div className="flex items-center gap-2.5 px-3 py-2 mt-1 rounded-lg hover:bg-[#f5f5f5] transition-colors cursor-pointer">
+          <div className="w-6 h-6 rounded-full bg-[#eef2ff] flex items-center justify-center text-[10px] text-[#5c5fef] font-bold flex-shrink-0">
             JM
           </div>
-          <div>
-            <div className="text-xs text-[#888]">Jordan Martinez</div>
-            <div className="text-[10px] text-[#444]">Admin</div>
+          <div className="min-w-0">
+            <div className="text-xs font-medium text-[#111827] truncate">Jordan Martinez</div>
+            <div className="text-[10px] text-[#9ca3af]">Admin</div>
           </div>
         </div>
       </div>

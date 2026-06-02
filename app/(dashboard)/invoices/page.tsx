@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import { TrendingUp, Download, Search, DollarSign } from 'lucide-react'
+import { TrendingUp, Download, Search } from 'lucide-react'
 import { PageHeader } from '@/components/page-header'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -56,41 +56,40 @@ export default function InvoicesPage() {
 
       {/* AR summary */}
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Outstanding AR</div>
-          <div className="text-2xl font-mono font-semibold text-[#f59e0b]">{formatCurrency(totals.outstanding)}</div>
-          <div className="text-xs text-[#444] mt-0.5">{MOCK_INVOICES.filter(i => i.status === 'sent' || i.status === 'overdue').length} invoices</div>
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Outstanding AR</div>
+          <div className="text-2xl font-semibold text-[#d97706] tabular-nums">{formatCurrency(totals.outstanding)}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'sent' || i.status === 'overdue').length} invoices</div>
         </div>
-        <div className="bg-[#111] border border-[#ef444422] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Overdue</div>
-          <div className="text-2xl font-mono font-semibold text-[#ef4444]">{formatCurrency(totals.overdue)}</div>
-          <div className="text-xs text-[#444] mt-0.5">{MOCK_INVOICES.filter(i => i.status === 'overdue').length} invoices</div>
+        <div className="bg-white border border-[#fecaca] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Overdue</div>
+          <div className="text-2xl font-semibold text-[#dc2626] tabular-nums">{formatCurrency(totals.overdue)}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'overdue').length} invoices</div>
         </div>
-        <div className="bg-[#111] border border-[#1e1e1e] rounded-lg p-3">
-          <div className="text-xs text-[#555] uppercase tracking-wide mb-1">Collected (This Month)</div>
-          <div className="text-2xl font-mono font-semibold text-[#22c55e]">{formatCurrency(totals.paid_this_month)}</div>
-          <div className="text-xs text-[#444] mt-0.5">{MOCK_INVOICES.filter(i => i.status === 'paid').length} invoices</div>
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Collected (This Month)</div>
+          <div className="text-2xl font-semibold text-[#16a34a] tabular-nums">{formatCurrency(totals.paid_this_month)}</div>
+          <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'paid').length} invoices</div>
         </div>
       </div>
 
       <div className="flex items-center gap-3 mb-4">
         <div className="relative flex-1 max-w-xs">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#444]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9ca3af]" />
           <input
             type="text"
             placeholder="Search invoices..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm bg-[#111] border border-[#222] rounded-md text-[#e8e8e8] placeholder-[#444] focus:outline-none focus:ring-1 focus:ring-[#00d4ff] focus:border-transparent"
+            className="w-full pl-9 pr-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
           />
         </div>
-
-        <div className="flex items-center gap-1 p-1 bg-[#111] border border-[#1e1e1e] rounded-md">
+        <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] border border-[#e5e7eb] rounded-md">
           {(['all', 'draft', 'sent', 'paid', 'overdue'] as StatusFilter[]).map(s => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-3 py-1 text-xs rounded transition-colors ${statusFilter === s ? 'bg-[#1e1e1e] text-[#e8e8e8]' : 'text-[#555] hover:text-[#888]'}`}
+              className={`px-3 h-7 text-xs rounded transition-colors ${statusFilter === s ? 'bg-white text-[#111827] font-medium shadow-sm' : 'text-[#6b7280] hover:text-[#374151]'}`}
             >
               {s}
             </button>
@@ -98,7 +97,7 @@ export default function InvoicesPage() {
         </div>
       </div>
 
-      <div className="bg-[#111] border border-[#1e1e1e] rounded-lg overflow-hidden">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         <Table>
           <Thead>
             <tr>
@@ -116,24 +115,24 @@ export default function InvoicesPage() {
             {filtered.length === 0 && <EmptyRow cols={8} message="No invoices found" />}
             {filtered.map(inv => (
               <Tr key={inv.id}>
-                <Td><span className="font-mono text-xs text-[#00d4ff]">{inv.invoice_number}</span></Td>
-                <Td><span className="text-[#e8e8e8]">{inv.customer?.name}</span></Td>
+                <Td><Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline font-medium">{inv.invoice_number}</Link></Td>
+                <Td><span className="text-[#111827] font-medium">{inv.customer?.name}</span></Td>
                 <Td>
                   {inv.contract_id
-                    ? <Link href={`/contracts/${inv.contract_id}`} className="text-xs text-[#555] hover:text-[#00d4ff] font-mono">
+                    ? <Link href={`/contracts/${inv.contract_id}`} className="text-xs text-[#6b7280] hover:text-[#5c5fef] font-mono">
                         {inv.contract?.contract_number || inv.contract_id.slice(-8)}
                       </Link>
-                    : <span className="text-xs text-[#333]">—</span>
+                    : <span className="text-xs text-[#9ca3af]">—</span>
                   }
                 </Td>
                 <Td>
-                  <span className="text-xs text-[#666]">
+                  <span className="text-xs text-[#6b7280]">
                     {inv.billing_period_start} – {inv.billing_period_end}
                   </span>
                 </Td>
-                <Td><span className="font-mono font-medium">{formatCurrency(inv.total)}</span></Td>
+                <Td><span className="font-semibold tabular-nums">{formatCurrency(inv.total)}</span></Td>
                 <Td>
-                  <span className={`text-xs font-mono ${inv.status === 'overdue' ? 'text-[#ef4444] font-semibold' : 'text-[#666]'}`}>
+                  <span className={`text-xs tabular-nums ${inv.status === 'overdue' ? 'text-[#dc2626] font-semibold' : 'text-[#6b7280]'}`}>
                     {inv.due_date || '—'}
                   </span>
                 </Td>
@@ -145,7 +144,7 @@ export default function InvoicesPage() {
                 </Td>
                 <Td>
                   {inv.status !== 'paid' && (
-                    <button className="text-xs text-[#555] hover:text-[#22c55e] transition-colors">
+                    <button className="text-xs text-[#6b7280] hover:text-[#16a34a] transition-colors font-medium">
                       Mark Paid
                     </button>
                   )}

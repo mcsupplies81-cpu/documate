@@ -1,7 +1,7 @@
 import {
   Tenant, User, Customer, Location, Equipment, MeterReading,
   Contract, ContractEquipment, ServiceCall, Invoice, InvoiceLineItem,
-  DashboardMetrics
+  DashboardMetrics, Part, PartUsage, Vendor, PurchaseOrder, POLineItem, CreditMemo
 } from './types'
 
 export const MOCK_TENANT: Tenant = {
@@ -336,6 +336,162 @@ export const MOCK_METRICS: DashboardMetrics = {
   active_equipment: 10,
   active_customers: 7,
 }
+
+// ── VENDORS ───────────────────────────────────────────────────────────────
+export const MOCK_VENDORS: Vendor[] = [
+  {
+    id: 'ven-1', tenant_id: 'tenant-1', name: 'Konica Minolta Business Solutions',
+    contact_name: 'Derek Walsh', email: 'dwalsh@kmbs.konicaminolta.us', phone: '(800) 456-5664',
+    address: { street: '100 Williams Dr', city: 'Ramsey', state: 'NJ', zip: '07446' },
+    account_number: 'ACCT-88231', payment_terms: 'net30', notes: 'Primary toner supplier',
+    created_at: '2023-01-01T00:00:00Z',
+  },
+  {
+    id: 'ven-2', tenant_id: 'tenant-1', name: 'Kyocera Document Solutions',
+    contact_name: 'Maria Santos', email: 'msantos@kyocera.com', phone: '(800) 255-6482',
+    address: { street: '225 Sand Road', city: 'Fairfield', state: 'NJ', zip: '07004' },
+    account_number: 'KYO-4421', payment_terms: 'net30', notes: null,
+    created_at: '2023-01-01T00:00:00Z',
+  },
+  {
+    id: 'ven-3', tenant_id: 'tenant-1', name: 'Ricoh USA',
+    contact_name: 'Tom Huang', email: 'thuang@ricoh-usa.com', phone: '(888) 742-6471',
+    address: { street: '300 Eagleview Blvd', city: 'Exton', state: 'PA', zip: '19341' },
+    account_number: 'RIC-9902', payment_terms: 'net45', notes: 'Net 45 — pay early for 2% discount',
+    created_at: '2023-02-01T00:00:00Z',
+  },
+  {
+    id: 'ven-4', tenant_id: 'tenant-1', name: 'Parts Express Pro',
+    contact_name: 'Chris Nguyen', email: 'orders@partsexpresspro.com', phone: '(415) 555-7700',
+    address: { street: '2200 Industrial Blvd', city: 'Hayward', state: 'CA', zip: '94545' },
+    account_number: 'PEP-1140', payment_terms: 'cod', notes: 'Local supplier. Next-day delivery in Bay Area.',
+    created_at: '2023-03-01T00:00:00Z',
+  },
+]
+
+// ── PARTS ─────────────────────────────────────────────────────────────────
+export const MOCK_PARTS: Part[] = [
+  {
+    id: 'part-1', tenant_id: 'tenant-1', part_number: 'TNP-50M', description: 'Konica Minolta Toner — Magenta (bizhub C360i)',
+    category: 'toner', make_compatibility: ['Konica Minolta'], unit_cost: 42.00, unit_price: 89.00,
+    quantity_on_hand: 8, reorder_point: 3, reorder_quantity: 6, vendor_id: 'ven-1', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-2', tenant_id: 'tenant-1', part_number: 'TNP-50C', description: 'Konica Minolta Toner — Cyan (bizhub C360i)',
+    category: 'toner', make_compatibility: ['Konica Minolta'], unit_cost: 42.00, unit_price: 89.00,
+    quantity_on_hand: 5, reorder_point: 3, reorder_quantity: 6, vendor_id: 'ven-1', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-3', tenant_id: 'tenant-1', part_number: 'TNP-50Y', description: 'Konica Minolta Toner — Yellow (bizhub C360i)',
+    category: 'toner', make_compatibility: ['Konica Minolta'], unit_cost: 42.00, unit_price: 89.00,
+    quantity_on_hand: 2, reorder_point: 3, reorder_quantity: 6, vendor_id: 'ven-1', notes: 'LOW STOCK',
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-4', tenant_id: 'tenant-1', part_number: 'TNP-50K', description: 'Konica Minolta Toner — Black (bizhub C360i)',
+    category: 'toner', make_compatibility: ['Konica Minolta'], unit_cost: 38.00, unit_price: 79.00,
+    quantity_on_hand: 12, reorder_point: 4, reorder_quantity: 8, vendor_id: 'ven-1', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-5', tenant_id: 'tenant-1', part_number: 'DR-512', description: 'Konica Minolta Drum Unit — C/M/Y',
+    category: 'drum', make_compatibility: ['Konica Minolta'], unit_cost: 95.00, unit_price: 185.00,
+    quantity_on_hand: 3, reorder_point: 2, reorder_quantity: 4, vendor_id: 'ven-1', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-6', tenant_id: 'tenant-1', part_number: 'FK-512', description: 'Konica Minolta Fuser Unit (bizhub C360i)',
+    category: 'fuser', make_compatibility: ['Konica Minolta'], unit_cost: 145.00, unit_price: 295.00,
+    quantity_on_hand: 1, reorder_point: 1, reorder_quantity: 2, vendor_id: 'ven-1', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[0],
+  },
+  {
+    id: 'part-7', tenant_id: 'tenant-1', part_number: 'TK-8337M', description: 'Kyocera Toner — Magenta (ECOSYS M8130)',
+    category: 'toner', make_compatibility: ['Kyocera'], unit_cost: 38.00, unit_price: 79.00,
+    quantity_on_hand: 6, reorder_point: 2, reorder_quantity: 4, vendor_id: 'ven-2', notes: null,
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[1],
+  },
+  {
+    id: 'part-8', tenant_id: 'tenant-1', part_number: 'MK-8335A', description: 'Kyocera Maintenance Kit (ECOSYS M8130)',
+    category: 'maintenance_kit', make_compatibility: ['Kyocera'], unit_cost: 210.00, unit_price: 399.00,
+    quantity_on_hand: 2, reorder_point: 1, reorder_quantity: 2, vendor_id: 'ven-2', notes: '200k page yield',
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[1],
+  },
+  {
+    id: 'part-9', tenant_id: 'tenant-1', part_number: 'IMC3000-TM', description: 'Ricoh Toner — Magenta (IM C3000)',
+    category: 'toner', make_compatibility: ['Ricoh'], unit_cost: 45.00, unit_price: 92.00,
+    quantity_on_hand: 0, reorder_point: 2, reorder_quantity: 4, vendor_id: 'ven-3', notes: 'OUT OF STOCK',
+    created_at: '2024-01-01T00:00:00Z', vendor: MOCK_VENDORS[2],
+  },
+  {
+    id: 'part-10', tenant_id: 'tenant-1', part_number: 'FEED-ROLL-UNI', description: 'Universal Feed Roller Kit',
+    category: 'feed_roller', make_compatibility: ['Konica Minolta', 'Kyocera', 'Ricoh', 'Sharp'],
+    unit_cost: 18.00, unit_price: 45.00, quantity_on_hand: 15, reorder_point: 5, reorder_quantity: 10,
+    vendor_id: 'ven-4', notes: 'Universal fit for most A3 MFPs', created_at: '2024-01-01T00:00:00Z',
+    vendor: MOCK_VENDORS[3],
+  },
+]
+
+// ── PART USAGE ────────────────────────────────────────────────────────────
+export const MOCK_PART_USAGE: PartUsage[] = [
+  {
+    id: 'pu-1', tenant_id: 'tenant-1', service_call_id: 'sc-1', part_id: 'part-6',
+    quantity: 1, unit_cost: 145.00, unit_price: 295.00, total: 295.00,
+    notes: 'Fuser replaced at 180k pages', created_at: '2026-05-16T14:00:00Z',
+    part: MOCK_PARTS[5],
+  },
+  {
+    id: 'pu-2', tenant_id: 'tenant-1', service_call_id: 'sc-3', part_id: 'part-10',
+    quantity: 2, unit_cost: 18.00, unit_price: 45.00, total: 90.00,
+    notes: null, created_at: '2026-05-20T11:00:00Z',
+    part: MOCK_PARTS[9],
+  },
+]
+
+// ── PURCHASE ORDERS ───────────────────────────────────────────────────────
+export const MOCK_PURCHASE_ORDERS: PurchaseOrder[] = [
+  {
+    id: 'po-1', tenant_id: 'tenant-1', vendor_id: 'ven-1', po_number: 'PO-2026-0041',
+    status: 'received', order_date: '2026-05-01', expected_date: '2026-05-08', received_date: '2026-05-07',
+    subtotal: 504.00, total: 504.00, notes: null, created_at: '2026-05-01T00:00:00Z',
+    vendor: MOCK_VENDORS[0],
+    line_items: [
+      { id: 'pli-1', po_id: 'po-1', part_id: 'part-1', description: 'TNP-50M Magenta Toner x6', quantity_ordered: 6, quantity_received: 6, unit_cost: 42.00, total: 252.00, part: MOCK_PARTS[0] },
+      { id: 'pli-2', po_id: 'po-1', part_id: 'part-2', description: 'TNP-50C Cyan Toner x6', quantity_ordered: 6, quantity_received: 6, unit_cost: 42.00, total: 252.00, part: MOCK_PARTS[1] },
+    ],
+  },
+  {
+    id: 'po-2', tenant_id: 'tenant-1', vendor_id: 'ven-1', po_number: 'PO-2026-0042',
+    status: 'sent', order_date: '2026-05-28', expected_date: '2026-06-04', received_date: null,
+    subtotal: 628.00, total: 628.00, notes: 'Urgent — low stock on yellow toner', created_at: '2026-05-28T00:00:00Z',
+    vendor: MOCK_VENDORS[0],
+    line_items: [
+      { id: 'pli-3', po_id: 'po-2', part_id: 'part-3', description: 'TNP-50Y Yellow Toner x6', quantity_ordered: 6, quantity_received: 0, unit_cost: 42.00, total: 252.00, part: MOCK_PARTS[2] },
+      { id: 'pli-4', po_id: 'po-2', part_id: 'part-5', description: 'DR-512 Drum Unit x4', quantity_ordered: 4, quantity_received: 0, unit_cost: 95.00, total: 380.00, part: MOCK_PARTS[4] },
+    ],
+  },
+  {
+    id: 'po-3', tenant_id: 'tenant-1', vendor_id: 'ven-3', po_number: 'PO-2026-0043',
+    status: 'draft', order_date: '2026-06-01', expected_date: null, received_date: null,
+    subtotal: 180.00, total: 180.00, notes: null, created_at: '2026-06-01T00:00:00Z',
+    vendor: MOCK_VENDORS[2],
+    line_items: [
+      { id: 'pli-5', po_id: 'po-3', part_id: 'part-9', description: 'IMC3000-TM Ricoh Magenta x4', quantity_ordered: 4, quantity_received: 0, unit_cost: 45.00, total: 180.00, part: MOCK_PARTS[8] },
+    ],
+  },
+]
+
+// ── CREDIT MEMOS ─────────────────────────────────────────────────────────
+export const MOCK_CREDIT_MEMOS: CreditMemo[] = [
+  {
+    id: 'cm-1', tenant_id: 'tenant-1', customer_id: 'cust-2', invoice_id: 'inv-2',
+    credit_number: 'CM-2026-001', amount: 45.00, reason: 'Service call response time exceeded SLA',
+    applied_at: null, created_at: '2026-05-20T00:00:00Z',
+    customer: MOCK_CUSTOMERS[1],
+  },
+]
 
 export const getEquipmentWithReadings = () => {
   return MOCK_EQUIPMENT.map(eq => {
