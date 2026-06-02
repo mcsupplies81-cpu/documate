@@ -27,6 +27,20 @@ function getStatusColor(status: string) {
   }
 }
 
+const STATUS_DOT: Record<string, { color: string; label: string }> = {
+  open: { color: '#dc2626', label: 'Open' },
+  in_progress: { color: '#d97706', label: 'In Progress' },
+  completed: { color: '#16a34a', label: 'Completed' },
+  closed: { color: '#9ca3af', label: 'Closed' },
+}
+
+const INV_STATUS: Record<string, { color: string; label: string }> = {
+  paid: { color: '#16a34a', label: 'Paid' },
+  sent: { color: '#5c5fef', label: 'Sent' },
+  overdue: { color: '#dc2626', label: 'Overdue' },
+  draft: { color: '#9ca3af', label: 'Draft' },
+}
+
 function getCallAge(openedAt: string): { label: string; color: string } {
   const hours = (Date.now() - new Date(openedAt).getTime()) / 3600000
   if (hours < 4) return { label: `${Math.round(hours)}h`, color: 'text-[#16a34a]' }
@@ -47,6 +61,7 @@ export default function DashboardPage() {
 
   const mrrFormatted = formatCurrency(m.monthly_recurring_revenue)
   const outstandingFormatted = formatCurrency(m.invoices_outstanding_amount)
+  const overdueTotal = MOCK_INVOICES.filter(inv => inv.status === 'overdue').reduce((sum, inv) => sum + inv.total, 0)
   const meterPct = Math.round((m.meters_collected / m.meters_due) * 100)
 
   return (
@@ -67,13 +82,14 @@ export default function DashboardPage() {
       <AlertsPanel />
 
       {/* KPI Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5">
         <StatCard
           label="Monthly Revenue"
           value={mrrFormatted}
           sub={`${m.active_customers} customers · ${m.active_contracts} contracts`}
           color="info"
           icon={TrendingUp}
+          trend={{ direction: 'up', label: '12.4% vs May 2026', color: '#16a34a' }}
         />
         <StatCard
           label="Open Service Calls"
@@ -81,6 +97,7 @@ export default function DashboardPage() {
           sub={`${m.active_equipment} active machines`}
           color={m.open_service_calls > 3 ? 'warning' : 'default'}
           icon={Wrench}
+          trend={{ direction: 'neutral', label: '2 urgent', color: '#dc2626' }}
         />
         <StatCard
           label="Meters Collected"
@@ -88,6 +105,7 @@ export default function DashboardPage() {
           sub={`${meterPct}% this cycle`}
           color={meterPct === 100 ? 'success' : meterPct > 70 ? 'warning' : 'danger'}
           icon={Gauge}
+          trend={{ direction: 'down', label: '3 days remaining', color: '#6b7280' }}
         />
         <StatCard
           label="Outstanding AR"
@@ -95,30 +113,46 @@ export default function DashboardPage() {
           sub={`${m.invoices_outstanding_count} invoices · ${m.contracts_expiring_30} expiring soon`}
           color={m.invoices_outstanding_amount > 500 ? 'warning' : 'default'}
           icon={CreditCard}
+          trend={{ direction: 'down', label: `${formatCurrency(overdueTotal)} overdue`, color: '#dc2626' }}
+        />
+        <StatCard
+          label="Active Contracts"
+          value={m.active_contracts}
+          sub={`Across ${m.active_customers} customers`}
+          color="info"
+          icon={FileText}
+          trend={{ direction: 'up', label: `${m.contracts_expiring_30} expiring this month`, color: '#d97706' }}
         />
       </div>
 
       {/* Meter progress bar */}
-      {meterPct < 100 && (
-        <div className="bg-white border border-[#fde68a] rounded-xl p-3 mb-5 flex items-center gap-3 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <Gauge className="w-4 h-4 text-[#d97706] flex-shrink-0" />
-          <div className="flex-1">
-            <div className="flex items-center justify-between text-xs mb-1.5">
-              <span className="text-[#92400e] font-medium">Meter Collection in Progress</span>
-              <span className="text-[#6b7280] tabular-nums">{m.meters_collected}/{m.meters_due}</span>
+      <div className="bg-white border border-[#ebebeb] rounded-xl p-5 mb-5 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1">
+              Meter Collection Progress
             </div>
-            <div className="h-1.5 bg-[#f3f4f6] rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#d97706] rounded-full transition-all duration-500"
-                style={{ width: `${meterPct}%` }}
-              />
+            <div className="text-2xl font-semibold text-[#111827]">
+              <span className="tabular-nums">{m.meters_collected}</span>
+              <span className="text-[#9ca3af] font-normal"> of </span>
+              <span className="tabular-nums">{m.meters_due}</span>
+              <span className="text-base font-normal text-[#6b7280] ml-1.5">meters collected</span>
             </div>
           </div>
-          <Link href="/meters" className="text-xs text-[#5c5fef] hover:underline flex-shrink-0 font-medium">
-            Enter readings →
-          </Link>
+          <div className="flex items-center gap-4">
+            <span className="text-2xl font-semibold tabular-nums text-[#111827]">{meterPct}%</span>
+            <Link href="/meters">
+              <Button variant="outline" size="sm">Enter Readings →</Button>
+            </Link>
+          </div>
         </div>
-      )}
+        <div className="h-2 bg-[#f3f4f6] rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[#5c5fef] rounded-full transition-all duration-700"
+            style={{ width: `${meterPct}%` }}
+          />
+        </div>
+      </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Open Service Calls */}
@@ -145,7 +179,16 @@ export default function DashboardPage() {
                     <div className="text-xs text-[#6b7280] truncate">{call.problem_description?.slice(0, 55)}…</div>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
-                    <Badge variant={getStatusColor(call.status) as 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'default'}>{call.status.replace('_', ' ')}</Badge>
+                    <div
+                      className="flex items-center gap-1.5 text-xs font-medium flex-shrink-0"
+                      style={{ color: STATUS_DOT[call.status]?.color }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: STATUS_DOT[call.status]?.color }}
+                      />
+                      {STATUS_DOT[call.status]?.label}
+                    </div>
                     <span className={`text-xs font-mono ${age.color}`}>{age.label}</span>
                   </div>
                 </Link>
@@ -157,6 +200,11 @@ export default function DashboardPage() {
                 All caught up — no open calls
               </div>
             )}
+          </div>
+          <div className="px-4 py-2.5 border-t border-[#f0f0f0]">
+            <Link href="/service" className="text-xs text-[#6b7280] hover:text-[#5c5fef]">
+              {openCalls.length} open calls →
+            </Link>
           </div>
         </div>
 
@@ -195,6 +243,11 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
+          <div className="px-4 py-2.5 border-t border-[#f0f0f0]">
+            <Link href="/contracts?filter=expiring" className="text-xs text-[#6b7280] hover:text-[#5c5fef]">
+              {expiringContracts.length} contracts expiring →
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -231,14 +284,26 @@ export default function DashboardPage() {
                   </span>
                 </Td>
                 <Td>
-                  <Badge variant={getStatusColor(inv.status) as 'success' | 'warning' | 'danger' | 'info' | 'muted' | 'default'}>
-                    {inv.status}
-                  </Badge>
+                  <div
+                    className="flex items-center gap-1.5 text-xs font-medium"
+                    style={{ color: INV_STATUS[inv.status]?.color }}
+                  >
+                    <span
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ backgroundColor: INV_STATUS[inv.status]?.color }}
+                    />
+                    {INV_STATUS[inv.status]?.label}
+                  </div>
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
+        <div className="px-5 py-3 border-t border-[#f0f0f0] text-center">
+          <Link href="/invoices" className="text-xs text-[#5c5fef] hover:underline font-medium">
+            View all invoices →
+          </Link>
+        </div>
       </div>
     </div>
   )

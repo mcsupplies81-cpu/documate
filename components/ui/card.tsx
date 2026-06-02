@@ -1,4 +1,5 @@
 import { type ReactNode, type ElementType } from 'react'
+import { TrendingDown, TrendingUp } from 'lucide-react'
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
@@ -24,7 +25,7 @@ export function StatCard({ label, value, sub, trend, color = 'default', icon: Ic
   label: string
   value: string | number
   sub?: string
-  trend?: { value: string; positive?: boolean }
+  trend?: { label: string; direction: 'up' | 'down' | 'neutral'; color?: string }
   color?: 'default' | 'success' | 'warning' | 'danger' | 'info'
   icon?: ElementType
 }) {
@@ -55,8 +56,16 @@ export function StatCard({ label, value, sub, trend, color = 'default', icon: Ic
       <div className={`text-[28px] font-semibold tracking-tight tabular-nums leading-none ${valueColors[color]}`}>{value}</div>
       {sub && <div className="text-xs text-[#9ca3af] mt-2">{sub}</div>}
       {trend && (
-        <div className={`text-xs mt-2 font-medium ${trend.positive ? 'text-[#16a34a]' : 'text-[#dc2626]'}`}>
-          {trend.positive ? '↑' : '↓'} {trend.value}
+        <div className="flex items-center gap-1 mt-2" style={{ color: trend.color }}>
+          {trend.direction === 'up' && <TrendingUp className="w-3 h-3" />}
+          {trend.direction === 'down' && <TrendingDown className="w-3 h-3" />}
+          {trend.direction === 'neutral' && (
+            <span
+              className="w-2 h-2 rounded-full flex-shrink-0 inline-block"
+              style={{ backgroundColor: trend.color }}
+            />
+          )}
+          <span className="text-xs">{trend.label}</span>
         </div>
       )}
     </div>
