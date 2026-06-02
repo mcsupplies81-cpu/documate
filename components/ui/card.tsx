@@ -3,7 +3,7 @@ import { TrendingDown, TrendingUp } from 'lucide-react'
 
 export function Card({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] ${className}`}>
+    <div className={`bg-white border border-[#e7e5e1] rounded-2xl shadow-[0_1px_2px_rgba(17,17,17,0.03)] ${className}`}>
       {children}
     </div>
   )
@@ -11,14 +11,14 @@ export function Card({ children, className = '' }: { children: ReactNode; classN
 
 export function CardHeader({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <div className={`px-4 py-3 border-b border-[#e5e7eb] flex items-center justify-between ${className}`}>
+    <div className={`px-5 py-4 border-b border-[#eeecea] flex items-center justify-between ${className}`}>
       {children}
     </div>
   )
 }
 
 export function CardBody({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <div className={`px-4 py-3 ${className}`}>{children}</div>
+  return <div className={`px-5 py-4 ${className}`}>{children}</div>
 }
 
 export function StatCard({ label, value, sub, trend, color = 'default', icon: Icon }: {
@@ -30,46 +30,46 @@ export function StatCard({ label, value, sub, trend, color = 'default', icon: Ic
   icon?: ElementType
 }) {
   const iconBgs = {
-    default: 'bg-[#f3f4f6] text-[#6b7280]',
-    success: 'bg-[#dcfce7] text-[#16a34a]',
-    warning: 'bg-[#ffedd5] text-[#d97706]',
-    danger:  'bg-[#fee2e2] text-[#dc2626]',
-    info:    'bg-[#dbeafe] text-[#2563eb]',
+    default: 'bg-[#f7f7f4] text-[#737373]',
+    success: 'bg-[#eef7f1] text-[#15803d]',
+    warning: 'bg-[#fff7ed] text-[#b45309]',
+    danger:  'bg-[#fff1f2] text-[#be123c]',
+    info:    'bg-[#eff6ff] text-[#2563eb]',
   }
   const trendBgs = {
-    up: 'bg-[#dcfce7]',
-    down: 'bg-[#f3f4f6]',
-    neutral: 'bg-[#fee2e2]',
+    up: 'bg-[#eef7f1] text-[#15803d]',
+    down: 'bg-[#f7f7f4] text-[#737373]',
+    neutral: 'bg-[#fff1f2] text-[#be123c]',
   }
   return (
-    <div className="bg-white border border-[#ebebeb] rounded-xl p-4 min-h-[128px] shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-      <div className="flex items-start gap-3">
+    <div className="bg-white border border-[#e7e5e1] rounded-2xl p-4 min-h-[116px] shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
+          <div className="text-[11px] text-[#737373] font-medium mb-2 truncate">{label}</div>
+          <div className="text-[22px] font-semibold tracking-[-0.025em] tabular-nums leading-none text-[#171717]">{value}</div>
+          {sub && <div className="text-xs text-[#737373] mt-3 truncate">{sub}</div>}
+        </div>
         {Icon && (
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${iconBgs[color]}`}>
-            <Icon className="w-5 h-5" />
+          <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${iconBgs[color]}`}>
+            <Icon className="w-4 h-4" strokeWidth={1.8} />
           </div>
         )}
-        <div className="min-w-0 flex-1">
-          <div className="text-xs text-[#111827] font-semibold mb-2 truncate">{label}</div>
-          <div className="text-2xl font-semibold tracking-tight tabular-nums leading-none text-[#111827]">{value}</div>
-          {sub && <div className="text-xs text-[#6b7280] mt-3 truncate">{sub}</div>}
-          {trend && (
-            <div className="flex items-center gap-1.5 mt-4" style={{ color: trend.color }}>
-              <span className={`w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 ${trendBgs[trend.direction]}`}>
-                {trend.direction === 'up' && <TrendingUp className="w-3 h-3" />}
-                {trend.direction === 'down' && <TrendingDown className="w-3 h-3" />}
-                {trend.direction === 'neutral' && (
-                  <span
-                    className="w-1.5 h-1.5 rounded-full flex-shrink-0 inline-block"
-                    style={{ backgroundColor: trend.color }}
-                  />
-                )}
-              </span>
-              <span className="text-xs font-medium truncate">{trend.label}</span>
-            </div>
-          )}
-        </div>
       </div>
+      {trend && (
+        <div className="flex items-center gap-1.5 mt-4" style={{ color: trend.color }}>
+          <span className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${trendBgs[trend.direction]}`}>
+            {trend.direction === 'up' && <TrendingUp className="w-3 h-3" strokeWidth={1.8} />}
+            {trend.direction === 'down' && <TrendingDown className="w-3 h-3" strokeWidth={1.8} />}
+            {trend.direction === 'neutral' && (
+              <span
+                className="w-1.5 h-1.5 rounded-full flex-shrink-0 inline-block"
+                style={{ backgroundColor: trend.color }}
+              />
+            )}
+          </span>
+          <span className="text-[11px] font-medium truncate text-[#737373]">{trend.label}</span>
+        </div>
+      )}
     </div>
   )
 }

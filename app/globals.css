@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #f7f8fb;
+  --color-background: #f6f5f2;
   --color-surface: #ffffff;
-  --color-border: #e5e7eb;
-  --color-border-2: #d1d5db;
+  --color-border: #e7e5e1;
+  --color-border-2: #d6d3ce;
   --color-text-primary: #111827;
   --color-text-secondary: #6b7280;
   --color-text-muted: #9ca3af;
-  --color-accent: #5c5fef;
-  --color-accent-light: #f0f0ff;
+  --color-accent: #2563eb;
+  --color-accent-light: #eff6ff;
   --color-success: #16a34a;
   --color-warning: #d97706;
   --color-danger: #dc2626;
@@ -25,7 +25,7 @@
 }
 
 html {
-  background: #f7f8fb;
+  background: #f6f5f2;
   color: #111827;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,7 +33,7 @@ html {
 }
 
 body {
-  background: #f7f8fb;
+  background: #f6f5f2;
   color: #111827;
   min-height: 100vh;
 }
@@ -47,7 +47,7 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: #d6d3ce;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -56,7 +56,7 @@ body {
 
 /* Focus ring */
 *:focus-visible {
-  outline: 2px solid #5c5fef;
+  outline: 2px solid rgba(37, 99, 235, 0.28);
   outline-offset: 2px;
 }
 
@@ -68,7 +68,7 @@ table {
 
 /* Selection */
 ::selection {
-  background: #5c5fef33;
+  background: #2563eb22;
   color: #111827;
 }
 
@@ -76,15 +76,15 @@ table {
 input, textarea, select {
   background: #ffffff;
   color: #111827;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  border: 1px solid #e7e5e1;
+  border-radius: 10px;
   font-family: inherit;
 }
 
 input:focus, textarea:focus, select:focus {
-  outline: 2px solid #5c5fef;
+  outline: 2px solid rgba(37, 99, 235, 0.16);
   outline-offset: -1px;
-  border-color: transparent;
+  border-color: rgba(37, 99, 235, 0.45);
 }
 
 input::placeholder, textarea::placeholder {

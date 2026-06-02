@@ -37,7 +37,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
 
   const customer = MOCK_CUSTOMERS.find(c => c.id === id)
   if (!customer) return (
-    <div className="text-[#6b7280] py-20 text-center">Customer not found. <Link href="/customers" className="text-[#5c5fef]">Back to list</Link></div>
+    <div className="text-[#6b7280] py-20 text-center">Customer not found. <Link href="/customers" className="text-[#2563eb]">Back to list</Link></div>
   )
 
   const equipment = MOCK_EQUIPMENT.filter(e => e.customer_id === id)
@@ -105,7 +105,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
           { label: 'Open Calls', value: serviceCalls.filter(s => s.status === 'open' || s.status === 'in_progress').length, icon: Wrench, href: `/service?customer=${id}` },
           { label: 'Outstanding', value: formatCurrency(invoices.filter(i => i.status !== 'paid').reduce((s, i) => s + i.total, 0)), icon: FileText, href: `/invoices?customer=${id}` },
         ].map(tile => (
-          <Link key={tile.label} href={tile.href} className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:border-[#d1d5db] transition-all">
+          <Link key={tile.label} href={tile.href} className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)] hover:shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:border-[#d1d5db] transition-all">
             <div className="flex items-center gap-2 mb-2">
               <tile.icon className="w-3.5 h-3.5 text-[#9ca3af]" />
               <span className="text-xs text-[#6b7280] uppercase tracking-wide font-medium">{tile.label}</span>
@@ -117,8 +117,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Equipment */}
-        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
             <span className="text-sm font-semibold text-[#111827]">Equipment</span>
             <Link href={`/equipment/new?customer=${id}`}>
               <Button variant="ghost" size="sm"><Plus className="w-3 h-3" />Add</Button>
@@ -141,8 +141,8 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
         </div>
 
         {/* Contracts */}
-        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
             <span className="text-sm font-semibold text-[#111827]">Contracts</span>
             <Link href={`/contracts/new?customer=${id}`}>
               <Button variant="ghost" size="sm"><Plus className="w-3 h-3" />Add</Button>
@@ -164,10 +164,10 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Recent Service Calls */}
-      <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] mb-4">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)] mb-4">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
           <span className="text-sm font-semibold text-[#111827]">Recent Service Calls</span>
-          <Link href={`/service?customer=${id}`} className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
+          <Link href={`/service?customer=${id}`} className="text-xs text-[#2563eb] hover:underline font-medium">View all →</Link>
         </div>
         <Table>
           <Thead>
@@ -183,7 +183,7 @@ export default function CustomerDetailPage({ params }: { params: Promise<{ id: s
             {serviceCalls.length === 0 && <EmptyRow cols={5} message="No service history" />}
             {serviceCalls.map(call => (
               <Tr key={call.id} onClick={() => window.location.href = `/service/${call.id}`}>
-                <Td><span className="font-mono text-xs text-[#5c5fef] font-medium">{call.call_number}</span></Td>
+                <Td><span className="font-mono text-xs text-[#2563eb] font-medium">{call.call_number}</span></Td>
                 <Td><span className="text-xs">{call.equipment?.model || '—'}</span></Td>
                 <Td><span className="text-xs text-[#6b7280] truncate block max-w-[200px]">{call.problem_description}</span></Td>
                 <Td><span className="text-xs">{call.technician?.name || <span className="text-[#9ca3af]">Unassigned</span>}</span></Td>

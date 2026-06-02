@@ -114,7 +114,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
 
   if (status === 'done') {
     return (
-      <div className="min-h-screen bg-[#f7f8fb] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-[#f6f5f2] flex items-center justify-center p-6">
         <div className="max-w-md w-full text-center">
           <div className="w-16 h-16 rounded-full bg-[#f0fdf4] border border-[#bbf7d0] flex items-center justify-center mx-auto mb-5">
             <CheckCircle2 className="w-8 h-8 text-[#16a34a]" />
@@ -129,12 +129,12 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f8fb]">
+    <div className="min-h-screen bg-[#f6f5f2]">
       {/* Header */}
       <header className="bg-white border-b border-[#e5e7eb] px-6 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-[#5c5fef] rounded-md flex items-center justify-center shadow-sm">
+            <div className="w-7 h-7 bg-[#2563eb] rounded-md flex items-center justify-center shadow-sm">
               <Zap className="w-4 h-4 text-white" fill="currentColor" />
             </div>
             <div>
@@ -159,7 +159,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
         </div>
 
         {/* Instructions */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 mb-6 text-sm text-[#374151] shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 mb-6 text-sm text-[#374151] shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <p className="mb-2">Please enter the <strong className="text-[#111827]">current meter reading</strong> from the display panel on each machine. These are <strong className="text-[#111827]">cumulative totals</strong>, not monthly counts.</p>
           <p className="text-xs text-[#6b7280] flex items-start gap-1.5">
             <AlertTriangle className="w-3.5 h-3.5 text-[#d97706] flex-shrink-0 mt-0.5" />
@@ -177,7 +177,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
             const colorPages = e.has_color && !isNaN(colorNum) && colorNum >= e.last_color ? colorNum - e.last_color : null
 
             return (
-              <div key={e.id} className={`bg-white border rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${r.error ? 'border-[#fecaca]' : 'border-[#e5e7eb]'}`}>
+              <div key={e.id} className={`bg-white border rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)] ${r.error ? 'border-[#fecaca]' : 'border-[#e5e7eb]'}`}>
                 <div className="px-4 py-3 border-b border-[#f3f4f6] flex items-center gap-3 bg-[#f9fafb]">
                   <Printer className="w-4 h-4 text-[#9ca3af] flex-shrink-0" />
                   <div className="flex-1 min-w-0">
@@ -201,7 +201,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
                         onChange={ev => setReading(e.id, 'bw', ev.target.value)}
                         onKeyDown={ev => handleKeyDown(ev, e.id, 'bw', idx)}
                         placeholder={e.last_bw.toLocaleString()}
-                        className="w-full px-3 py-2.5 text-sm font-mono bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#d1d5db] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+                        className="w-full px-3 py-2.5 text-sm font-mono bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#d1d5db] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
                       />
                       {bwPages !== null && (
                         <div className="mt-1 text-xs text-[#16a34a] font-mono">+{bwPages.toLocaleString()} pages this period</div>
@@ -217,7 +217,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
                           onChange={ev => setReading(e.id, 'color', ev.target.value)}
                           onKeyDown={ev => handleKeyDown(ev, e.id, 'color', idx)}
                           placeholder={e.last_color.toLocaleString()}
-                          className="w-full px-3 py-2.5 text-sm font-mono bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#d1d5db] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+                          className="w-full px-3 py-2.5 text-sm font-mono bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#d1d5db] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
                         />
                         {colorPages !== null && (
                           <div className="mt-1 text-xs text-[#16a34a] font-mono">+{colorPages.toLocaleString()} pages this period</div>
@@ -245,7 +245,7 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
             onChange={e => setNotes(e.target.value)}
             placeholder="Any issues, machine offline, unusual usage, etc."
             rows={3}
-            className="w-full px-3 py-2.5 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent resize-none"
+            className="w-full px-3 py-2.5 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent resize-none"
           />
         </div>
 
@@ -255,8 +255,8 @@ export default function MeterSubmitPage({ params }: { params: { token: string } 
           disabled={status === 'submitting'}
           className={`w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg text-sm font-medium transition-all ${
             status === 'submitting'
-              ? 'bg-[#5c5fef88] text-white cursor-wait'
-              : 'bg-[#5c5fef] text-white hover:bg-[#4f52d9] active:scale-[0.99]'
+              ? 'bg-[#2563eb88] text-white cursor-wait'
+              : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8] active:scale-[0.99]'
           }`}
         >
           {status === 'submitting' ? (

@@ -29,7 +29,7 @@ export default function InvoiceDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center h-64 gap-3">
         <div className="text-[#6b7280] text-sm">Invoice not found</div>
-        <Link href="/invoices" className="text-xs text-[#5c5fef] hover:underline">Back to invoices</Link>
+        <Link href="/invoices" className="text-xs text-[#2563eb] hover:underline">Back to invoices</Link>
       </div>
     )
   }
@@ -97,12 +97,12 @@ export default function InvoiceDetailPage() {
       </div>
 
       {/* Invoice Document — visible on screen and print */}
-      <div className="bg-white print:bg-white border border-[#e5e7eb] print:border-0 rounded-xl overflow-hidden print:shadow-none max-w-3xl shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white print:bg-white border border-[#e5e7eb] print:border-0 rounded-xl overflow-hidden print:shadow-none max-w-3xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         {/* Invoice Header */}
         <div className="px-8 py-8 border-b border-[#e5e7eb]">
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-xl font-bold text-[#5c5fef] tracking-tight mb-1">{dealer.name}</div>
+              <div className="text-xl font-bold text-[#2563eb] tracking-tight mb-1">{dealer.name}</div>
               <div className="text-xs text-[#6b7280] space-y-0.5">
                 <div>service@pacificoffice.com</div>
                 <div>(415) 555-9000</div>
@@ -111,7 +111,7 @@ export default function InvoiceDetailPage() {
             </div>
             <div className="text-right">
               <div className="text-2xl font-mono font-bold text-[#111827]">INVOICE</div>
-              <div className="text-sm font-mono text-[#5c5fef] mt-1">{invoice.invoice_number}</div>
+              <div className="text-sm font-mono text-[#2563eb] mt-1">{invoice.invoice_number}</div>
               <div className="text-xs text-[#6b7280] mt-2">
                 <div>Issued: {invoice.created_at ? new Date(invoice.created_at).toLocaleDateString() : '—'}</div>
                 <div className={`font-medium ${invoice.status === 'overdue' ? 'text-[#dc2626]' : 'text-[#374151]'}`}>
@@ -203,7 +203,7 @@ export default function InvoiceDetailPage() {
             )}
             <div className="flex items-center gap-12 text-base font-semibold pt-2 border-t border-[#e5e7eb] mt-1 w-48">
               <span className="text-[#111827]">Total Due</span>
-              <span className="font-mono text-[#5c5fef] w-24 text-right text-lg">{formatCurrency(invoice.total)}</span>
+              <span className="font-mono text-[#2563eb] w-24 text-right text-lg">{formatCurrency(invoice.total)}</span>
             </div>
           </div>
         </div>

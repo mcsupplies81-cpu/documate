@@ -87,8 +87,8 @@ function buildAlerts(): Alert[] {
 }
 
 const SEVERITY_STYLES: Record<AlertSeverity, { icon: string; bg: string; border: string }> = {
-  critical: { icon: 'text-[#dc2626]', bg: 'bg-[#fff7f7]', border: 'border-[#fee2e2]' },
-  warning:  { icon: 'text-[#d97706]', bg: 'bg-[#fffaf0]', border: 'border-[#fed7aa]' },
+  critical: { icon: 'text-[#b91c1c]', bg: 'bg-[#fffafa]', border: 'border-[#f1d3d3]' },
+  warning:  { icon: 'text-[#b45309]', bg: 'bg-[#fffaf2]', border: 'border-[#f4dfb8]' },
   info:     { icon: 'text-[#2563eb]', bg: 'bg-[#f8fbff]', border: 'border-[#dbeafe]' },
 }
 
@@ -100,12 +100,12 @@ export function AlertsPanel() {
   if (alerts.length === 0) return null
 
   return (
-    <div id="alerts" className="bg-white border border-[#e5e7eb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden mb-4">
+    <div id="alerts" className="bg-white border border-[#e7e5e1] rounded-2xl shadow-[0_1px_2px_rgba(17,17,17,0.03)] overflow-hidden mb-5">
       <div className="px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Bell className="w-4 h-4 text-[#64748b]" />
-          <span className="text-sm font-semibold text-[#111827]">Alerts</span>
-          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-[#fee2e2] text-xs font-semibold text-[#dc2626]">
+          <span className="text-sm font-medium text-[#171717]">Alerts</span>
+          <span className="inline-flex items-center justify-center min-w-5 h-5 px-1.5 rounded-full bg-[#fff5f5] border border-[#f1d3d3] text-xs font-medium text-[#b91c1c]">
             {alerts.length}
           </span>
         </div>
@@ -121,8 +121,8 @@ export function AlertsPanel() {
               <div className="flex items-center gap-3">
                 <div className={`flex-shrink-0 ${styles.icon}`}>{alert.icon}</div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-xs font-semibold text-[#111827] truncate">{alert.title}</div>
-                  <div className="text-[11px] text-[#475569] truncate mt-1">{alert.description}</div>
+                  <div className="text-xs font-medium text-[#171717] truncate">{alert.title}</div>
+                  <div className="text-[11px] text-[#737373] truncate mt-1">{alert.description}</div>
                 </div>
               </div>
               <button

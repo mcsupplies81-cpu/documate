@@ -3,13 +3,13 @@ import { type ReactNode, type ElementType } from 'react'
 export function Table({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
     <div className="overflow-x-auto">
-      <table className={`w-full text-sm ${className}`}>{children}</table>
+      <table className={`w-full text-[13px] ${className}`}>{children}</table>
     </div>
   )
 }
 
 export function Thead({ children }: { children: ReactNode }) {
-  return <thead className="border-b border-[#f0f0f0]">{children}</thead>
+  return <thead className="border-b border-[#eeecea] bg-[#fbfaf8]">{children}</thead>
 }
 
 export function Th({ children, className = '', onClick, sortable }: {
@@ -22,8 +22,8 @@ export function Th({ children, className = '', onClick, sortable }: {
     <th
       onClick={onClick}
       className={`
-        px-5 py-3 text-left text-[11px] font-semibold text-[#9ca3af] uppercase tracking-wider
-        ${sortable ? 'cursor-pointer hover:text-[#6b7280] select-none' : ''}
+        px-4 py-2.5 text-left text-[11px] font-medium text-[#737373] tracking-wide
+        ${sortable ? 'cursor-pointer hover:text-[#171717] select-none' : ''}
         ${className}
       `}
     >
@@ -33,7 +33,7 @@ export function Th({ children, className = '', onClick, sortable }: {
 }
 
 export function Tbody({ children }: { children: ReactNode }) {
-  return <tbody className="divide-y divide-[#f7f7f7]">{children}</tbody>
+  return <tbody className="divide-y divide-[#eeecea] bg-white">{children}</tbody>
 }
 
 export function Tr({ children, onClick, className = '' }: {
@@ -45,8 +45,8 @@ export function Tr({ children, onClick, className = '' }: {
     <tr
       onClick={onClick}
       className={`
-        transition-colors duration-75
-        ${onClick ? 'cursor-pointer hover:bg-[#fafafa]' : 'hover:bg-[#fafafa]'}
+        transition-colors duration-100
+        ${onClick ? 'cursor-pointer hover:bg-[#fbfaf8]' : 'hover:bg-[#fbfaf8]'}
         ${className}
       `}
     >
@@ -57,7 +57,7 @@ export function Tr({ children, onClick, className = '' }: {
 
 export function Td({ children, className = '' }: { children: ReactNode; className?: string }) {
   return (
-    <td className={`px-5 py-3.5 text-[#374151] ${className}`}>{children}</td>
+    <td className={`px-4 py-3 text-[#374151] align-middle ${className}`}>{children}</td>
   )
 }
 
@@ -69,8 +69,8 @@ export function EmptyRow({ cols, message = 'No records found', icon: Icon }: {
   return (
     <tr>
       <td colSpan={cols} className="px-5 py-16 text-center">
-        {Icon && <Icon className="w-8 h-8 text-[#e5e7eb] mx-auto mb-3" />}
-        <p className="text-sm text-[#9ca3af]">{message}</p>
+        {Icon && <Icon className="w-8 h-8 text-[#d6d3ce] mx-auto mb-3" strokeWidth={1.5} />}
+        <p className="text-sm text-[#a3a3a3]">{message}</p>
       </td>
     </tr>
   )

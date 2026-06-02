@@ -31,7 +31,7 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
 
   if (!sc) return (
     <div className="text-[#6b7280] py-20 text-center">
-      Call not found. <Link href="/service" className="text-[#5c5fef]">Back to list</Link>
+      Call not found. <Link href="/service" className="text-[#2563eb]">Back to list</Link>
     </div>
   )
 
@@ -100,12 +100,12 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Call Info */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Call Details</h3>
 
           <div>
             <div className="text-xs text-[#9ca3af] mb-0.5">Customer</div>
-            <Link href={`/customers/${sc.customer_id}`} className="text-sm text-[#5c5fef] hover:underline font-medium">
+            <Link href={`/customers/${sc.customer_id}`} className="text-sm text-[#2563eb] hover:underline font-medium">
               {sc.customer?.name}
             </Link>
           </div>
@@ -113,7 +113,7 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
           {sc.equipment && (
             <div>
               <div className="text-xs text-[#9ca3af] mb-0.5">Equipment</div>
-              <Link href={`/equipment/${sc.equipment_id}`} className="text-sm text-[#5c5fef] hover:underline font-medium">
+              <Link href={`/equipment/${sc.equipment_id}`} className="text-sm text-[#2563eb] hover:underline font-medium">
                 {sc.equipment.make} {sc.equipment.model}
               </Link>
               <div className="text-xs text-[#6b7280] font-mono mt-0.5">S/N: {sc.equipment.serial_number}</div>
@@ -140,7 +140,7 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
         </div>
 
         {/* Update Panel */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Update Call</h3>
 
           <Select
@@ -181,7 +181,7 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {sc.resolution_notes && (
-        <div className="bg-white border border-[#bbf7d0] rounded-lg p-4 mb-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#bbf7d0] rounded-lg p-4 mb-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center gap-2 mb-2">
             <CheckCircle2 className="w-4 h-4 text-[#16a34a]" />
             <span className="text-sm font-semibold text-[#16a34a]">Resolution</span>
@@ -191,14 +191,14 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
       )}
 
       {/* Parts Used */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="px-4 py-3 border-b border-[#f3f4f6] flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Package className="w-4 h-4 text-[#9ca3af]" />
             <span className="text-sm font-semibold text-[#111827]">Parts Used</span>
             {partsTotal > 0 && <span className="text-xs font-semibold text-[#16a34a] ml-1">{formatCurrency(partsTotal)}</span>}
           </div>
-          <button className="text-xs text-[#5c5fef] hover:underline font-medium flex items-center gap-1">
+          <button className="text-xs text-[#2563eb] hover:underline font-medium flex items-center gap-1">
             <Plus className="w-3 h-3" />Add Part
           </button>
         </div>
@@ -217,7 +217,7 @@ export default function ServiceCallDetailPage({ params }: { params: Promise<{ id
               {partsUsed.map(u => (
                 <tr key={u.id} className="h-10 hover:bg-[#f9fafb] transition-colors">
                   <td className="px-4 py-2.5">
-                    <a href={`/parts/${u.part_id}`} className="font-mono text-xs text-[#5c5fef] hover:underline font-medium">
+                    <a href={`/parts/${u.part_id}`} className="font-mono text-xs text-[#2563eb] hover:underline font-medium">
                       {u.part?.part_number || u.part_id}
                     </a>
                   </td>

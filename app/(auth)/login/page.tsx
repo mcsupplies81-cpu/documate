@@ -38,11 +38,11 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f7f8fb] flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[#f6f5f2] flex items-center justify-center p-4">
       <div className="w-full max-w-sm">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-8 justify-center">
-          <div className="w-9 h-9 bg-[#5c5fef] rounded-lg flex items-center justify-center shadow-md">
+          <div className="w-9 h-9 bg-[#2563eb] rounded-lg flex items-center justify-center shadow-md">
             <Zap className="w-5 h-5 text-white" fill="currentColor" />
           </div>
           <div>
@@ -51,7 +51,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-xl p-6 shadow-[0_4px_24px_rgba(0,0,0,0.08)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-xl p-6 shadow-[0_18px_50px_rgba(17,17,17,0.08)]">
           <h1 className="text-base font-semibold text-[#111827] mb-0.5">Welcome back</h1>
           <p className="text-sm text-[#6b7280] mb-6">Sign in to your account</p>
 
@@ -74,7 +74,7 @@ export default function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   autoComplete="current-password"
-                  className="w-full px-3 h-9 pr-10 text-sm rounded-md bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+                  className="w-full px-3 h-9 pr-10 text-sm rounded-md bg-white border border-[#e5e7eb] text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
                 />
                 <button
                   type="button"
@@ -100,7 +100,7 @@ export default function LoginPage() {
         </div>
 
         {/* Demo credentials */}
-        <div className="mt-4 bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="mt-4 bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <p className="text-[11px] text-[#9ca3af] mb-2 uppercase tracking-wide font-medium">Demo accounts</p>
           <div className="space-y-0.5">
             {DEMO_USERS.map(u => (

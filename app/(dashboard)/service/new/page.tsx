@@ -38,7 +38,7 @@ function NewServiceForm() {
 
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
-          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <div className="grid grid-cols-2 gap-4">
               <Select
                 label="Customer"
@@ -85,7 +85,7 @@ function NewServiceForm() {
             </div>
 
             <div className="flex items-center gap-2">
-              <input type="checkbox" id="billable" className="w-4 h-4 rounded border-[#d1d5db] text-[#5c5fef] focus:ring-[#5c5fef]" />
+              <input type="checkbox" id="billable" className="w-4 h-4 rounded border-[#d1d5db] text-[#2563eb] focus:ring-[#2563eb]" />
               <label htmlFor="billable" className="text-sm text-[#374151]">
                 Billable (not covered by contract)
               </label>

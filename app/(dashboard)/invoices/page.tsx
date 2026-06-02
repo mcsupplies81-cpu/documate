@@ -57,17 +57,17 @@ export default function InvoicesPage() {
 
       {/* AR summary */}
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Outstanding AR</div>
           <div className="text-2xl font-semibold text-[#d97706] tabular-nums">{formatCurrency(totals.outstanding)}</div>
           <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'sent' || i.status === 'overdue').length} invoices</div>
         </div>
-        <div className="bg-white border border-[#fecaca] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#fecaca] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Overdue</div>
           <div className="text-2xl font-semibold text-[#dc2626] tabular-nums">{formatCurrency(totals.overdue)}</div>
           <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'overdue').length} invoices</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Collected (This Month)</div>
           <div className="text-2xl font-semibold text-[#16a34a] tabular-nums">{formatCurrency(totals.paid_this_month)}</div>
           <div className="text-xs text-[#9ca3af] mt-1">{MOCK_INVOICES.filter(i => i.status === 'paid').length} invoices</div>
@@ -82,7 +82,7 @@ export default function InvoicesPage() {
             placeholder="Search invoices..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
@@ -103,7 +103,7 @@ export default function InvoicesPage() {
         />
       </div>
 
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <Table>
           <Thead>
             <tr>
@@ -121,11 +121,11 @@ export default function InvoicesPage() {
             {filtered.length === 0 && <EmptyRow cols={8} message="No invoices found" icon={Receipt} />}
             {filtered.map(inv => (
               <Tr key={inv.id}>
-                <Td><Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline font-medium">{inv.invoice_number}</Link></Td>
+                <Td><Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#2563eb] hover:underline font-medium">{inv.invoice_number}</Link></Td>
                 <Td><span className="text-[#111827] font-medium">{inv.customer?.name}</span></Td>
                 <Td>
                   {inv.contract_id
-                    ? <Link href={`/contracts/${inv.contract_id}`} className="text-xs text-[#6b7280] hover:text-[#5c5fef] font-mono">
+                    ? <Link href={`/contracts/${inv.contract_id}`} className="text-xs text-[#6b7280] hover:text-[#2563eb] font-mono">
                         {inv.contract?.contract_number || inv.contract_id.slice(-8)}
                       </Link>
                     : <span className="text-xs text-[#9ca3af]">—</span>

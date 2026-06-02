@@ -46,16 +46,16 @@ export default function PurchaseOrdersPage() {
       />
 
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Open POs</div>
           <div className="text-2xl font-semibold text-[#d97706] tabular-nums">{openPOs.length}</div>
           <div className="text-xs text-[#9ca3af] mt-1">Sent / partial</div>
         </div>
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Pending Total</div>
-          <div className="text-2xl font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(pendingTotal)}</div>
+          <div className="text-2xl font-semibold text-[#2563eb] tabular-nums">{formatCurrency(pendingTotal)}</div>
         </div>
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">Drafts</div>
           <div className="text-2xl font-semibold text-[#374151] tabular-nums">{draftCount}</div>
         </div>
@@ -69,7 +69,7 @@ export default function PurchaseOrdersPage() {
             placeholder="Search POs..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
@@ -90,7 +90,7 @@ export default function PurchaseOrdersPage() {
         />
       </div>
 
-      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <Table>
           <Thead>
             <tr>
@@ -108,7 +108,7 @@ export default function PurchaseOrdersPage() {
             {filtered.length === 0 && <EmptyRow cols={8} message="No purchase orders found" icon={ShoppingBag} />}
             {filtered.map(po => (
               <Tr key={po.id}>
-                <Td><Link href={`/purchase-orders/${po.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline">{po.po_number}</Link></Td>
+                <Td><Link href={`/purchase-orders/${po.id}`} className="font-mono text-xs text-[#2563eb] hover:underline">{po.po_number}</Link></Td>
                 <Td><span className="text-[#111827] text-sm font-medium">{po.vendor?.name}</span></Td>
                 <Td><span className="font-mono text-xs text-[#6b7280]">{po.order_date}</span></Td>
                 <Td>
@@ -119,7 +119,7 @@ export default function PurchaseOrdersPage() {
                 <Td><span className="font-mono text-sm text-[#374151]">{po.line_items?.length || 0}</span></Td>
                 <Td><span className="font-mono font-medium text-[#374151]">{formatCurrency(po.total)}</span></Td>
                 <Td><Badge variant={STATUS_BADGE[po.status]}>{po.status}</Badge></Td>
-                <Td><Link href={`/purchase-orders/${po.id}`} className="text-xs text-[#5c5fef] hover:underline font-medium">View</Link></Td>
+                <Td><Link href={`/purchase-orders/${po.id}`} className="text-xs text-[#2563eb] hover:underline font-medium">View</Link></Td>
               </Tr>
             ))}
           </Tbody>

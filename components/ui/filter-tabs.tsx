@@ -16,22 +16,22 @@ export function FilterTabs<T extends string>({
   onChange: (key: T) => void
 }) {
   return (
-    <div className="flex items-center gap-0.5 p-0.5 bg-[#f3f4f6] rounded-lg">
+    <div className="flex items-center gap-0.5 p-0.5 bg-[#efede9] rounded-[10px] border border-[#e7e5e1]">
       {options.map(opt => (
         <button
           key={opt.key}
           onClick={() => onChange(opt.key)}
           className={`
-            flex items-center gap-1.5 px-3 h-7 text-xs rounded-md transition-colors whitespace-nowrap
+            flex items-center gap-1.5 px-3 h-7 text-xs rounded-lg transition-colors whitespace-nowrap
             ${value === opt.key
-              ? 'bg-white text-[#111827] font-semibold shadow-sm'
-              : 'text-[#6b7280] hover:text-[#374151]'
+              ? 'bg-white text-[#171717] font-medium shadow-[0_1px_2px_rgba(17,17,17,0.04)]'
+              : 'text-[#737373] hover:text-[#171717]'
             }
           `}
         >
           <span>{opt.label}</span>
           {opt.count !== undefined && (
-            <span className={`tabular-nums font-normal ${value === opt.key ? 'text-[#9ca3af]' : 'text-[#c4c9d4]'}`}>
+            <span className={`tabular-nums font-normal ${value === opt.key ? 'text-[#a3a3a3]' : 'text-[#a3a3a3]'}`}>
               {opt.count}
             </span>
           )}

@@ -32,7 +32,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
   const contract = getContractWithEquipment(id)
   if (!contract) return (
     <div className="text-[#6b7280] py-20 text-center">
-      Contract not found. <Link href="/contracts" className="text-[#5c5fef]">Back to list</Link>
+      Contract not found. <Link href="/contracts" className="text-[#2563eb]">Back to list</Link>
     </div>
   )
 
@@ -78,7 +78,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
         }
       >
         <div className="flex items-center gap-3 mt-1">
-          <Link href={`/customers/${contract.customer_id}`} className="text-sm text-[#5c5fef] hover:underline font-medium">{contract.customer?.name}</Link>
+          <Link href={`/customers/${contract.customer_id}`} className="text-sm text-[#2563eb] hover:underline font-medium">{contract.customer?.name}</Link>
           <span className="text-[#d1d5db]">·</span>
           <Badge variant="muted">{contract.contract_type.replace('_', ' ')}</Badge>
           <Badge variant={
@@ -102,7 +102,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
           { label: 'End Date', value: contract.end_date || 'Open-ended' },
           { label: 'Auto-Renew', value: contract.auto_renew ? 'Yes' : 'No', color: contract.auto_renew ? 'text-[#16a34a]' : 'text-[#9ca3af]' },
         ].map(tile => (
-          <div key={tile.label} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div key={tile.label} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">{tile.label}</div>
             <div className={`text-lg font-semibold tabular-nums ${(tile as { color?: string }).color || 'text-[#111827]'}`}>{tile.value}</div>
             {(tile as { sub?: string }).sub && <div className="text-xs text-[#9ca3af]">{(tile as { sub?: string }).sub}</div>}
@@ -111,7 +111,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Equipment on contract */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-4">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_2px_rgba(17,17,17,0.03)] mb-4">
         <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
           <span className="text-sm font-semibold text-[#111827]">Equipment &amp; Meter Groups</span>
         </div>
@@ -135,7 +135,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
               <Tr key={ce.id}>
                 <Td>
                   {ce.equipment
-                    ? <Link href={`/equipment/${ce.equipment_id}`} className="text-[#5c5fef] hover:underline text-sm font-medium">{ce.equipment.make} {ce.equipment.model}</Link>
+                    ? <Link href={`/equipment/${ce.equipment_id}`} className="text-[#2563eb] hover:underline text-sm font-medium">{ce.equipment.make} {ce.equipment.model}</Link>
                     : '—'
                   }
                 </Td>
@@ -154,10 +154,10 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
       </div>
 
       {/* Current period billing preview */}
-      <div className="bg-white border border-[#5c5fef22] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)] mb-4">
+      <div className="bg-white border border-[#2563eb22] rounded-lg shadow-[0_1px_2px_rgba(17,17,17,0.03)] mb-4">
         <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
           <div>
-            <span className="text-sm font-semibold text-[#5c5fef]">Current Period Preview</span>
+            <span className="text-sm font-semibold text-[#2563eb]">Current Period Preview</span>
             <span className="text-xs text-[#9ca3af] ml-3">{period.start} – {period.end}</span>
           </div>
           <span className="text-lg font-semibold text-[#111827] tabular-nums">{formatCurrency(preview.total)}</span>
@@ -182,16 +182,16 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
           ))}
           <div className="flex items-center justify-between text-sm border-t border-[#f3f4f6] pt-2">
             <span className="text-[#111827] font-medium">Estimated Total</span>
-            <span className="font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(preview.total)}</span>
+            <span className="font-semibold text-[#2563eb] tabular-nums">{formatCurrency(preview.total)}</span>
           </div>
         </div>
       </div>
 
       {/* Invoice history */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
           <span className="text-sm font-semibold text-[#111827]">Invoice History</span>
-          <Link href="/invoices/run" className="text-xs text-[#5c5fef] hover:underline font-medium">Run billing →</Link>
+          <Link href="/invoices/run" className="text-xs text-[#2563eb] hover:underline font-medium">Run billing →</Link>
         </div>
         <Table>
           <Thead>
@@ -207,7 +207,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
             {invoices.length === 0 && <EmptyRow cols={5} message="No invoices yet" />}
             {invoices.map(inv => (
               <Tr key={inv.id}>
-                <Td><span className="font-mono text-xs text-[#5c5fef] font-medium">{inv.invoice_number}</span></Td>
+                <Td><span className="font-mono text-xs text-[#2563eb] font-medium">{inv.invoice_number}</span></Td>
                 <Td><span className="text-xs text-[#6b7280]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
                 <Td><span className="font-semibold tabular-nums">{formatCurrency(inv.total)}</span></Td>
                 <Td><span className="text-xs text-[#6b7280] tabular-nums">{inv.due_date || '—'}</span></Td>
@@ -251,7 +251,7 @@ export default function ContractDetailPage({ params }: { params: Promise<{ id: s
               <select
                 value={renewYears}
                 onChange={e => setRenewYears(e.target.value)}
-                className="w-full px-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+                className="w-full px-3 h-9 text-sm bg-white border border-[#e5e7eb] rounded-md text-[#111827] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
               >
                 <option value="1">1 Year</option>
                 <option value="2">2 Years</option>

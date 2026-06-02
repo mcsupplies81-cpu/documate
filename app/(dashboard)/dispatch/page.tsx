@@ -11,13 +11,13 @@ const PRIORITY_ORDER = { urgent: 0, high: 1, normal: 2, low: 3 }
 const PRIORITY_BORDER: Record<string, string> = {
   urgent: 'border-l-[#dc2626]',
   high: 'border-l-[#d97706]',
-  normal: 'border-l-[#5c5fef]',
+  normal: 'border-l-[#2563eb]',
   low: 'border-l-[#d1d5db]',
 }
 const PRIORITY_DOT: Record<string, string> = {
   urgent: 'bg-[#dc2626]',
   high: 'bg-[#d97706]',
-  normal: 'bg-[#5c5fef]',
+  normal: 'bg-[#2563eb]',
   low: 'bg-[#d1d5db]',
 }
 
@@ -37,9 +37,9 @@ function CallCard({ call }: { call: typeof MOCK_SERVICE_CALLS[0] }) {
   const age = getCallAge(call.opened_at)
   return (
     <Link href={`/service/${call.id}`}>
-      <div className={`bg-white border border-[#e5e7eb] border-l-2 ${PRIORITY_BORDER[call.priority]} rounded-lg p-3 hover:bg-[#f9fafb] hover:shadow-sm transition-all cursor-pointer shadow-[0_1px_3px_rgba(0,0,0,0.04)]`}>
+      <div className={`bg-white border border-[#e5e7eb] border-l-2 ${PRIORITY_BORDER[call.priority]} rounded-lg p-3 hover:bg-[#f9fafb] hover:shadow-sm transition-all cursor-pointer shadow-[0_1px_2px_rgba(17,17,17,0.03)]`}>
         <div className="flex items-start justify-between gap-2 mb-1.5">
-          <div className="font-mono text-[11px] text-[#5c5fef] font-medium">{call.call_number}</div>
+          <div className="font-mono text-[11px] text-[#2563eb] font-medium">{call.call_number}</div>
           <div className={`text-[11px] font-semibold tabular-nums ${age.color}`}>{age.label}</div>
         </div>
         <div className="text-xs font-medium text-[#111827] mb-1 leading-snug">{call.customer?.name}</div>
@@ -109,9 +109,9 @@ export default function DispatchPage() {
           { label: 'Open Calls', value: open.length, color: 'text-[#111827]' },
           { label: 'Unassigned', value: unassigned.length, color: unassigned.length > 0 ? 'text-[#d97706]' : 'text-[#16a34a]' },
           { label: 'Urgent', value: urgentCount, color: urgentCount > 0 ? 'text-[#dc2626]' : 'text-[#16a34a]' },
-          { label: 'Technicians Active', value: byTech.filter(t => t.calls.length > 0).length, color: 'text-[#5c5fef]' },
+          { label: 'Technicians Active', value: byTech.filter(t => t.calls.length > 0).length, color: 'text-[#2563eb]' },
         ].map(s => (
-          <div key={s.label} className="bg-white border border-[#e5e7eb] rounded-lg px-4 py-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div key={s.label} className="bg-white border border-[#e5e7eb] rounded-lg px-4 py-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1">{s.label}</div>
             <div className={`text-2xl font-semibold tabular-nums ${s.color}`}>{s.value}</div>
           </div>
@@ -139,7 +139,7 @@ export default function DispatchPage() {
           {byTech.map(({ tech, calls }) => (
             <div key={tech.id} className="flex-shrink-0 w-64">
               <div className="flex items-center gap-2 mb-3">
-                <div className="w-6 h-6 rounded-full bg-[#f0f0ff] border border-[#5c5fef33] flex items-center justify-center text-[10px] text-[#5c5fef] font-semibold flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-[#eff6ff] border border-[#2563eb33] flex items-center justify-center text-[10px] text-[#2563eb] font-semibold flex-shrink-0">
                   {tech.name.split(' ').map(n => n[0]).join('')}
                 </div>
                 <span className="text-xs font-semibold text-[#374151] truncate">{tech.name}</span>
@@ -157,7 +157,7 @@ export default function DispatchPage() {
       )}
 
       {view === 'calendar' && (
-        <div className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="grid border-b border-[#e5e7eb]" style={{ gridTemplateColumns: `120px repeat(${technicians.length}, 1fr)` }}>
             <div className="px-4 py-2.5 text-xs text-[#9ca3af] uppercase tracking-wider font-medium">Time</div>
             {technicians.map(t => (
@@ -180,8 +180,8 @@ export default function DispatchPage() {
                     <div key={t.id} className="border-l border-[#f3f4f6] px-2 py-1.5">
                       {slotCall && (
                         <Link href={`/service/${slotCall.id}`}>
-                          <div className={`rounded-md px-2 py-1.5 border-l-2 ${PRIORITY_BORDER[slotCall.priority]} bg-[#f9fafb] hover:bg-[#f0f0ff] border border-[#e5e7eb] transition-colors cursor-pointer`}>
-                            <div className="text-[10px] font-mono text-[#5c5fef] font-medium">{slotCall.call_number}</div>
+                          <div className={`rounded-md px-2 py-1.5 border-l-2 ${PRIORITY_BORDER[slotCall.priority]} bg-[#f9fafb] hover:bg-[#eff6ff] border border-[#e5e7eb] transition-colors cursor-pointer`}>
+                            <div className="text-[10px] font-mono text-[#2563eb] font-medium">{slotCall.call_number}</div>
                             <div className="text-[11px] text-[#111827] truncate">{slotCall.customer?.name}</div>
                           </div>
                         </Link>
@@ -196,7 +196,7 @@ export default function DispatchPage() {
       )}
 
       {/* All open calls table */}
-      <div className="mt-6 bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="mt-6 bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="px-4 py-3 border-b border-[#f3f4f6] flex items-center justify-between">
           <span className="text-sm font-semibold text-[#111827]">All Open Service Calls</span>
           <span className="text-xs text-[#9ca3af]">{open.length} calls</span>
@@ -215,7 +215,7 @@ export default function DispatchPage() {
               const tech = MOCK_USERS.find(u => u.id === call.assigned_to)
               return (
                 <tr key={call.id} className="h-10 hover:bg-[#f9fafb] transition-colors">
-                  <td className="px-4 py-2.5"><span className="font-mono text-xs text-[#5c5fef] font-medium">{call.call_number}</span></td>
+                  <td className="px-4 py-2.5"><span className="font-mono text-xs text-[#2563eb] font-medium">{call.call_number}</span></td>
                   <td className="px-4 py-2.5 text-[#111827] font-medium">{call.customer?.name}</td>
                   <td className="px-4 py-2.5 text-xs text-[#6b7280]">{call.equipment ? `${call.equipment.make} ${call.equipment.model}` : '—'}</td>
                   <td className="px-4 py-2.5">
@@ -227,7 +227,7 @@ export default function DispatchPage() {
                   <td className="px-4 py-2.5">
                     {tech ? (
                       <div className="flex items-center gap-1.5">
-                        <div className="w-5 h-5 rounded-full bg-[#f0f0ff] border border-[#5c5fef33] flex items-center justify-center text-[9px] text-[#5c5fef] font-semibold">
+                        <div className="w-5 h-5 rounded-full bg-[#eff6ff] border border-[#2563eb33] flex items-center justify-center text-[9px] text-[#2563eb] font-semibold">
                           {tech.name.split(' ').map(n => n[0]).join('')}
                         </div>
                         <span className="text-xs text-[#374151]">{tech.name.split(' ')[0]}</span>
@@ -238,7 +238,7 @@ export default function DispatchPage() {
                   </td>
                   <td className="px-4 py-2.5"><span className={`text-xs font-semibold tabular-nums ${age.color}`}>{age.label}</span></td>
                   <td className="px-4 py-2.5">
-                    <Link href={`/service/${call.id}`} className="text-xs text-[#5c5fef] hover:underline font-medium">
+                    <Link href={`/service/${call.id}`} className="text-xs text-[#2563eb] hover:underline font-medium">
                       View <ChevronRight className="w-3 h-3 inline" />
                     </Link>
                   </td>

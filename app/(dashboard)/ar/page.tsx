@@ -112,7 +112,7 @@ export default function ARAgingPage() {
           const amount = bucketTotals[bucket]
           const pct = grandTotal > 0 ? Math.round((amount / grandTotal) * 100) : 0
           return (
-            <div key={bucket} className={`rounded-lg border p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${amount > 0 ? `${BUCKET_BG[bucket]} ${BUCKET_BORDER[bucket]}` : 'bg-white border-[#e5e7eb]'}`}>
+            <div key={bucket} className={`rounded-lg border p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)] ${amount > 0 ? `${BUCKET_BG[bucket]} ${BUCKET_BORDER[bucket]}` : 'bg-white border-[#e5e7eb]'}`}>
               <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1.5">
                 {bucket === 'current' ? 'Current' : `${bucket} days`}
               </div>
@@ -126,10 +126,10 @@ export default function ARAgingPage() {
       </div>
 
       {/* Total bar */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 mb-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="flex items-center justify-between mb-3">
           <span className="text-sm font-semibold text-[#111827]">Total Open AR</span>
-          <span className="text-xl font-semibold text-[#5c5fef] tabular-nums">{formatCurrency(grandTotal)}</span>
+          <span className="text-xl font-semibold text-[#2563eb] tabular-nums">{formatCurrency(grandTotal)}</span>
         </div>
         <div className="h-2 bg-[#f3f4f6] rounded-full overflow-hidden flex">
           {(['current', '0-30', '31-60', '61-90', '90+'] as const).map(bucket => {
@@ -153,12 +153,12 @@ export default function ARAgingPage() {
       </div>
 
       {/* Customer aging table */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="px-4 py-3 border-b border-[#f3f4f6]">
           <span className="text-sm font-semibold text-[#111827]">Customer Aging Detail</span>
         </div>
         <table className="w-full text-sm">
-          <thead className="border-b border-[#f0f0f0]">
+          <thead className="border-b border-[#e7e5e1]">
             <tr>
               <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider w-8"></th>
               <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wider">Customer</th>
@@ -198,7 +198,7 @@ export default function ARAgingPage() {
                     <td className="px-4 py-2.5 text-right font-semibold tabular-nums text-[#111827]">{formatCurrency(row.total)}</td>
                     <td className="px-4 py-2.5 text-center">
                       <button
-                        className="text-[10px] text-[#6b7280] hover:text-[#5c5fef] transition-colors uppercase tracking-wider px-2 py-1 border border-[#e5e7eb] rounded hover:border-[#5c5fef44] font-medium"
+                        className="text-[10px] text-[#6b7280] hover:text-[#2563eb] transition-colors uppercase tracking-wider px-2 py-1 border border-[#e5e7eb] rounded hover:border-[#2563eb44] font-medium"
                         onClick={e => { e.stopPropagation(); toast.info('Statement queued', `Statement sent to ${row.customer.email}`) }}
                       >
                         Stmt
@@ -212,7 +212,7 @@ export default function ARAgingPage() {
                       <tr key={inv.id} className="border-b border-[#f9fafb] bg-[#f9fafb]">
                         <td className="px-4 py-2" />
                         <td className="px-4 py-2 pl-8">
-                          <Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline font-medium">{inv.invoice_number}</Link>
+                          <Link href={`/invoices/${inv.id}`} className="font-mono text-xs text-[#2563eb] hover:underline font-medium">{inv.invoice_number}</Link>
                           <div className="text-[11px] text-[#9ca3af]">{inv.billing_period_start} – {inv.billing_period_end}</div>
                         </td>
                         <td className="px-4 py-2 text-right text-xs text-[#6b7280]" colSpan={5}>
@@ -235,7 +235,7 @@ export default function ARAgingPage() {
               <td className="px-4 py-3 text-right font-semibold tabular-nums text-[#ea580c]">{formatCurrency(bucketTotals['31-60'])}</td>
               <td className="px-4 py-3 text-right font-semibold tabular-nums text-[#dc2626]">{formatCurrency(bucketTotals['61-90'])}</td>
               <td className="px-4 py-3 text-right font-semibold tabular-nums text-[#991b1b]">{formatCurrency(bucketTotals['90+'])}</td>
-              <td className="px-4 py-3 text-right font-bold text-base text-[#5c5fef] tabular-nums">{formatCurrency(grandTotal)}</td>
+              <td className="px-4 py-3 text-right font-bold text-base text-[#2563eb] tabular-nums">{formatCurrency(grandTotal)}</td>
               <td />
             </tr>
           </tbody>

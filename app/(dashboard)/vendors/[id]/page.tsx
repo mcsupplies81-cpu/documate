@@ -20,7 +20,7 @@ export default function VendorDetailPage() {
   if (!vendor) return (
     <div className="flex flex-col items-center justify-center h-64 gap-3">
       <div className="text-[#6b7280] text-sm">Vendor not found</div>
-      <Link href="/vendors" className="text-xs text-[#5c5fef] hover:underline">Back to vendors</Link>
+      <Link href="/vendors" className="text-xs text-[#2563eb] hover:underline">Back to vendors</Link>
     </div>
   )
 
@@ -46,22 +46,22 @@ export default function VendorDetailPage() {
       </PageHeader>
 
       <div className="grid grid-cols-3 gap-3 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Total Spend</div>
-          <div className="text-xl font-mono font-bold text-[#5c5fef]">{formatCurrency(totalSpend)}</div>
+          <div className="text-xl font-mono font-bold text-[#2563eb]">{formatCurrency(totalSpend)}</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Open POs</div>
           <div className={`text-xl font-mono font-bold ${openPos.length > 0 ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>{openPos.length}</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Parts Supplied</div>
           <div className="text-xl font-mono font-bold text-[#111827]">{parts.length}</div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider mb-3">Contact</div>
           {vendor.contact_name && <div className="text-sm font-medium text-[#111827] mb-2">{vendor.contact_name}</div>}
           <div className="space-y-2">
@@ -87,14 +87,14 @@ export default function VendorDetailPage() {
           )}
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider mb-3">Parts Supplied ({parts.length})</div>
           <div className="space-y-1.5">
             {parts.slice(0, 6).map(p => (
               <Link key={p.id} href={`/parts/${p.id}`}
                 className="flex items-center justify-between hover:bg-[#f9fafb] -mx-2 px-2 py-1.5 rounded transition-colors">
                 <div>
-                  <span className="font-mono text-xs text-[#5c5fef]">{p.part_number}</span>
+                  <span className="font-mono text-xs text-[#2563eb]">{p.part_number}</span>
                   <span className="text-xs text-[#6b7280] ml-2">{p.description.slice(0, 30)}</span>
                 </div>
                 <span className={`text-xs font-mono font-semibold ${p.quantity_on_hand === 0 ? 'text-[#dc2626]' : p.quantity_on_hand <= p.reorder_point ? 'text-[#d97706]' : 'text-[#16a34a]'}`}>
@@ -107,7 +107,7 @@ export default function VendorDetailPage() {
       </div>
 
       {/* PO History */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="px-4 py-3 border-b border-[#f3f4f6]">
           <span className="text-sm font-semibold text-[#111827]">Purchase Order History</span>
         </div>
@@ -126,7 +126,7 @@ export default function VendorDetailPage() {
               {pos.map(po => (
                 <tr key={po.id} className="h-10 hover:bg-[#f9fafb] transition-colors">
                   <td className="px-3 py-2.5">
-                    <Link href={`/purchase-orders/${po.id}`} className="font-mono text-xs text-[#5c5fef] hover:underline">{po.po_number}</Link>
+                    <Link href={`/purchase-orders/${po.id}`} className="font-mono text-xs text-[#2563eb] hover:underline">{po.po_number}</Link>
                   </td>
                   <td className="px-3 py-2.5 font-mono text-xs text-[#6b7280]">{po.order_date}</td>
                   <td className="px-3 py-2.5 font-mono text-xs text-[#6b7280]">{po.expected_date || '—'}</td>

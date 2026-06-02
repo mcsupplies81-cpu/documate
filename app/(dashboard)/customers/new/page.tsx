@@ -28,7 +28,7 @@ export default function NewCustomerPage() {
 
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
-          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <div>
               <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider mb-3">Basic Info</h3>
               <div className="grid grid-cols-2 gap-4">

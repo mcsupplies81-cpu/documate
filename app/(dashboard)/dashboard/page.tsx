@@ -36,7 +36,7 @@ const STATUS_DOT: Record<string, { color: string; label: string }> = {
 
 const INV_STATUS: Record<string, { color: string; label: string }> = {
   paid: { color: '#16a34a', label: 'Paid' },
-  sent: { color: '#5c5fef', label: 'Sent' },
+  sent: { color: '#2563eb', label: 'Sent' },
   overdue: { color: '#dc2626', label: 'Overdue' },
   draft: { color: '#9ca3af', label: 'Draft' },
 }
@@ -126,7 +126,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Meter progress bar */}
-      <div className="bg-white border border-[#ebebeb] rounded-xl p-5 mb-5 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl p-5 mb-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="flex items-center justify-between mb-3">
           <div>
             <div className="text-xs text-[#6b7280] uppercase tracking-wide font-medium mb-1">
@@ -148,7 +148,7 @@ export default function DashboardPage() {
         </div>
         <div className="h-2 bg-[#f3f4f6] rounded-full overflow-hidden">
           <div
-            className="h-full bg-[#5c5fef] rounded-full transition-all duration-700"
+            className="h-full bg-[#2563eb] rounded-full transition-all duration-700"
             style={{ width: `${meterPct}%` }}
           />
         </div>
@@ -156,18 +156,18 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-2 gap-4 mb-4">
         {/* Open Service Calls */}
-        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
             <div className="flex items-center gap-2">
               <Wrench className="w-4 h-4 text-[#9ca3af]" />
               <span className="text-sm font-semibold text-[#111827]">Open Service Calls</span>
             </div>
-            <Link href="/service" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
+            <Link href="/service" className="text-xs text-[#2563eb] hover:underline font-medium">View all →</Link>
           </div>
           <div className="divide-y divide-[#f7f7f7]">
             {openCalls.slice(0, 5).map(call => {
               const age = getCallAge(call.opened_at)
-              const priorityDot: Record<string, string> = { urgent: 'bg-[#dc2626]', high: 'bg-[#d97706]', normal: 'bg-[#5c5fef]', low: 'bg-[#d1d5db]' }
+              const priorityDot: Record<string, string> = { urgent: 'bg-[#dc2626]', high: 'bg-[#d97706]', normal: 'bg-[#2563eb]', low: 'bg-[#d1d5db]' }
               return (
                 <Link key={call.id} href={`/service/${call.id}`} className="flex items-center gap-3 px-4 py-2.5 hover:bg-[#fafafa] transition-colors">
                   <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${priorityDot[call.priority] || 'bg-[#d1d5db]'}`} />
@@ -201,21 +201,21 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
-          <div className="px-4 py-2.5 border-t border-[#f0f0f0]">
-            <Link href="/service" className="text-xs text-[#6b7280] hover:text-[#5c5fef]">
+          <div className="px-4 py-2.5 border-t border-[#e7e5e1]">
+            <Link href="/service" className="text-xs text-[#6b7280] hover:text-[#2563eb]">
               {openCalls.length} open calls →
             </Link>
           </div>
         </div>
 
         {/* Expiring Contracts */}
-        <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-[#9ca3af]" />
               <span className="text-sm font-semibold text-[#111827]">Expiring Contracts</span>
             </div>
-            <Link href="/contracts?filter=expiring" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
+            <Link href="/contracts?filter=expiring" className="text-xs text-[#2563eb] hover:underline font-medium">View all →</Link>
           </div>
           <div className="divide-y divide-[#f7f7f7]">
             {expiringContracts.slice(0, 5).map(contract => {
@@ -243,8 +243,8 @@ export default function DashboardPage() {
               </div>
             )}
           </div>
-          <div className="px-4 py-2.5 border-t border-[#f0f0f0]">
-            <Link href="/contracts?filter=expiring" className="text-xs text-[#6b7280] hover:text-[#5c5fef]">
+          <div className="px-4 py-2.5 border-t border-[#e7e5e1]">
+            <Link href="/contracts?filter=expiring" className="text-xs text-[#6b7280] hover:text-[#2563eb]">
               {expiringContracts.length} contracts expiring →
             </Link>
           </div>
@@ -252,13 +252,13 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Invoices */}
-      <div className="bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#f0f0f0]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-[#e7e5e1]">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-[#9ca3af]" />
             <span className="text-sm font-semibold text-[#111827]">Recent Invoices</span>
           </div>
-          <Link href="/invoices" className="text-xs text-[#5c5fef] hover:underline font-medium">View all →</Link>
+          <Link href="/invoices" className="text-xs text-[#2563eb] hover:underline font-medium">View all →</Link>
         </div>
         <Table>
           <Thead>
@@ -274,7 +274,7 @@ export default function DashboardPage() {
           <Tbody>
             {recentInvoices.map(inv => (
               <Tr key={inv.id}>
-                <Td><span className="font-mono text-[#5c5fef] text-xs font-medium">{inv.invoice_number}</span></Td>
+                <Td><span className="font-mono text-[#2563eb] text-xs font-medium">{inv.invoice_number}</span></Td>
                 <Td><span className="text-[#111827] font-medium">{inv.customer?.name}</span></Td>
                 <Td><span className="text-xs text-[#6b7280]">{inv.billing_period_start} – {inv.billing_period_end}</span></Td>
                 <Td><span className="font-semibold tabular-nums">{formatCurrency(inv.total)}</span></Td>
@@ -299,8 +299,8 @@ export default function DashboardPage() {
             ))}
           </Tbody>
         </Table>
-        <div className="px-5 py-3 border-t border-[#f0f0f0] text-center">
-          <Link href="/invoices" className="text-xs text-[#5c5fef] hover:underline font-medium">
+        <div className="px-5 py-3 border-t border-[#e7e5e1] text-center">
+          <Link href="/invoices" className="text-xs text-[#2563eb] hover:underline font-medium">
             View all invoices →
           </Link>
         </div>

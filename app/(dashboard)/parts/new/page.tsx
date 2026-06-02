@@ -54,7 +54,7 @@ export default function NewPartPage() {
       />
 
       <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider font-semibold mb-1">Part Information</div>
           <div className="grid grid-cols-2 gap-4">
             <Input label="Part Number *" value={form.part_number} onChange={e => set('part_number', e.target.value)} placeholder="TNP-50M" />
@@ -66,7 +66,7 @@ export default function NewPartPage() {
           <Input label="Compatible Makes (comma-separated)" value={form.compatibility} onChange={e => set('compatibility', e.target.value)} placeholder="Konica Minolta, Kyocera" />
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider font-semibold mb-1">Pricing</div>
           <div className="grid grid-cols-2 gap-4">
             <Input label="Unit Cost ($)" type="number" step="0.01" value={form.unit_cost} onChange={e => set('unit_cost', e.target.value)} placeholder="42.00" />
@@ -74,7 +74,7 @@ export default function NewPartPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider font-semibold mb-1">Inventory</div>
           <div className="grid grid-cols-3 gap-4">
             <Input label="On Hand" type="number" value={form.quantity_on_hand} onChange={e => set('quantity_on_hand', e.target.value)} placeholder="0" />
@@ -87,7 +87,7 @@ export default function NewPartPage() {
           </Select>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <Textarea label="Notes" value={form.notes} onChange={e => set('notes', e.target.value)} placeholder="Any special handling notes..." rows={2} />
         </div>
 

@@ -62,7 +62,7 @@ export default function NewContractPage() {
           { n: 3, label: 'Equipment & Meters' },
         ].map(s => (
           <div key={s.n} className="flex items-center gap-2">
-            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${step >= s.n ? 'bg-[#5c5fef] text-white' : 'bg-[#f3f4f6] text-[#9ca3af] border border-[#e5e7eb]'}`}>
+            <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold ${step >= s.n ? 'bg-[#2563eb] text-white' : 'bg-[#f3f4f6] text-[#9ca3af] border border-[#e5e7eb]'}`}>
               {s.n}
             </div>
             <span className={`text-xs ${step >= s.n ? 'text-[#374151] font-medium' : 'text-[#9ca3af]'}`}>{s.label}</span>
@@ -74,7 +74,7 @@ export default function NewContractPage() {
       <div className="max-w-2xl">
         <form onSubmit={handleSubmit}>
           {step === 1 && (
-            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Customer &amp; Contract Type</h3>
               <Select
                 label="Customer"
@@ -104,7 +104,7 @@ export default function NewContractPage() {
           )}
 
           {step === 2 && (
-            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Billing Terms</h3>
               <div className="grid grid-cols-2 gap-4">
                 <Input label="Base Rate ($/month)" type="number" step="0.01" placeholder="0.00" />
@@ -121,7 +121,7 @@ export default function NewContractPage() {
                 <Input label="End Date" type="date" />
               </div>
               <div className="flex items-center gap-2">
-                <input type="checkbox" id="autorenew" className="w-4 h-4 rounded border-[#d1d5db] text-[#5c5fef] focus:ring-[#5c5fef]" />
+                <input type="checkbox" id="autorenew" className="w-4 h-4 rounded border-[#d1d5db] text-[#2563eb] focus:ring-[#2563eb]" />
                 <label htmlFor="autorenew" className="text-sm text-[#374151]">Auto-renew at end of term</label>
               </div>
               <Textarea label="Notes" placeholder="Special terms, conditions, etc." rows={2} />
@@ -133,7 +133,7 @@ export default function NewContractPage() {
           )}
 
           {step === 3 && (
-            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <div className="flex items-center justify-between">
                 <h3 className="text-xs font-semibold text-[#6b7280] uppercase tracking-wider">Equipment &amp; Meter Groups</h3>
                 {contractType !== 'flat_rate' && contractType !== 'equipment_only' && (

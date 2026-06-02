@@ -7,7 +7,7 @@ export default function SettingsPage() {
       <PageHeader title="Settings" subtitle="Manage your account and preferences" />
 
       <div className="grid grid-cols-2 gap-4 max-w-4xl">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-sm font-semibold text-[#111827] mb-4">Organization</h3>
           <div className="space-y-3">
             <div>
@@ -25,7 +25,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-sm font-semibold text-[#111827] mb-4">Billing Defaults</h3>
           <div className="space-y-3">
             <div>
@@ -43,13 +43,13 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 col-span-2 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 col-span-2 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-sm font-semibold text-[#111827] mb-4">Team Members</h3>
           <div className="space-y-1">
             {MOCK_USERS.map(user => (
               <div key={user.id} className="flex items-center justify-between py-2.5 border-b border-[#f3f4f6] last:border-0">
                 <div className="flex items-center gap-3">
-                  <div className="w-7 h-7 rounded-full bg-[#f0f0ff] border border-[#5c5fef33] flex items-center justify-center text-[10px] text-[#5c5fef] font-semibold">
+                  <div className="w-7 h-7 rounded-full bg-[#eff6ff] border border-[#2563eb33] flex items-center justify-center text-[10px] text-[#2563eb] font-semibold">
                     {user.name.split(' ').map(n => n[0]).join('')}
                   </div>
                   <div>
@@ -65,7 +65,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 col-span-2 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 col-span-2 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <h3 className="text-sm font-semibold text-[#111827] mb-1">Database</h3>
           <p className="text-xs text-[#6b7280] mb-3">Connect this account to a Supabase project to enable real data persistence.</p>
           <div className="space-y-2">

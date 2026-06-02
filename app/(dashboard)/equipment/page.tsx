@@ -194,7 +194,7 @@ export default function EquipmentPage() {
             placeholder="Search equipment..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
@@ -206,7 +206,7 @@ export default function EquipmentPage() {
         <select
           value={customerFilter}
           onChange={e => setCustomerFilter(e.target.value)}
-          className="h-9 pl-3 pr-7 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="h-9 pl-3 pr-7 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
         >
           <option value="">All Customers</option>
           {MOCK_CUSTOMERS.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
@@ -227,14 +227,14 @@ export default function EquipmentPage() {
           onClick={() => setShowAdvanced(v => !v)}
           className={`relative h-9 px-3 flex items-center gap-1.5 rounded-lg border text-sm transition-colors ${
             showAdvanced || activeFilterCount > 0
-              ? 'bg-[#eef2ff] border-[#c7d2fe] text-[#5c5fef]'
+              ? 'bg-[#eff6ff] border-[#c7d2fe] text-[#2563eb]'
               : 'bg-white border-[#e5e7eb] text-[#6b7280] hover:text-[#374151] hover:border-[#d1d5db]'
           }`}
         >
           <SlidersHorizontal className="w-3.5 h-3.5" />
           <span className="text-xs font-medium">Filters</span>
           {activeFilterCount > 0 && (
-            <span className="w-4 h-4 rounded-full bg-[#5c5fef] text-white text-[10px] font-bold flex items-center justify-center">
+            <span className="w-4 h-4 rounded-full bg-[#2563eb] text-white text-[10px] font-bold flex items-center justify-center">
               {activeFilterCount}
             </span>
           )}
@@ -247,7 +247,7 @@ export default function EquipmentPage() {
           <select
             value={makeFilter}
             onChange={e => setMakeFilter(e.target.value)}
-            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
           >
             <option value="">All Manufacturers</option>
             {makes.map(m => <option key={m} value={m}>{m}</option>)}
@@ -256,7 +256,7 @@ export default function EquipmentPage() {
           <select
             value={contractFilter}
             onChange={e => setContractFilter(e.target.value as typeof contractFilter)}
-            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
           >
             <option value="all">All Contracts</option>
             <option value="under_contract">Under Contract</option>
@@ -267,7 +267,7 @@ export default function EquipmentPage() {
           <select
             value={meterFilter}
             onChange={e => setMeterFilter(e.target.value as typeof meterFilter)}
-            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
           >
             <option value="all">All Meters</option>
             <option value="ok">Meter OK</option>
@@ -277,7 +277,7 @@ export default function EquipmentPage() {
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value as typeof sortBy)}
-            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+            className="h-8 pl-3 pr-7 text-xs bg-white border border-[#e5e7eb] rounded-md text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
           >
             <option value="recently_updated">Recently Updated</option>
             <option value="customer">Customer A–Z</option>
@@ -302,10 +302,10 @@ export default function EquipmentPage() {
       <div className={`grid gap-4 items-start ${selectedEquipment ? 'grid-cols-[minmax(0,1fr)_360px]' : 'grid-cols-1'}`}>
 
         {/* Table card */}
-        <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <table className="w-full min-w-0">
             <thead>
-              <tr className="border-b border-[#f0f0f0] bg-[#fafafa]">
+              <tr className="border-b border-[#e7e5e1] bg-[#fafafa]">
                 <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wide whitespace-nowrap">Device / Model</th>
                 <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wide whitespace-nowrap">Customer</th>
                 <th className="px-4 py-2.5 text-left text-[11px] font-semibold text-[#6b7280] uppercase tracking-wide whitespace-nowrap">Contract</th>
@@ -332,8 +332,8 @@ export default function EquipmentPage() {
                   <tr
                     key={eq.id}
                     onClick={() => { setSelectedId(isSelected ? null : eq.id); setActiveTab('overview') }}
-                    className={`cursor-pointer transition-colors duration-75 ${isSelected ? 'bg-[#eef2ff]' : 'hover:bg-[#fafafa]'}`}
-                    style={isSelected ? { boxShadow: 'inset 3px 0 0 #5c5fef' } : undefined}
+                    className={`cursor-pointer transition-colors duration-75 ${isSelected ? 'bg-[#eff6ff]' : 'hover:bg-[#fafafa]'}`}
+                    style={isSelected ? { boxShadow: 'inset 3px 0 0 #2563eb' } : undefined}
                   >
                     {/* Device */}
                     <td className="px-4 py-2">
@@ -346,7 +346,7 @@ export default function EquipmentPage() {
                       <Link
                         href={`/customers/${eq.customer_id}`}
                         onClick={e => e.stopPropagation()}
-                        className="text-sm text-[#111827] font-medium hover:text-[#5c5fef] transition-colors truncate block max-w-[160px]"
+                        className="text-sm text-[#111827] font-medium hover:text-[#2563eb] transition-colors truncate block max-w-[160px]"
                       >
                         {eq.customer?.name || '—'}
                       </Link>
@@ -364,7 +364,7 @@ export default function EquipmentPage() {
                           <Link
                             href={`/contracts/${contract.id}`}
                             onClick={e => e.stopPropagation()}
-                            className="text-xs font-mono text-[#5c5fef] hover:underline"
+                            className="text-xs font-mono text-[#2563eb] hover:underline"
                           >
                             {contract.contract_number}
                           </Link>
@@ -378,7 +378,7 @@ export default function EquipmentPage() {
                         <Link
                           href={`/contracts/new?equipment=${eq.id}`}
                           onClick={e => e.stopPropagation()}
-                          className="text-xs text-[#9ca3af] hover:text-[#5c5fef] transition-colors"
+                          className="text-xs text-[#9ca3af] hover:text-[#2563eb] transition-colors"
                         >
                           Add contract
                         </Link>
@@ -427,13 +427,13 @@ export default function EquipmentPage() {
           </table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#f0f0f0]">
+          <div className="flex items-center justify-between px-4 py-2.5 border-t border-[#e7e5e1]">
             <span className="text-xs text-[#9ca3af]">Showing {filtered.length} of {allEquipment.length}</span>
             <div className="flex items-center gap-1">
               <button disabled className="w-7 h-7 flex items-center justify-center rounded border border-[#e5e7eb] text-[#9ca3af] opacity-40">
                 <ChevronLeft className="w-3.5 h-3.5" />
               </button>
-              <button className="w-7 h-7 flex items-center justify-center rounded border border-[#5c5fef] bg-[#5c5fef] text-white text-xs font-semibold">1</button>
+              <button className="w-7 h-7 flex items-center justify-center rounded border border-[#2563eb] bg-[#2563eb] text-white text-xs font-semibold">1</button>
               <button disabled className="w-7 h-7 flex items-center justify-center rounded border border-[#e5e7eb] text-[#9ca3af] opacity-40">
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
@@ -448,10 +448,10 @@ export default function EquipmentPage() {
           const locationName  = getLocationName(selectedEquipment.location_id)
 
           return (
-            <div className="w-[360px] flex-shrink-0 bg-white border border-[#ebebeb] rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] overflow-hidden self-start sticky top-4">
+            <div className="w-[360px] flex-shrink-0 bg-white border border-[#e7e5e1] rounded-xl shadow-[0_1px_2px_rgba(17,17,17,0.03)] overflow-hidden self-start sticky top-4">
 
               {/* Panel header */}
-              <div className="flex items-start justify-between gap-2 px-4 pt-4 pb-3 border-b border-[#f0f0f0]">
+              <div className="flex items-start justify-between gap-2 px-4 pt-4 pb-3 border-b border-[#e7e5e1]">
                 <div>
                   <div className="text-sm font-semibold text-[#111827] leading-snug">
                     {selectedEquipment.make} {selectedEquipment.model}
@@ -472,14 +472,14 @@ export default function EquipmentPage() {
               </div>
 
               {/* Tabs */}
-              <div className="flex border-b border-[#f0f0f0]">
+              <div className="flex border-b border-[#e7e5e1]">
                 {(['overview', 'meters', 'service', 'contracts', 'history'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
                     className={`flex-1 py-2.5 text-[11px] font-medium capitalize border-b-2 transition-colors text-center ${
                       activeTab === tab
-                        ? 'border-[#5c5fef] text-[#5c5fef]'
+                        ? 'border-[#2563eb] text-[#2563eb]'
                         : 'border-transparent text-[#6b7280] hover:text-[#374151]'
                     }`}
                   >
@@ -502,7 +502,7 @@ export default function EquipmentPage() {
                       {
                         label: 'Customer',
                         value: (
-                          <Link href={`/customers/${selectedEquipment.customer_id}`} className="text-xs text-[#5c5fef] hover:underline font-medium">
+                          <Link href={`/customers/${selectedEquipment.customer_id}`} className="text-xs text-[#2563eb] hover:underline font-medium">
                             {selectedEquipment.customer?.name}
                           </Link>
                         ),
@@ -529,7 +529,7 @@ export default function EquipmentPage() {
                       {
                         label: 'Contract',
                         value: selectedContract ? (
-                          <Link href={`/contracts/${selectedContract.id}`} className="text-xs font-mono text-[#5c5fef] hover:underline font-medium">
+                          <Link href={`/contracts/${selectedContract.id}`} className="text-xs font-mono text-[#2563eb] hover:underline font-medium">
                             {selectedContract.contract_number}
                           </Link>
                         ) : <span className="text-xs text-[#9ca3af]">No contract</span>,
@@ -578,7 +578,7 @@ export default function EquipmentPage() {
 
                   {/* Risk & Alerts */}
                   {selectedAlerts.length > 0 && (
-                    <div className="border-t border-[#f0f0f0]">
+                    <div className="border-t border-[#e7e5e1]">
                       <div className="flex items-center gap-2 px-4 pt-3 pb-2">
                         <span className="text-xs font-semibold text-[#111827]">Risk &amp; Alerts</span>
                         <span className="w-4 h-4 rounded-full bg-[#dc2626] text-white text-[10px] font-bold flex items-center justify-center">
@@ -608,7 +608,7 @@ export default function EquipmentPage() {
                   )}
 
                   {/* Quick Actions */}
-                  <div className="border-t border-[#f0f0f0] px-4 py-3">
+                  <div className="border-t border-[#e7e5e1] px-4 py-3">
                     <div className="text-xs font-semibold text-[#111827] mb-2">Quick Actions</div>
                     <div className="grid grid-cols-3 gap-2">
                       {([
@@ -621,7 +621,7 @@ export default function EquipmentPage() {
                           href={action.href}
                           className="flex flex-col items-center gap-1.5 p-2.5 bg-[#f9fafb] border border-[#e5e7eb] rounded-lg hover:bg-[#f3f4f6] hover:border-[#d1d5db] transition-colors"
                         >
-                          <action.icon className="w-4 h-4 text-[#5c5fef]" />
+                          <action.icon className="w-4 h-4 text-[#2563eb]" />
                           <span className="text-[10px] font-medium text-[#374151] text-center leading-tight">{action.label}</span>
                         </Link>
                       ))}

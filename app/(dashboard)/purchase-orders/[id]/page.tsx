@@ -24,7 +24,7 @@ export default function PODetailPage() {
   if (!po) return (
     <div className="flex flex-col items-center justify-center h-64 gap-3">
       <div className="text-[#6b7280] text-sm">Purchase order not found</div>
-      <Link href="/purchase-orders" className="text-xs text-[#5c5fef] hover:underline">Back to POs</Link>
+      <Link href="/purchase-orders" className="text-xs text-[#2563eb] hover:underline">Back to POs</Link>
     </div>
   )
 
@@ -56,7 +56,7 @@ export default function PODetailPage() {
       </PageHeader>
 
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 col-span-2 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 col-span-2 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider mb-3">Vendor</div>
           <div className="text-sm font-semibold text-[#111827]">{po.vendor?.name}</div>
           {po.vendor?.contact_name && <div className="text-xs text-[#374151] mt-1">{po.vendor.contact_name}</div>}
@@ -66,7 +66,7 @@ export default function PODetailPage() {
             <div className="text-xs text-[#9ca3af] mt-2">Account: <span className="font-mono text-[#6b7280]">{po.vendor.account_number}</span></div>
           )}
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider mb-3">Dates</div>
           <div className="space-y-2 text-xs">
             <div className="flex items-center justify-between">
@@ -92,7 +92,7 @@ export default function PODetailPage() {
       </div>
 
       {/* Line items */}
-      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden mb-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+      <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden mb-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <div className="px-4 py-3 border-b border-[#f3f4f6]">
           <span className="text-sm font-semibold text-[#111827]">Line Items</span>
         </div>
@@ -113,7 +113,7 @@ export default function PODetailPage() {
                 <tr key={item.id} className="h-10 hover:bg-[#f9fafb] transition-colors">
                   <td className="px-3 py-3">
                     {item.part ? (
-                      <Link href={`/parts/${item.part_id}`} className="font-mono text-xs text-[#5c5fef] hover:underline">
+                      <Link href={`/parts/${item.part_id}`} className="font-mono text-xs text-[#2563eb] hover:underline">
                         {item.part.part_number}
                       </Link>
                     ) : <span className="text-[#9ca3af] text-xs">—</span>}
@@ -142,13 +142,13 @@ export default function PODetailPage() {
         </table>
         <div className="px-4 py-3 border-t border-[#e5e7eb] flex justify-end bg-[#f9fafb]">
           <div className="text-sm font-semibold text-[#111827]">
-            Total: <span className="font-mono text-[#5c5fef] ml-2">{formatCurrency(po.total)}</span>
+            Total: <span className="font-mono text-[#2563eb] ml-2">{formatCurrency(po.total)}</span>
           </div>
         </div>
       </div>
 
       {po.notes && (
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider mb-2">Notes</div>
           <p className="text-sm text-[#374151]">{po.notes}</p>
         </div>

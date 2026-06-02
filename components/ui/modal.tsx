@@ -29,15 +29,15 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
   return (
     <div className="fixed inset-0 z-50 flex">
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" onClick={onClose} />
+      <div className="absolute inset-0 bg-[#171717]/20 backdrop-blur-[3px]" onClick={onClose} />
 
       {/* Slide panel from right */}
-      <div className={`absolute right-0 top-0 bottom-0 ${sizes[size]} bg-white border-l border-[#e5e7eb] shadow-2xl slide-panel flex flex-col`}>
-        <div className="flex items-center justify-between px-5 py-4 border-b border-[#e5e7eb] flex-shrink-0">
-          <h2 className="text-sm font-semibold text-[#111827]">{title}</h2>
+      <div className={`absolute right-3 top-3 bottom-3 ${sizes[size]} bg-white border border-[#e7e5e1] rounded-2xl shadow-[0_24px_80px_rgba(17,17,17,0.14)] slide-panel flex flex-col overflow-hidden`}>
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#eeecea] flex-shrink-0">
+          <h2 className="text-sm font-semibold text-[#171717]">{title}</h2>
           <button
             onClick={onClose}
-            className="text-[#9ca3af] hover:text-[#374151] transition-colors p-1 rounded hover:bg-[#f3f4f6]"
+            className="text-[#a3a3a3] hover:text-[#171717] transition-colors p-1 rounded-lg hover:bg-[#f7f7f4]"
           >
             <X className="w-4 h-4" />
           </button>

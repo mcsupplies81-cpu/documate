@@ -26,7 +26,7 @@ function getAge(openedAt: string) {
 const PRIORITY_COLORS: Record<string, string> = {
   urgent: 'bg-[#dc2626]',
   high: 'bg-[#d97706]',
-  normal: 'bg-[#5c5fef]',
+  normal: 'bg-[#2563eb]',
   low: 'bg-[#d1d5db]',
 }
 
@@ -81,7 +81,7 @@ export default function ServicePage() {
             placeholder="Search calls..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
@@ -115,7 +115,7 @@ export default function ServicePage() {
         />
       </div>
 
-      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <Table>
           <Thead>
             <tr>
@@ -140,9 +140,9 @@ export default function ServicePage() {
                   <Td className="w-1 pr-0 pl-5">
                     <div className={`w-1.5 h-1.5 rounded-full ${PRIORITY_COLORS[sc.priority] || 'bg-[#d1d5db]'}`} />
                   </Td>
-                  <Td><span className="font-mono text-xs text-[#5c5fef] font-semibold">{sc.call_number}</span></Td>
+                  <Td><span className="font-mono text-xs text-[#2563eb] font-semibold">{sc.call_number}</span></Td>
                   <Td>
-                    <Link href={`/customers/${sc.customer_id}`} onClick={e => e.stopPropagation()} className="text-[#111827] font-medium hover:text-[#5c5fef] transition-colors">
+                    <Link href={`/customers/${sc.customer_id}`} onClick={e => e.stopPropagation()} className="text-[#111827] font-medium hover:text-[#2563eb] transition-colors">
                       {sc.customer?.name}
                     </Link>
                   </Td>
@@ -173,7 +173,7 @@ export default function ServicePage() {
                     </Badge>
                   </Td>
                   <Td>
-                    <Link href={`/service/${sc.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#5c5fef] hover:underline font-medium">
+                    <Link href={`/service/${sc.id}`} onClick={e => e.stopPropagation()} className="text-xs text-[#2563eb] hover:underline font-medium">
                       View →
                     </Link>
                   </Td>

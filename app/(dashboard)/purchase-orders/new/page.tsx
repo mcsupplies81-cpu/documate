@@ -64,7 +64,7 @@ export default function NewPOPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4 mb-5">
-          <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <div className="text-xs text-[#6b7280] uppercase tracking-wider font-semibold mb-3">Vendor</div>
             <Select
               value={vendorId}
@@ -75,7 +75,7 @@ export default function NewPOPage() {
               {MOCK_VENDORS.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
             </Select>
           </div>
-          <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+          <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 space-y-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
             <Input
               label="Expected Delivery Date"
               type="date"
@@ -93,10 +93,10 @@ export default function NewPOPage() {
         </div>
 
         {/* Line items */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden mb-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden mb-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="px-4 py-3 border-b border-[#f3f4f6] flex items-center justify-between">
             <span className="text-sm font-semibold text-[#111827]">Line Items</span>
-            <button type="button" onClick={addLine} className="text-xs text-[#5c5fef] hover:underline flex items-center gap-1 font-medium">
+            <button type="button" onClick={addLine} className="text-xs text-[#2563eb] hover:underline flex items-center gap-1 font-medium">
               <Plus className="w-3 h-3" /> Add Item
             </button>
           </div>
@@ -115,7 +115,7 @@ export default function NewPOPage() {
                     <select
                       value={line.part_id}
                       onChange={e => updateLine(i, 'part_id', e.target.value)}
-                      className="w-full px-2 h-8 text-xs bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+                      className="w-full px-2 h-8 text-xs bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
                     >
                       <option value="">Select part...</option>
                       {MOCK_PARTS.map(p => <option key={p.id} value={p.id}>{p.part_number}</option>)}
@@ -127,7 +127,7 @@ export default function NewPOPage() {
                       value={line.description}
                       onChange={e => updateLine(i, 'description', e.target.value)}
                       placeholder="Description"
-                      className="w-full px-2 h-8 text-xs bg-white border border-[#e5e7eb] rounded text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+                      className="w-full px-2 h-8 text-xs bg-white border border-[#e5e7eb] rounded text-[#374151] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
                     />
                   </td>
                   <td className="px-3 py-2.5 w-20">
@@ -136,7 +136,7 @@ export default function NewPOPage() {
                       min="1"
                       value={line.quantity}
                       onChange={e => updateLine(i, 'quantity', Number(e.target.value))}
-                      className="w-full px-2 h-8 text-xs font-mono bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+                      className="w-full px-2 h-8 text-xs font-mono bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
                     />
                   </td>
                   <td className="px-3 py-2.5 w-28">
@@ -146,7 +146,7 @@ export default function NewPOPage() {
                       step="0.01"
                       value={line.unit_cost}
                       onChange={e => updateLine(i, 'unit_cost', Number(e.target.value))}
-                      className="w-full px-2 h-8 text-xs font-mono bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+                      className="w-full px-2 h-8 text-xs font-mono bg-white border border-[#e5e7eb] rounded text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
                     />
                   </td>
                   <td className="px-3 py-2.5 w-24">
@@ -165,7 +165,7 @@ export default function NewPOPage() {
           </table>
           <div className="px-4 py-3 border-t border-[#e5e7eb] flex justify-end bg-[#f9fafb]">
             <span className="text-sm font-semibold text-[#111827]">
-              Total: <span className="font-mono text-[#5c5fef] ml-2">{formatCurrency(total)}</span>
+              Total: <span className="font-mono text-[#2563eb] ml-2">{formatCurrency(total)}</span>
             </span>
           </div>
         </div>

@@ -36,7 +36,7 @@ export default function NewVendorPage() {
         breadcrumb={[{ label: 'Vendors', href: '/vendors' }, { label: 'New Vendor' }]}
       />
       <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <Input label="Company Name *" value={form.name} onChange={e => set('name', e.target.value)} placeholder="Konica Minolta Business Solutions" />
           <div className="grid grid-cols-2 gap-4">
             <Input label="Contact Name" value={form.contact_name} onChange={e => set('contact_name', e.target.value)} />
@@ -54,7 +54,7 @@ export default function NewVendorPage() {
             <option value="prepaid">Prepaid</option>
           </Select>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 space-y-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wider font-semibold mb-1">Address</div>
           <Input label="Street Address" value={form.street} onChange={e => set('street', e.target.value)} />
           <div className="grid grid-cols-3 gap-4">
@@ -63,7 +63,7 @@ export default function NewVendorPage() {
             <Input label="ZIP" value={form.zip} onChange={e => set('zip', e.target.value)} />
           </div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-5 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <Textarea label="Notes" value={form.notes} onChange={e => set('notes', e.target.value)} rows={2} />
         </div>
         <div className="flex gap-3 justify-end">

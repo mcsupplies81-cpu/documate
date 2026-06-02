@@ -5,11 +5,11 @@ type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline'
 type ButtonSize = 'sm' | 'md' | 'lg'
 
 const variants: Record<ButtonVariant, string> = {
-  primary: 'bg-[#5c5fef] text-white hover:bg-[#4f52d9] font-medium',
-  secondary: 'bg-white text-[#374151] hover:bg-[#f9fafb] border border-[#e5e7eb]',
-  ghost: 'bg-transparent text-[#6b7280] hover:text-[#111827] hover:bg-[#f3f4f6]',
-  danger: 'bg-[#fef2f2] text-[#dc2626] hover:bg-[#fee2e2] border border-[#fecaca]',
-  outline: 'bg-transparent text-[#374151] border border-[#e5e7eb] hover:bg-[#f9fafb]',
+  primary: 'bg-[#111111] text-white hover:bg-[#262626] border border-[#111111] shadow-[0_1px_2px_rgba(17,17,17,0.12)] font-medium',
+  secondary: 'bg-white text-[#171717] hover:bg-[#f8f8f6] border border-[#e7e5e1]',
+  ghost: 'bg-transparent text-[#737373] hover:text-[#171717] hover:bg-[#efede9]',
+  danger: 'bg-[#fff7f7] text-[#b91c1c] hover:bg-[#fee2e2] border border-[#fecaca]',
+  outline: 'bg-transparent text-[#171717] border border-[#e7e5e1] hover:bg-[#f8f8f6]',
 }
 
 const sizes: Record<ButtonSize, string> = {
@@ -32,8 +32,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || loading}
         className={`
-          inline-flex items-center justify-center rounded-md transition-colors duration-100
+          inline-flex items-center justify-center rounded-[10px] transition-colors duration-150
           disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer font-medium
+          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb]/20 focus-visible:ring-offset-1
           ${variants[variant]} ${sizes[size]} ${className}
         `}
         {...props}

@@ -246,7 +246,7 @@ export default function ContractsPage() {
         />
         <MetricCard
           icon={ShieldCheck}
-          iconBg="bg-[#eef2ff]"
+          iconBg="bg-[#eff6ff]"
           iconClassName="text-[#4f46e5]"
           label="Auto-Renew Enabled"
           value={String(autoRenewEnabled)}

@@ -23,7 +23,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
   const eq = MOCK_EQUIPMENT.find(e => e.id === id)
   if (!eq) return (
     <div className="text-[#6b7280] py-20 text-center">
-      Equipment not found. <Link href="/equipment" className="text-[#5c5fef]">Back to list</Link>
+      Equipment not found. <Link href="/equipment" className="text-[#2563eb]">Back to list</Link>
     </div>
   )
 
@@ -75,7 +75,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
         <div className="flex items-center gap-3 mt-1">
           <span className="text-xs text-[#6b7280] font-mono">S/N: {eq.serial_number}</span>
           <span className="text-[#d1d5db]">·</span>
-          <Link href={`/customers/${eq.customer_id}`} className="text-xs text-[#5c5fef] hover:underline">{eq.customer?.name}</Link>
+          <Link href={`/customers/${eq.customer_id}`} className="text-xs text-[#2563eb] hover:underline">{eq.customer?.name}</Link>
           {eq.install_date && <><span className="text-[#d1d5db]">·</span><span className="text-xs text-[#6b7280]">Installed {eq.install_date}</span></>}
           <Badge variant={eq.status === 'active' ? 'success' : eq.status === 'inactive' ? 'warning' : 'muted'}>{eq.status}</Badge>
         </div>
@@ -83,31 +83,31 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
       {/* Meter summary */}
       <div className="grid grid-cols-4 gap-3 mb-5">
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Current B&W</div>
           <div className="text-2xl font-mono font-semibold text-[#111827]">
             {latestReading ? formatNumber(latestReading.bw_reading) : '—'}
           </div>
           {bwDelta !== null && <div className="text-xs text-[#9ca3af] mt-0.5">+{formatNumber(bwDelta)} this period</div>}
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Current Color</div>
           <div className="text-2xl font-mono font-semibold text-[#111827]">
             {latestReading ? formatNumber(latestReading.color_reading) : '—'}
           </div>
           {colorDelta !== null && <div className="text-xs text-[#9ca3af] mt-0.5">+{formatNumber(colorDelta)} this period</div>}
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Last Reading</div>
           <div className="text-lg font-mono font-semibold text-[#374151]">
             {latestReading?.reading_date || '—'}
           </div>
           <div className="text-xs text-[#9ca3af]">{latestReading?.source || ''}</div>
         </div>
-        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg p-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Contract</div>
           {contract
-            ? <Link href={`/contracts/${contract.id}`} className="text-sm text-[#5c5fef] hover:underline font-mono">{contract.contract_number}</Link>
+            ? <Link href={`/contracts/${contract.id}`} className="text-sm text-[#2563eb] hover:underline font-mono">{contract.contract_number}</Link>
             : <div className="text-sm text-[#9ca3af]">None</div>
           }
           {contractEq && <div className="text-xs text-[#9ca3af] mt-0.5">{contractEq.included_bw.toLocaleString()} B&W / {contractEq.included_color.toLocaleString()} Color incl.</div>}
@@ -124,7 +124,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
 
       <div className="grid grid-cols-2 gap-4">
         {/* Meter History */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
             <span className="text-sm font-semibold text-[#111827]">Meter History</span>
             <Button variant="ghost" size="sm" onClick={() => setMeterOpen(true)}>
@@ -172,7 +172,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
         </div>
 
         {/* Service History */}
-        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+        <div className="bg-white border border-[#e5e7eb] rounded-lg shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center justify-between px-4 py-3 border-b border-[#f3f4f6]">
             <span className="text-sm font-semibold text-[#111827]">Service History</span>
             <Link href={`/service/new?equipment=${id}`}>
@@ -192,7 +192,7 @@ export default function EquipmentDetailPage({ params }: { params: Promise<{ id: 
               {serviceCalls.length === 0 && <EmptyRow cols={4} message="No service history" />}
               {serviceCalls.map(sc => (
                 <Tr key={sc.id} onClick={() => window.location.href = `/service/${sc.id}`}>
-                  <Td><span className="font-mono text-xs text-[#5c5fef]">{sc.call_number}</span></Td>
+                  <Td><span className="font-mono text-xs text-[#2563eb]">{sc.call_number}</span></Td>
                   <Td><span className="text-xs text-[#6b7280] block truncate max-w-[160px]">{sc.problem_description}</span></Td>
                   <Td><span className="text-xs text-[#374151]">{sc.technician?.name || <span className="text-[#9ca3af]">—</span>}</span></Td>
                   <Td>

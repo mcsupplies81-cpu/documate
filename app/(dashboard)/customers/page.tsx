@@ -141,7 +141,7 @@ export default function CustomersPage() {
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-5">
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#eff6ff]">
               <Users className="w-4 h-4 text-[#3b82f6]" />
@@ -153,7 +153,7 @@ export default function CustomersPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#f0fdf4]">
               <FileText className="w-4 h-4 text-[#16a34a]" />
@@ -165,7 +165,7 @@ export default function CustomersPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#f5f3ff]">
               <Printer className="w-4 h-4 text-[#7c3aed]" />
@@ -177,7 +177,7 @@ export default function CustomersPage() {
             </div>
           </div>
         </div>
-        <div className="bg-white border border-[#ebebeb] rounded-xl p-4 shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+        <div className="bg-white border border-[#e7e5e1] rounded-xl p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-[#fff7ed]">
               <Wrench className="w-4 h-4 text-[#ea580c]" />
@@ -199,7 +199,7 @@ export default function CustomersPage() {
             placeholder="Search customers..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#5c5fef] focus:border-transparent"
+            className="w-full pl-9 pr-8 h-9 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#111827] placeholder-[#9ca3af] focus:outline-none focus:ring-1 focus:ring-[#2563eb] focus:border-transparent"
           />
           {search && (
             <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-[#9ca3af] hover:text-[#6b7280]">
@@ -211,7 +211,7 @@ export default function CustomersPage() {
         <select
           value={statusFilter}
           onChange={e => setStatusFilter(e.target.value)}
-          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
         >
           <option value="all">All Statuses</option>
           <option value="active">Active</option>
@@ -221,7 +221,7 @@ export default function CustomersPage() {
         <select
           value={locationFilter}
           onChange={e => setLocationFilter(e.target.value)}
-          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
         >
           <option value="all">All States</option>
           {CUSTOMER_STATES.map(state => <option key={state} value={state}>{state}</option>)}
@@ -230,7 +230,7 @@ export default function CustomersPage() {
         <select
           value={contractStatusFilter}
           onChange={e => setContractStatusFilter(e.target.value)}
-          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
         >
           <option value="all">All Contracts</option>
           <option value="active">Active</option>
@@ -242,7 +242,7 @@ export default function CustomersPage() {
         <select
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
-          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+          className="h-9 pl-3 pr-8 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#2563eb]"
         >
           <option value="name_asc">Customer A–Z</option>
           <option value="name_desc">Customer Z–A</option>
@@ -255,7 +255,7 @@ export default function CustomersPage() {
         </button>
       </div>
 
-      <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
+      <div className="bg-white border border-[#e7e5e1] rounded-xl overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
         <Table>
           <Thead>
             <tr>
@@ -361,7 +361,7 @@ export default function CustomersPage() {
             })}
           </Tbody>
         </Table>
-        <div className="flex items-center justify-between px-5 py-3 border-t border-[#f0f0f0]">
+        <div className="flex items-center justify-between px-5 py-3 border-t border-[#e7e5e1]">
           <span className="text-xs text-[#6b7280]">
             Showing 1 to {filtered.length} of {MOCK_CUSTOMERS.length} customers
           </span>
@@ -369,7 +369,7 @@ export default function CustomersPage() {
             <button className="w-7 h-7 flex items-center justify-center rounded border border-[#e5e7eb] text-[#9ca3af] hover:border-[#d1d5db] disabled:opacity-40" disabled>
               <ChevronLeft className="w-3.5 h-3.5" />
             </button>
-            <button className="w-7 h-7 flex items-center justify-center rounded border border-[#5c5fef] bg-[#5c5fef] text-white text-xs font-medium">
+            <button className="w-7 h-7 flex items-center justify-center rounded border border-[#2563eb] bg-[#2563eb] text-white text-xs font-medium">
               1
             </button>
             <button className="w-7 h-7 flex items-center justify-center rounded border border-[#e5e7eb] text-[#9ca3af] hover:border-[#d1d5db] disabled:opacity-40" disabled>

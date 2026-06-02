@@ -98,7 +98,7 @@ export default function BillingRunPage() {
           <p className="text-[#6b7280] mb-2">
             <span className="text-[#111827] font-mono font-semibold">{generatedInvoices}</span> invoices generated
           </p>
-          <p className="text-2xl font-mono font-semibold text-[#5c5fef] mb-8">{formatCurrency(totalRevenue)}</p>
+          <p className="text-2xl font-mono font-semibold text-[#2563eb] mb-8">{formatCurrency(totalRevenue)}</p>
           <div className="flex items-center justify-center gap-3">
             <Link href="/invoices">
               <Button variant="secondary" size="md">View Invoices</Button>
@@ -113,15 +113,15 @@ export default function BillingRunPage() {
         /* Running State */
         <div className="max-w-xl mx-auto py-16">
           <div className="text-center mb-8">
-            <div className="w-14 h-14 bg-[#f0f0ff] border border-[#5c5fef33] rounded-full flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-7 h-7 text-[#5c5fef] animate-pulse" />
+            <div className="w-14 h-14 bg-[#eff6ff] border border-[#2563eb33] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-7 h-7 text-[#2563eb] animate-pulse" />
             </div>
             <h2 className="text-lg font-semibold text-[#111827]">Generating Invoices...</h2>
             <p className="text-sm text-[#6b7280] mt-1">{generatedInvoices} of {previews.length} complete</p>
           </div>
           <div className="h-2 bg-[#f3f4f6] rounded-full overflow-hidden">
             <div
-              className="h-full bg-[#5c5fef] rounded-full transition-all duration-300"
+              className="h-full bg-[#2563eb] rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -131,17 +131,17 @@ export default function BillingRunPage() {
         <>
           {/* Idle / Preview */}
           <div className="grid grid-cols-3 gap-3 mb-6">
-            <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Contracts to Bill</div>
               <div className="text-2xl font-mono font-semibold text-[#111827]">{previews.length}</div>
             </div>
-            <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <div className="text-xs text-[#6b7280] uppercase tracking-wide mb-1">Base Charges</div>
               <div className="text-2xl font-mono font-semibold text-[#111827]">{formatCurrency(previews.reduce((s, p) => s + p.base_charge, 0))}</div>
             </div>
-            <div className="bg-white border border-[#5c5fef33] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
-              <div className="text-xs text-[#5c5fef] uppercase tracking-wide mb-1">Total to Invoice</div>
-              <div className="text-2xl font-mono font-semibold text-[#5c5fef]">{formatCurrency(totalRevenue)}</div>
+            <div className="bg-white border border-[#2563eb33] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
+              <div className="text-xs text-[#2563eb] uppercase tracking-wide mb-1">Total to Invoice</div>
+              <div className="text-2xl font-mono font-semibold text-[#2563eb]">{formatCurrency(totalRevenue)}</div>
               <div className="text-xs text-[#9ca3af] mt-0.5">+{formatCurrency(totalOverage)} overages</div>
             </div>
           </div>
@@ -153,7 +153,7 @@ export default function BillingRunPage() {
                 <p className="text-sm text-[#92400e] font-medium">Missing meter readings</p>
                 <p className="text-xs text-[#6b7280] mt-0.5">
                   Some equipment has no readings for this period. Overages will be calculated as zero.
-                  <Link href="/meters" className="text-[#5c5fef] ml-1 hover:underline">Enter readings →</Link>
+                  <Link href="/meters" className="text-[#2563eb] ml-1 hover:underline">Enter readings →</Link>
                 </p>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function BillingRunPage() {
           )}
 
           {runState === 'preview' && (
-            <div className="flex items-center justify-between mb-4 bg-[#f0f0ff] border border-[#5c5fef33] rounded-lg px-4 py-3">
+            <div className="flex items-center justify-between mb-4 bg-[#eff6ff] border border-[#2563eb33] rounded-lg px-4 py-3">
               <div>
                 <p className="text-sm font-medium text-[#111827]">Preview ready — {previews.length} invoices, {formatCurrency(totalRevenue)} total</p>
                 <p className="text-xs text-[#6b7280] mt-0.5">Review each invoice below, then click Generate to create and send them.</p>
@@ -188,7 +188,7 @@ export default function BillingRunPage() {
               const contractId = preview.contract.id
               const isExpanded = expanded.has(contractId)
               return (
-                <div key={contractId} className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <div key={contractId} className="bg-white border border-[#e5e7eb] rounded-lg overflow-hidden shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
                   <button
                     className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[#f9fafb] transition-colors text-left"
                     onClick={() => toggleExpand(contractId)}
@@ -217,7 +217,7 @@ export default function BillingRunPage() {
                       </div>
                       <div className="text-right">
                         <div className="text-xs text-[#9ca3af]">Total</div>
-                        <div className="font-mono text-lg font-semibold text-[#5c5fef]">{formatCurrency(preview.total)}</div>
+                        <div className="font-mono text-lg font-semibold text-[#2563eb]">{formatCurrency(preview.total)}</div>
                       </div>
                     </div>
                   </button>
@@ -260,7 +260,7 @@ export default function BillingRunPage() {
                         ))}
                         <div className="flex items-center justify-between text-sm border-t border-[#e5e7eb] pt-2">
                           <span className="font-medium text-[#111827]">Invoice Total</span>
-                          <span className="font-mono font-semibold text-[#5c5fef]">{formatCurrency(preview.total)}</span>
+                          <span className="font-mono font-semibold text-[#2563eb]">{formatCurrency(preview.total)}</span>
                         </div>
                       </div>
                     </div>

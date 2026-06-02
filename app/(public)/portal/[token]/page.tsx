@@ -24,12 +24,12 @@ export default function CustomerPortalPage({ params }: { params: { token: string
   const outstandingTotal = outstanding.reduce((s, i) => s + i.total, 0)
 
   return (
-    <div className="min-h-screen bg-[#f7f8fb]">
+    <div className="min-h-screen bg-[#f6f5f2]">
       {/* Header */}
       <header className="bg-white border-b border-[#e5e7eb] px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 bg-[#5c5fef] rounded-md flex items-center justify-center shadow-sm">
+            <div className="w-7 h-7 bg-[#2563eb] rounded-md flex items-center justify-center shadow-sm">
               <Zap className="w-4 h-4 text-white" fill="currentColor" />
             </div>
             <div>
@@ -64,7 +64,7 @@ export default function CustomerPortalPage({ params }: { params: { token: string
             { label: 'Open Service Calls', value: serviceCalls.filter(sc => sc.status !== 'closed' && sc.status !== 'completed').length, icon: <Wrench className="w-4 h-4" /> },
             { label: 'Outstanding', value: formatCurrency(outstandingTotal), icon: <FileText className="w-4 h-4" /> },
           ].map(s => (
-            <div key={s.label} className="bg-white border border-[#e5e7eb] rounded-lg p-4 flex items-center gap-3 shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
+            <div key={s.label} className="bg-white border border-[#e5e7eb] rounded-lg p-4 flex items-center gap-3 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
               <div className="text-[#9ca3af]">{s.icon}</div>
               <div>
                 <div className="text-xs text-[#6b7280]">{s.label}</div>
@@ -99,10 +99,10 @@ export default function CustomerPortalPage({ params }: { params: { token: string
               const overdue = inv.status === 'overdue'
               const paid = inv.status === 'paid'
               return (
-                <div key={inv.id} className={`bg-white border rounded-lg p-4 flex items-center justify-between shadow-[0_1px_3px_rgba(0,0,0,0.04)] ${overdue ? 'border-[#fecaca]' : 'border-[#e5e7eb]'}`}>
+                <div key={inv.id} className={`bg-white border rounded-lg p-4 flex items-center justify-between shadow-[0_1px_2px_rgba(17,17,17,0.03)] ${overdue ? 'border-[#fecaca]' : 'border-[#e5e7eb]'}`}>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-sm text-[#5c5fef] font-medium">{inv.invoice_number}</span>
+                      <span className="font-mono text-sm text-[#2563eb] font-medium">{inv.invoice_number}</span>
                       <span className={`text-[11px] px-2 py-0.5 rounded font-medium ${
                         paid ? 'bg-[#f0fdf4] text-[#16a34a]' :
                         overdue ? 'bg-[#fef2f2] text-[#dc2626]' :
@@ -130,7 +130,7 @@ export default function CustomerPortalPage({ params }: { params: { token: string
                         <Download className="w-3.5 h-3.5" />PDF
                       </button>
                       {!paid && (
-                        <button className="text-xs font-medium text-white bg-[#5c5fef] px-3 py-1.5 rounded hover:bg-[#4f52d9] transition-colors">
+                        <button className="text-xs font-medium text-white bg-[#2563eb] px-3 py-1.5 rounded hover:bg-[#1d4ed8] transition-colors">
                           Pay
                         </button>
                       )}
@@ -146,7 +146,7 @@ export default function CustomerPortalPage({ params }: { params: { token: string
         {tab === 'equipment' && (
           <div className="space-y-2">
             {equipment.map(eq => (
-              <div key={eq.id} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+              <div key={eq.id} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="text-sm font-medium text-[#111827]">{eq.make} {eq.model}</div>
@@ -174,11 +174,11 @@ export default function CustomerPortalPage({ params }: { params: { token: string
             {serviceCalls.map(sc => {
               const open = sc.status === 'open' || sc.status === 'in_progress'
               return (
-                <div key={sc.id} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+                <div key={sc.id} className="bg-white border border-[#e5e7eb] rounded-lg p-4 shadow-[0_1px_2px_rgba(17,17,17,0.03)]">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-sm text-[#5c5fef] font-medium">{sc.call_number}</span>
-                      <span className={`text-[11px] px-2 py-0.5 rounded font-medium ${open ? 'bg-[#f0f0ff] text-[#5c5fef]' : 'bg-[#f0fdf4] text-[#16a34a]'}`}>
+                      <span className="font-mono text-sm text-[#2563eb] font-medium">{sc.call_number}</span>
+                      <span className={`text-[11px] px-2 py-0.5 rounded font-medium ${open ? 'bg-[#eff6ff] text-[#2563eb]' : 'bg-[#f0fdf4] text-[#16a34a]'}`}>
                         {sc.status.replace('_', ' ')}
                       </span>
                     </div>
