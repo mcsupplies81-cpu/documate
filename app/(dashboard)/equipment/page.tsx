@@ -89,6 +89,9 @@ export default function EquipmentPage() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [customerFilter, setCustomerFilter] = useState('')
   const [makeFilter, setMakeFilter] = useState('')
+  const [contractFilter, setContractFilter] = useState<'all' | 'under_contract' | 'no_contract' | 'expiring'>('all')
+  const [meterFilter, setMeterFilter] = useState<'all' | 'ok' | 'missing'>('all')
+  const [sortBy, setSortBy] = useState<'recently_updated' | 'customer' | 'make' | 'missing_meter'>('recently_updated')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<PanelTab>('overview')
 
@@ -114,7 +117,30 @@ export default function EquipmentPage() {
     const matchStatus   = statusFilter === 'all' || eq.status === statusFilter
     const matchCustomer = !customerFilter || eq.customer_id === customerFilter
     const matchMake     = !makeFilter || eq.make === makeFilter
-    return matchSearch && matchStatus && matchCustomer && matchMake
+    const contract      = getEquipmentContract(eq.id)
+    const matchContract =
+      contractFilter === 'all' ? true :
+      contractFilter === 'under_contract' ? contract !== null :
+      contractFilter === 'no_contract' ? contract === null :
+      contractFilter === 'expiring' ? (contract?.end_date ? getDaysUntilExpiry(contract.end_date) <= 60 : false) : true
+    const meter = getMeterStatus(eq)
+    const matchMeter =
+      meterFilter === 'all' ? true :
+      meterFilter === 'ok' ? meter.label === 'OK' :
+      meterFilter === 'missing' ? meter.label === 'Missing Meter' : true
+    return matchSearch && matchStatus && matchCustomer && matchMake && matchContract && matchMeter
+  }).sort((a, b) => {
+    if (sortBy === 'customer') return (a.customer?.name || '').localeCompare(b.customer?.name || '')
+    if (sortBy === 'make') return a.make.localeCompare(b.make)
+    if (sortBy === 'missing_meter') {
+      const aM = getMeterStatus(a).label === 'Missing Meter' ? 0 : 1
+      const bM = getMeterStatus(b).label === 'Missing Meter' ? 0 : 1
+      return aM - bM
+    }
+    // recently_updated — most recent reading first
+    const aDate = a.latest_reading?.reading_date || ''
+    const bDate = b.latest_reading?.reading_date || ''
+    return bDate.localeCompare(aDate)
   })
 
   const selectedEquipment  = selectedId ? allEquipment.find(e => e.id === selectedId) ?? null : null
@@ -190,7 +216,7 @@ export default function EquipmentPage() {
                 <div className="text-2xl font-semibold text-[#111827] tabular-nums leading-tight">{card.value}</div>
                 <div className="text-xs text-[#9ca3af] mt-0.5">{card.sub}</div>
                 <div className={`flex items-center gap-0.5 mt-1.5 text-[11px] font-medium ${card.trend.up ? 'text-[#16a34a]' : 'text-[#dc2626]'}`}>
-                  <span>{card.trend.up ? '↑' : '↑'}</span>
+                  <span>{card.trend.up ? '↑' : '↓'}</span>
                   <span>{card.trend.label}</span>
                 </div>
               </div>
@@ -246,18 +272,46 @@ export default function EquipmentPage() {
           onChange={setStatusFilter}
         />
 
-        <button className="ml-auto h-9 w-9 flex items-center justify-center bg-white border border-[#e5e7eb] rounded-lg text-[#6b7280] hover:text-[#374151] hover:border-[#d1d5db] transition-colors">
-          <SlidersHorizontal className="w-4 h-4" />
-        </button>
+        <select
+          value={contractFilter}
+          onChange={e => setContractFilter(e.target.value as typeof contractFilter)}
+          className="h-9 pl-3 pr-7 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+        >
+          <option value="all">All Contracts</option>
+          <option value="under_contract">Under Contract</option>
+          <option value="no_contract">No Contract</option>
+          <option value="expiring">Expiring Soon</option>
+        </select>
+
+        <select
+          value={meterFilter}
+          onChange={e => setMeterFilter(e.target.value as typeof meterFilter)}
+          className="h-9 pl-3 pr-7 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+        >
+          <option value="all">All Meters</option>
+          <option value="ok">Meter OK</option>
+          <option value="missing">Missing Meter</option>
+        </select>
+
+        <select
+          value={sortBy}
+          onChange={e => setSortBy(e.target.value as typeof sortBy)}
+          className="h-9 pl-3 pr-7 text-sm bg-white border border-[#e5e7eb] rounded-lg text-[#374151] focus:outline-none focus:ring-1 focus:ring-[#5c5fef]"
+        >
+          <option value="recently_updated">Recently Updated</option>
+          <option value="customer">Customer A–Z</option>
+          <option value="make">Manufacturer A–Z</option>
+          <option value="missing_meter">Missing Meters First</option>
+        </select>
       </div>
 
       <p className="text-xs text-[#6b7280] mb-3">{filtered.length} of {allEquipment.length} devices</p>
 
       {/* Table + optional side panel */}
-      <div className="flex gap-4 items-start">
+      <div className={`grid gap-4 items-start ${selectedEquipment ? 'grid-cols-[minmax(0,1fr)_360px]' : 'grid-cols-1'}`}>
 
         {/* Table card */}
-        <div className={`bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)] ${selectedEquipment ? 'flex-1 min-w-0' : 'w-full'}`}>
+        <div className="bg-white border border-[#ebebeb] rounded-xl overflow-hidden shadow-[0_1px_4px_rgba(0,0,0,0.05)]">
           <Table>
             <Thead>
               <tr>
@@ -285,6 +339,7 @@ export default function EquipmentPage() {
                     key={eq.id}
                     onClick={() => { setSelectedId(isSelected ? null : eq.id); setActiveTab('overview') }}
                     className={`cursor-pointer transition-colors duration-75 ${isSelected ? 'bg-[#eef2ff]' : 'hover:bg-[#fafafa]'}`}
+                    style={isSelected ? { boxShadow: 'inset 3px 0 0 #5c5fef' } : undefined}
                   >
                     {/* Device / Model */}
                     <Td>
@@ -292,9 +347,9 @@ export default function EquipmentPage() {
                         <div className="w-9 h-9 bg-[#f3f4f6] rounded-lg flex items-center justify-center flex-shrink-0 border border-[#e5e7eb]">
                           <Printer className="w-4 h-4 text-[#9ca3af]" />
                         </div>
-                        <div>
-                          <div className="text-sm text-[#111827] font-medium">{eq.make} {eq.model}</div>
-                          <div className="text-[11px] text-[#9ca3af] font-mono">{eq.serial_number}</div>
+                        <div className="min-w-0">
+                          <div className="text-sm text-[#111827] font-medium truncate max-w-[140px]">{eq.make} {eq.model}</div>
+                          <div className="text-[11px] text-[#9ca3af] font-mono truncate max-w-[140px]">{eq.serial_number}</div>
                         </div>
                       </div>
                     </Td>
@@ -443,12 +498,12 @@ export default function EquipmentPage() {
               </div>
 
               {/* Tabs */}
-              <div className="flex border-b border-[#f0f0f0] px-2">
+              <div className="flex border-b border-[#f0f0f0]">
                 {(['overview', 'meters', 'service', 'contracts', 'history'] as const).map(tab => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`px-2 py-2.5 text-xs font-medium capitalize border-b-2 transition-colors ${
+                    className={`flex-1 py-2.5 text-[11px] font-medium capitalize border-b-2 transition-colors text-center ${
                       activeTab === tab
                         ? 'border-[#5c5fef] text-[#5c5fef]'
                         : 'border-transparent text-[#6b7280] hover:text-[#374151]'
